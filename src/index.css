@@ -1,0 +1,474 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Helvetica Neue",
+    sans-serif !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* --- Utility Classes --- */
+.glass-effect,
+.glass-card {
+  /* 1. Background: #FFFFFF at 10% opacity 
+     2. Border: Linear Gradient from #FFFFFF (50%) to #FFFFFF (10%)
+  */
+  background: rgba(255, 255, 255, 0.1);
+
+  /* Transparent border to reveal the gradient */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  /* Radius */
+  border-radius: 12px;
+
+  /* Blur: 35px */
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+
+  /* Spacing & Shadow */
+  padding: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Header --- */
+.header-container {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  pointer-events: none;
+  font-family: "Inter", sans-serif;
+}
+
+.header-interactive {
+  pointer-events: auto;
+}
+
+/* --- Footer --- */
+.footer-container {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 280px;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  pointer-events: auto;
+}
+
+/* --- SIDEBAR (New) --- */
+.sidebar-container {
+  position: absolute;
+  top: 20px;
+  bottom: 120px;
+  right: 20px;
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 101;
+  pointer-events: auto;
+}
+
+.sidebar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  background: rgba(19, 27, 40, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+}
+
+.sidebar-icon:hover {
+  background: rgba(255, 140, 105, 0.2);
+  border-color: #ff8c69;
+  color: #ff8c69;
+  transform: scale(1.05);
+}
+
+.sidebar-icon.active {
+  background: #ff8c69;
+  color: #000;
+  border-color: #ff8c69;
+}
+
+/* --- Right Panel (Charts & Chat) --- */
+.right-panel-top {
+  position: absolute;
+  /* top: 80px; */
+  right: 20px;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 100;
+  font-family: "Inter", sans-serif;
+  max-height: calc(100vh - 320px);
+  overflow-y: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.right-panel-top::-webkit-scrollbar {
+  display: none;
+}
+
+/* CHANGED: Moved from bottom-right to top-left */
+.right-panel-bottom {
+  position: fixed;
+  /* top: 100px; */
+  left: 20px; /* Left side */
+  right: auto; /* Reset right */
+  bottom: auto; /* Reset bottom */
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 102;
+  font-family: "Inter", sans-serif;
+  align-items: flex-start; /* Align contents to the left */
+}
+
+/* Mobile Toggle Button (Hidden on Desktop) */
+.mobile-toggle-btn {
+  display: none;
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: #ff8c69;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  z-index: 110;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Home Screen --- */
+.home-container {
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-content {
+  z-index: 10;
+  max-width: 692px;
+  width: 90%;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ========================================= */
+/* 📱 MOBILE RESPONSIVENESS MEDIA QUERIES    */
+/* ========================================= */
+
+@media (max-width: 768px) {
+  .header-container {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .footer-container {
+    display: none;
+  }
+
+  .mobile-toggle-btn {
+    display: flex;
+  }
+
+  .sidebar-container {
+    display: none;
+  }
+
+  .right-panel-mobile-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 105;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    backdrop-filter: blur(5px);
+  }
+
+  .right-panel-top {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    max-height: 50vh;
+    margin-bottom: 20px;
+  }
+
+  .right-panel-bottom {
+    position: relative;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    z-index: 106;
+  }
+}
+
+.top-left-panel {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  width: 400px;
+  z-index: 100;
+  pointer-events: auto;
+  font-family: "Inter", sans-serif;
+}
+
+/* 2. Right Side Panel (Charts) */
+.right-side-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 430px; /* Slightly wider for charts */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 100;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  pointer-events: auto;
+  max-height: 82%;
+}
+.right-side-panel::-webkit-scrollbar {
+  display: none;
+}
+
+/* 3. Bottom Input Panel (Moved to Left) */
+.bottom-center-panel {
+  position: absolute;
+  bottom: 30px;
+  left: 20px; /* Aligned to left */
+  width: 380px; /* Matching top-left panel width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  pointer-events: auto;
+  font-family: "Inter", sans-serif;
+}
+
+/* 3. Bottom Input Panel (Moved to Left) */
+.bottom-middle-panel {
+  width: 380px; /* Matching top-left panel width */
+  position: absolute;
+  bottom: 30px;
+  left: 50%; /* Aligned to left */
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  pointer-events: auto;
+  font-family: "Inter", sans-serif;
+}
+
+/* Chips Container */
+.chips-container {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.action-chip {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.action-chip:hover {
+  background: rgba(255, 140, 105, 0.2);
+  border-color: #ff8c69;
+  color: #ff8c69;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 1024px) {
+  .top-left-panel {
+    width: 300px;
+  }
+  .right-side-panel {
+    width: 350px;
+  }
+  .bottom-center-panel {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-left-panel,
+  .right-side-panel,
+  .footer-container {
+    display: none; /* Simplified for mobile, show only critical or use toggle */
+  }
+  .bottom-center-panel {
+    width: 95%;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* --- Fancy Input Animation --- */
+.fancy {
+  --offset: 3px;
+  /* Use the app's dark background color or similar to blend in, 
+     overridden by inline styles if needed, but important for the effect base */
+  background: rgb(55, 21, 90);
+  border-radius: 30px; /* Matched to INPUT_BAR_STYLE radius */
+  position: relative;
+  /* Removed fixed height/width to adapt to the React component's layout */
+  /* height: 75px; */
+  /* width: 400px; */
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Conic gradient */
+.fancy::before {
+  content: "";
+  background: conic-gradient(transparent 270deg, #ff9364, transparent);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1;
+  width: 100%;
+  animation: rotate 5s linear infinite;
+  z-index: 0;
+}
+
+/* Overlay - matches background to create the border effect */
+.fancy::after {
+  content: "";
+  background: inherit;
+  border-radius: inherit;
+  position: absolute;
+  inset: var(--offset);
+  height: calc(100% - 2 * var(--offset));
+  width: calc(100% - 2 * var(--offset));
+  z-index: 1;
+}
+
+/* Ensure content sits on top */
+.fancy > * {
+  z-index: 10;
+  position: relative;
+}
+
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) scale(1.4) rotate(0turn);
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1.4) rotate(1turn);
+  }
+}
+
+/* --- FIX: Remove Default Focus Outline on Chart Interactive Elements --- */
+.recharts-wrapper *:focus {
+  outline: none !important;
+}
+
+.hide-scroll {
+  direction: ltr;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #616161 transparent;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #4c8dff;
+  border-radius: 4px;
+}

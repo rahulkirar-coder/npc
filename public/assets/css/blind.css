@@ -1,0 +1,781 @@
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+button,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+header,
+hgroup,
+html,
+html input[type=button],
+i,
+iframe,
+img,
+input[type=reset],
+input[type=submit],
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+	color: #ff0 !important;
+	/* background-color: #000!important; */
+}
+
+header {
+	background: #000;
+}
+
+header .logo-without-blind {
+	display: none;
+}
+
+header .logo-blind {
+	display: block;
+}
+
+.honeycomb-navigation path {
+	fill: #ff0 !important;
+}
+
+.honeycomb-navigation path {
+	stroke: #ff0 !important;
+}
+
+.honeycomb-navigation path.main-honey {
+	fill: #000 !important;
+}
+
+.g-our-advantage tspan {
+	fill: #ff0 !important;
+}
+
+.easy-process path,
+.easy-process path,
+.g-our-advantage path,
+.g-our-advantage path,
+.how-does-it-work path,
+.how-does-it-work path,
+.investment-benefits path,
+.investment-benefits path,
+.investment-opportunities path,
+.investment-opportunities path,
+.success-stories path,
+.success-stories path,
+.why-qatar path,
+.why-qatar path {
+	fill: #000 !important;
+}
+
+.easy-process text,
+.easy-process text,
+.g-our-advantage text,
+.g-our-advantage text,
+.how-does-it-work text,
+.how-does-it-work text,
+.investment-benefits text,
+.investment-benefits text,
+.investment-opportunities text,
+.investment-opportunities text,
+.success-stories text,
+.success-stories text,
+.why-qatar text,
+.why-qatar text {
+	fill: #ff0 !important;
+}
+
+
+.easy-process.active path,
+.easy-process:hover path,
+.easy-process:hover path,
+.g-our-advantage.active path,
+.g-our-advantage:hover path,
+.how-does-it-work.active path,
+.how-does-it-work:hover path,
+.investment-benefits.active path,
+.investment-benefits:hover path,
+.investment-opportunities.active path,
+.investment-opportunities:hover path,
+.success-stories.active path,
+.success-stories:hover path,
+.why-qatar.active path,
+.why-qatar:hover path {
+	fill: #ff0 !important;
+}
+
+.easy-process.active text,
+.easy-process:hover text,
+.easy-process:hover text,
+.g-our-advantage.active text,
+.g-our-advantage:hover text,
+.how-does-it-work.active text,
+.how-does-it-work:hover text,
+.investment-benefits.active text,
+.investment-benefits:hover text,
+.investment-opportunities.active text,
+.investment-opportunities:hover text,
+.success-stories.active text,
+.success-stories:hover text,
+.why-qatar.active text,
+.why-qatar:hover text {
+	fill: #000 !important;
+}
+
+
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+button,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+	color: #ff0 !important
+}
+
+option,
+select {
+	color: #ff0 !important
+}
+
+::-moz-placeholder {
+	color: #ff0 !important
+}
+
+a:focus,
+a:hover {
+	color: #000 !important
+}
+
+strong:focus,
+strong:hover {
+	color: #000 !important
+}
+
+body img {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%) !important;
+	filter: #ff0;
+}
+
+[class*=banner],
+[class^=banner] {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%) !important
+}
+
+[class*=ico],
+[class^=ico] {
+	color: #ff0 !important
+}
+
+input,
+input::-webkit-input-placeholder {
+	color: #000 !important
+}
+
+.hero .swiper-container .swiper-slide .desc-swipe {
+	color: #ff0;
+}
+
+
+h2::before,
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+button,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+header,
+hgroup,
+html,
+html input[type=button],
+i,
+iframe,
+img,
+input[type=reset],
+input[type=submit],
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+	/* -webkit-filter: grayscale(100%); */
+	/* filter: grayscale(100%)!important; */
+	color: #ff0;
+	/* filter: gray; */
+}
+
+
+.gallery .item,
+.gallery .item .content-container,
+.gallery .item .content-container div {
+	background-color: #ff0 !important;
+	background: #ff0 !important;
+	color: #000 !important;
+}
+
+.swiper-slide,
+section,
+body,
+button,
+.form-control,
+.form-control::placeholder,
+.form-select {
+	background: #000 !important;
+	background-color: #000 !important;
+	color: #ff0 !important;
+}
+
+.form-control,
+.form-control::placeholder,
+.form-select {
+	border-color: #ff0 !important;
+}
+
+
+
+.section-search .contact-us .title-contact-us::after {
+	border-top-color: #ff0 !important;
+	background: #000;
+}
+
+.btn.btn-swipe-services,
+.service-card,
+.service-card .btn,
+.section-search .contact-us .title-contact-us,
+.btn {
+	border: 1px solid #ff0 !important;
+	background: #000 !important;
+	color: #ff0 !important;
+}
+
+header .actions-header .actions-header-list .actions-header-list-item .actions-header-list-item-link img {
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+.navbar-brand img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+
+.hero .swiper-container .swiper-slide .bg-slider {
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+
+header .navbar-toggler-sidebar{
+	border-color: #ff0;
+}
+img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+
+}
+
+.services .service-card .service-title img,.icon-slider ,.section-search .contact-us .list-contact-us .contact-item .location a img,.contact-item img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+header .search-header-container .search-header .search-img-button, header .search-header-container-mobile .search-header .search-img-button{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+.hero .bg-home-page .card-login{
+	background-color: #000;
+	border: 1px solid #ff0;
+}
+footer .contact-us .list-contact-us .contact-item{
+	border-color: #ff0!important;
+}
+footer .contact-us .list-contact-us .contact-item .social-media .social-media-item{
+	background: #ff0!important;
+}
+.accordion-item{
+	border-color:#ff0!important;
+}
+.card-search-result{
+	background-color: #000!important;
+	border: 1px solid #ff0;
+}
+div{
+	background-color: #000!important;
+}
+.card-search-result .card-img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+
+.accordion-custom .accordion-button::after{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+.accordion-custom .accordion-button{
+	background: #ff0!important;
+	color: #000!important;
+}
+
+.accordion-custom .accordion-button.collapsed{
+	color: #ff0!important;
+	background: #000!important;
+}
+
+.help-articles-page .articles-list{
+	background: #000;
+	border:#ff0 1px solid;
+}
+
+.help-articles-page .articles-list .articles-item.item-header{
+	background: #ff0!important;
+	color: #000!important;
+}
+
+.help-articles-page .articles-list .articles-item.active{
+	font-weight: 700;
+}
+.help-articles-page .articles-list .articles-item{
+	border-color: #ff0;
+}
+
+
+.accordion-header .accordion-button img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+
+.investment-advantages-section .card-investment-custom .card-investment-custom-body .cost-investment .img-investment-custom{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+.investment-advantages-section .container-comprehensive .comprehensive-body .list-comprehensive li::before{
+	background: #ff0;
+}
+
+
+.divider{
+	background: #ff0!important;
+}
+footer .contact-us .list-contact-us .contact-item .social-media .social-media-item img{
+	filter: brightness(0) saturate(100%) invert(0%) sepia(83%) saturate(7500%) hue-rotate(51deg) brightness(111%) contrast(115%)!important;
+}
+
+.hero .bg-home-page .card-login .input-group-container img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+.btn-info img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+
+.section-search .newsletter-icons{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+.bottom-footer-content img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+
+header .navbar-collapse .navbar-nav li a:hover,
+a:focus,
+a:hover {
+	color: #ff0 !important;
+}
+
+.section-search .contact-us .list-contact-us .contact-item {
+	border-color: #ff0 !important;
+}
+.custom-alert{
+border: 1px solid;
+}
+
+.navbar-toggler {
+	border: 1px solid;
+}
+
+.navbar-toggler span {
+	color: #ff0 !important;
+}
+
+header {
+	border-bottom: 1px solid #ff0;
+}
+
+header .navbar-collapse .navbar-nav {
+	border-color: #ff0;
+}
+
+section {
+	border-bottom: #ff0 1px solid;
+}
+
+
+.section-search .contact-us .list-contact-us .contact-item .social-media .social-media-item {
+	background: #ff0;
+}
+
+.section-search .contact-us .list-contact-us .contact-item .social-media .social-media-item img {
+	filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(29deg) brightness(99%) contrast(102%)!important;
+}
+
+.desc-swipe path {
+	fill: #ff0;
+}
+
+.desc-swipe text{
+	fill:#000;
+}
+
+header .navbar-collapse{
+	background: #000;
+}
+
+.navbar-nav .dropdown-menu{
+	background: #000!important;
+}
+
+.navbar-nav .dropdown-menu li{
+	border-color: #ff0!important;
+}
+
+header .navbar-collapse .navbar-nav li a:hover{
+	background-color: #ff0!important;
+	color: #000!important;
+}
+
+
+main.have-bg {
+	background: #000;
+}
+
+.l-navbar{
+	border: 1px solid;
+}
+
+.card-company{
+	border:1px solid
+}
+
+.custom-nav-tabs .nav-item .nav-link.active::before{
+	background-color: #ff0;
+}
+
+.card-company .card-company-footer{
+	border-color: #ff0;
+}
+
+.pagination-nav .pagination.custom-pagination .page-item .page-link{
+	border-color: #ff0;
+}
+
+.pagination-nav .pagination.custom-pagination .page-item.active .page-link{
+    background-color: #ff0!important;
+    border-color: #ff0;
+    color: #000!important;
+}
+
+
+.pagination-nav .pagination.custom-pagination .page-item:first-child .page-link, .pagination-nav .pagination.custom-pagination .page-item:last-child .page-link{
+	border-color: #ff0;
+}
+
+footer .contact-us .list-contact-us .contact-item{
+	border-color: #ff0;
+}
+
+header .actions-header .actions-header-list .divider{
+	background: #ff0!important;
+}
+
+/* solve blind old design */
+
+#sw-header{
+	background-color: #000;
+}
+
+#sw-header .navbar-toggler-sidebar{
+	border-color: #ff0;
+}
+
+#sw-header .navbar-toggler-sidebar img{
+	filter: brightness(0) saturate(100%) invert(84%) sepia(76%) saturate(676%) hue-rotate(356deg) brightness(103%) contrast(102%) !important;
+}
+
+.navbar.sub-main-nav .navbar-nav .nav-item{
+	background-color: #000;
+}
+
+.navbar.sub-main-nav .navbar-nav .nav-item:not(:last-child){
+	border-color: #ff0;
+}
+
+.navbar.sub-main-nav .navbar-nav .nav-item.active, .navbar.sub-main-nav .navbar-nav .nav-item:hover{
+	background: #ff0;
+	color: #000!important;
+}
+
+.navbar.sub-main-nav .navbar-nav .nav-item.active a, .navbar.sub-main-nav .navbar-nav .nav-item:hover a{
+	color: #000!important;
+}
+
+.navbar.sub-main-nav .navbar-nav .nav-item.active [class^="icon-"],.navbar.sub-main-nav .navbar-nav .nav-item:hover [class^="icon-"], .navbar.sub-main-nav .navbar-nav .nav-item:hover [class*=" icon-"], .navbar.sub-main-nav .navbar-nav .nav-item.active [class*=" icon-"]{
+	color: #000!important;
+}
+
+.quetionnaire-details .menu ul li a{
+	background: #000;
+	border-color: #ff0!important;
+}
+
+#menu li.highlight a,.quetionnaire-details .menu ul li a:hover{
+	background: #ff0;
+	color: #000!important;
+}
+
+.subHeader,.subHeader .row,.subHeader div,.subHeader span{
+	background: #ff0!important;
+	color: #000!important;
+}
+
+.dashboard .subHeader h4{
+	color: #000!important;
+}
+
+.btnDefault:hover{
+	background-color: #ff0!important;
+	color: #000!important;
+}
+
+.scroll-to-top{
+	background: #ff0!important;
+}
+.scroll-to-top i{
+	color: #000;
+}
+
+.actions-header {
+	background: #000!important;
+}
+
+/* .actions-header div{
+	border-inline-end: 1px solid #ff0!important;
+} */
+
+.customTabs.tab-container .nav-tabs{
+	border-color: #ff0;
+}
+
+.customTabs.tab-container .nav-tabs .nav-item.show .nav-link, .customTabs.tab-container .nav-tabs .nav-link.active{
+	background-color: #ff0;
+	color: #000!important;
+}
+
+.customTabs.tab-container .nav-tabs .nav-link:focus,.customTabs.tab-container .nav-tabs .nav-link:hover{
+	border-color:#ff0;
+}
+.customTabs .nav-tabs .nav-link.active i{
+	color: #000!important;
+}
+
+.details .highlighted{
+	background-color: #ff0!important;
+	color: #000!important;
+}
+
+.bg-white{
+	background: #000!important;
+}
+
+.bg-white.highlighted{
+	background-color: #ff0!important;
+	color: #000!important;
+}
+
+.bg-white.highlighted a{
+	color: #000!important;
+}
+
+
+.errRed{
+	color: #ff0!important;
+}
+
+.quetionnaire-details select.form-control, .quetionnaire-details input.form-control, .quetionnaire-details textarea.form-control, .modal-body select.form-control, .modal-body input.form-control{
+	border-color: #ff0!important;
+}
+
+.trade-top-list .trade-top-list-item::marker{
+	color: #ff0;
+}
