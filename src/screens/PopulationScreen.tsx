@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RightPanel } from "../components/PopulationRight";
+import { RightPanel } from "../components/RightPanel";
+import { Footer } from "../components/Footer";
 import { setLoading, setMapLayer, type AppState } from "../state/appReducer";
 import { useMap } from "react-map-gl";
 import type { FillLayer, LineLayer } from "react-map-gl";
@@ -14,40 +15,63 @@ import {
 } from "../util";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingOverlay } from "../components/LoadingOverlay";
-import { BottomInputPanel } from "../components/AIChat";
-import { RawiChatCard } from "../components/RawiChatCard";
-import { Footer } from "../components/PopulationFooter";
-import { ChartToggleBtn } from "../components/PopulationToggleBtn";
-import TogglePanel from "../components/TogglePanel";
+import { COMMON_TOGGLE_TOP } from "../utils/style";
 
 // --- Styles ---
 const SCREEN_STYLE: React.CSSProperties = {
+  position: "absolute",
   width: "100%",
   height: "100%",
-  position: "absolute",
   top: 0,
   left: 0,
   overflow: "hidden",
   pointerEvents: "none",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
 };
 
-const RESET_BTN_STYLE: React.CSSProperties = {
+const UI_CONTAINER_STYLE: React.CSSProperties = {
+  padding: "20px",
+  width: "100%",
+  height: "100%",
+  pointerEvents: "none",
+};
+
+const INTERACTIVE_STYLE: React.CSSProperties = {
   pointerEvents: "auto",
-  backgroundColor: "#A30134",
-  borderRadius: "50px",
-  padding: "8px 18px",
-  color: "#fff",
-  fontSize: "14px",
-  fontWeight: "500",
-  cursor: "pointer",
-  alignItems: "center",
-  transition: "all 0.2s ease",
-  fontFamily: "Poppins",
+};
+
+const TOGGLE_STYLE: React.CSSProperties = {
+  position: "absolute",
+  top: COMMON_TOGGLE_TOP,
+  left: "50%",
+  transform: "translateX(-50%)",
+  zIndex: 150,
+  pointerEvents: "auto",
+  display: "flex",
+};
+
+const TOGGLE_WRAPPER_STYLE: React.CSSProperties = {
+  backgroundColor: "rgba(19, 27, 40, 0.9)",
+  borderRadius: "30px",
+  padding: "4px",
+  border: "1px solid rgba(255, 255, 255, 0.15)",
+  display: "flex",
+  gap: "4px",
+  backdropFilter: "blur(10px)",
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.4)",
+};
+
+const TOGGLE_BUTTON_STYLE = (active: boolean): React.CSSProperties => ({
+  padding: "8px 24px",
+  borderRadius: "24px",
   border: "none",
-}
+  background: active ? DOHA_FLAG_COLOR : "transparent",
+  color: active ? "#fff" : "#94a3b8",
+  fontWeight: 600,
+  fontSize: "14px",
+  cursor: "pointer",
+  transition: "all 0.3s ease",
+  outline: "none",
+});
 
 export const PopulationScreen = () => {
   const dispatch = useDispatch();
@@ -56,7 +80,7 @@ export const PopulationScreen = () => {
   const navigate = useNavigate();
 
   // State
-  const [activeYearBtn, setActiveYearBtn] = useState<2020 | 2025>(2020);
+  const [activeYearBtn, setActiveYearBtn] = useState<2025 | 2020>(2020);
   const [viewMode, setViewMode] = useState<"zone" | "block">("zone");
 
   // Drill-down State
@@ -886,128 +910,100 @@ export const PopulationScreen = () => {
     }
   }
 
-  //
-  const handleTransition = (path: string) => {
-    if (stopCinematicMode) stopCinematicMode();
-    if (map) {
-      map.stop();
-      map.flyTo({ center: [51.5348, 25.2867], zoom: 9, duration: 2000 });
-      map.once("moveend", () => navigate(path));
-    } else {
-      navigate(path);
-    }
-  };
-  const processTextAndNavigate = () => handleTransition("/establishment");
-
   return (
     <div style={SCREEN_STYLE}>
       <LoadingOverlay />
-
-      <div style={{
-        width: "25%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "50px 10px 30px 10px",
-      }}>
-
-        <RawiChatCard
-          text={
-            chatInfo?.text ||
-            "Good morning. Qatar’s population is 3.7M (+4% vs 2020). 28.02% are university educated."
-          }
-          buttonText="Show Employment"
-          onButtonClick={() => processTextAndNavigate()}
-          minHeight="60px"
-          question={
-            chatInfo?.question || "Population analysis by block in Doha"
-          }
-          recommendations={chatInfo?.recommendations}
-          onRecommendationClick={handleRecommendationClick}
-        />
-
-        <BottomInputPanel
-          chips={chatInfo?.recommendations || []}
-          onSubmit={processTextAndNavigate}
-          onDataUpdate={handleDataUpdate}
-        />
-      </div>
-
-      <div style={{
-        width: "25%",
-        height: "100%",
-        paddingBottom: "30px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}>
-        <TogglePanel
-          activeYear={activeYearBtn}
-          viewMode={viewMode}
-          isTransitioning={isTransitioning}
-          onChangeYear={(year) =>
-            performZoomTransition(() => setActiveYearBtn(year))
-          }
-          onChangeViewMode={(mode) =>
-            performZoomTransition(() => {
-              setViewMode(mode);
-              setSelectedZone(null);
-            })
-          }
-        />
-
-        <Footer
-          title={
-            selectedZone
-              ? `Population (Zone ${selectedZone} Blocks)`
-              : viewMode === "zone"
-                ? "Population Distribution (Zone)"
-                : "Population Distribution (Block)"
-          }
-          minVal={minVal}
-          maxVal={maxVal}
-        />
-      </div>
-
-      <div style={{
-        width: "30%",
-        height: "100%",
-        padding: "0px 20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <ChartToggleBtn />
-          <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
-            <span>Reset Filters</span>
+      <div style={TOGGLE_STYLE}>
+        <div style={TOGGLE_WRAPPER_STYLE}>
+          <button
+            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
+            onClick={() => {
+              if (activeYearBtn !== 2020 && !isTransitioning.current) {
+                performZoomTransition(() => setActiveYearBtn(2020));
+              }
+            }}
+          >
+            2020
+          </button>
+          <button
+            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
+            onClick={() => {
+              if (activeYearBtn !== 2025 && !isTransitioning.current) {
+                performZoomTransition(() => setActiveYearBtn(2025));
+              }
+            }}
+          >
+            2025
           </button>
         </div>
+        <div style={{ width: "10px" }}></div>
+        <div style={TOGGLE_WRAPPER_STYLE}>
+          <button
+            style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
+            onClick={() => {
+              if (viewMode !== "zone" && !isTransitioning.current) {
+                performZoomTransition(() => {
+                  setViewMode("zone");
+                  setSelectedZone(null);
+                });
+              }
+            }}
+          >
+            Zone
+          </button>
+          <button
+            style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
+            onClick={() => {
+              if (viewMode !== "block" && !isTransitioning.current) {
+                performZoomTransition(() => {
+                  setViewMode("block");
+                  setSelectedZone(null);
+                });
+              }
+            }}
+          >
+            Block
+          </button>
+        </div>
+      </div>
 
-        {panelData && (
-          <RightPanel
-            data={panelData}
-            onStartTransition={stopCinematicMode}
-            selectedAgeGroups={selectedAgeGroups}
-            onAgeGroupToggle={handleAgeGroupToggle}
-            selectedGender={selectedGender}
-            onGenderToggle={handleGenderToggle}
-            selectedMaritalStatus={selectedMaritalStatus}
-            onMaritalStatusToggle={handleMaritalStatusToggle}
-            selectedEducation={selectedEducation}
-            onEducationToggle={handleEducationToggle}
-            // Added Props
-            selectedNationalities={selectedNationalities}
-            onNationalityToggle={handleNationalityToggle}
-            onResetFilters={handleResetFilters}
-            chatData={chatInfo}
-            onRecommendationClick={handleRecommendationClick}
-            onDataUpdate={handleDataUpdate}
+      <div style={UI_CONTAINER_STYLE}>
+        <div style={INTERACTIVE_STYLE}>
+          {panelData && (
+            <RightPanel
+              data={panelData}
+              onStartTransition={stopCinematicMode}
+              selectedAgeGroups={selectedAgeGroups}
+              onAgeGroupToggle={handleAgeGroupToggle}
+              selectedGender={selectedGender}
+              onGenderToggle={handleGenderToggle}
+              selectedMaritalStatus={selectedMaritalStatus}
+              onMaritalStatusToggle={handleMaritalStatusToggle}
+              selectedEducation={selectedEducation}
+              onEducationToggle={handleEducationToggle}
+              // Added Props
+              selectedNationalities={selectedNationalities}
+              onNationalityToggle={handleNationalityToggle}
+              onResetFilters={handleResetFilters}
+              chatData={chatInfo}
+              onRecommendationClick={handleRecommendationClick}
+              onDataUpdate={handleDataUpdate}
+            />
+          )}
+        </div>
+        <div style={INTERACTIVE_STYLE}>
+          <Footer
+            title={
+              selectedZone
+                ? `Population (Zone ${selectedZone} Blocks)`
+                : viewMode === "zone"
+                  ? "Population Distribution (Zone)"
+                  : "Population Distribution (Block)"
+            }
+            minVal={minVal}
+            maxVal={maxVal}
           />
-        )}
+        </div>
       </div>
     </div>
   );
