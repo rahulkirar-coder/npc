@@ -1,3 +1,4 @@
+import { DownloadIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 // --- Icons (Inline SVGs) ---
@@ -39,6 +40,7 @@ const CARD_STYLE: React.CSSProperties = {
   flexDirection: "column",
   gap: "16px",
   position: "relative",
+  pointerEvents: "auto",
 };
 
 const HEADER_STYLE: React.CSSProperties = {
@@ -182,6 +184,9 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
       <div style={BODY_TEXT_STYLE} className="custom-scroll">
         <TypewriterText text={text} />
       </div>
+
+      {/* Download button */}
+        <DownloadIcon />
 
       {/* Recommendations */}
       {/* {recommendations && recommendations.length > 0 && (

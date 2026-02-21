@@ -21,7 +21,7 @@ export const MapLayout = () => {
       <Header />
 
       {/* 4. Chart Toggle Button */}
-      {isShow && <ChartToggleBtn />}
+      {/* {isShow && <ChartToggleBtn />} */}
 
       {/* 1. Persistent Map Background */}
       <GraphArea />

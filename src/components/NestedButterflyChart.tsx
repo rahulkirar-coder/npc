@@ -64,7 +64,6 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
   }, [data, maxVal]);
 
   const Row = ({ row }: { row: ButterflyData }) => {
-    console.log(row,"===@@@")
     const [isHovered, setIsHovered] = useState(false);
 
     // Determine Selection Key

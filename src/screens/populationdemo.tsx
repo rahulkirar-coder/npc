@@ -898,7 +898,6 @@ export const PopulationScreen = () => {
     }
   };
   const processTextAndNavigate = () => handleTransition("/establishment");
-  
 
   return (
     <div style={SCREEN_STYLE}>
@@ -982,26 +981,12 @@ export const PopulationScreen = () => {
         gap: "20px",
       }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20 }}>
-            <ChartToggleBtn />
-
-            <div>
-              {selectedAgeGroups.map((item) => {
+          <ChartToggleBtn />
+            {/* {selectedAgeGroups.map((item) => {
               return (
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 5, pointerEvents: "auto", cursor: "pointer" }}
-                  onClick={() => {handleAgeGroupToggle(item) }}
-                >
-                  <p key={item}
-                    style={{ fontSize: "10px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                  <span style={{ fontSize: "15px" }}>X</span>
-                </div>
+                <p>{item}</p>
               )
-            })}
-            </div>
-          </div>
-
-
+            })} */}
           <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
             <span>Reset Filters</span>
           </button>

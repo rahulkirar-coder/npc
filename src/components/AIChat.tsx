@@ -172,6 +172,8 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
         body: JSON.stringify({ query: queryText }),
       });
 
+      console.log(response?.headers, "===@@@")
+      
       if (response.ok) {
         const json = await response.json();
         const data = json.ouptput;

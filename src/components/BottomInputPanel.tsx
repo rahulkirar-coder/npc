@@ -169,12 +169,15 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
       const response = await fetch("https://rawi-backend.vercel.app/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",   // 👈 IMPORTANT
         body: JSON.stringify({ query: queryText }),
       });
+
 
       if (response.ok) {
         const json = await response.json();
         const data = json.ouptput;
+        console.log(data)
         setInputValue("");
 
         const isGeneric = json.genericQuery;
@@ -316,7 +319,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
       }
       style={style} // Apply style override
     >
-      <div className="chips-container" style={{width: window.location.pathname !== "/city" ?"100%":"800px"}}>
+      <div className="chips-container" style={{ width: window.location.pathname !== "/city" ? "100%" : "800px" }}>
         {uniqueChips.map((chip, index) => (
           <div
             key={index}
