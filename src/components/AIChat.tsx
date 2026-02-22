@@ -206,7 +206,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
           return;
         }
 
-        // 2. Specific Query: Navigate or Update Screen Data
+        // 2. Specific Query: Navigate or Update Screen Data..
         if (data && data.graphScreeen) {
           let route = "";
           switch (data.graphScreeen) {
