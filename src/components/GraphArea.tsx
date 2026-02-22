@@ -23,8 +23,7 @@ const GRAPH_AREA_STYLE: React.CSSProperties = {
   left: 0,
 };
 
-const MAPBOX_TOKEN =
-  "REMOVED";
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const MAP_STYLE =
   "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
