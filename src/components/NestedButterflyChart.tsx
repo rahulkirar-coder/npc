@@ -64,6 +64,18 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
   }, [data, maxVal]);
 
   const Row = ({ row }: { row: ButterflyData }) => {
+
+    const hasInvalidValue = (obj) => {
+      return Object.values(obj).some((value) => {
+        return (
+          value === null ||
+          value === undefined ||
+          (typeof value === "number" && Number.isNaN(value)) ||
+          (typeof value === "string" && value.includes("NaN"))
+        );
+      });
+    };
+
     const [isHovered, setIsHovered] = useState(false);
 
     // Determine Selection Key
@@ -91,7 +103,7 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
     return (
       <div
         onClick={() =>
-          isInteractive && onItemToggle && onItemToggle(selectionKey)
+          !hasInvalidValue(row) && isInteractive && onItemToggle && onItemToggle(selectionKey)
         }
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -105,16 +117,18 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
           padding: "6px 8px",
           borderRadius: "8px",
           transition: "all 0.2s ease",
-          backgroundColor: isSelected
+          border: isSelected
+            ? "1px solid #FF8C69"
+            : !hasInvalidValue(row) && isHovered && isInteractive
+              ? `1px solid ${DOHA_FLAG_COLOR}`
+              : "1px solid transparent",
+
+          backgroundColor: hasInvalidValue(row) ? "rgba(255, 140, 105, 0.15)" : isSelected
             ? "rgba(255, 140, 105, 0.15)"
             : isHovered && isInteractive
               ? DOHA_FLAG_COLOR_RGBA_06
               : "transparent",
-          border: isSelected
-            ? "1px solid #FF8C69"
-            : isHovered && isInteractive
-              ? `1px solid ${DOHA_FLAG_COLOR}`
-              : "1px solid transparent",
+          opacity: hasInvalidValue(row) ? 0.5 : 1,
         }}
       >
         {/* LEFT: MALE */}
