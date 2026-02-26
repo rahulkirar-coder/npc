@@ -109,7 +109,7 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
         onMouseLeave={() => setIsHovered(false)}
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 85px 1fr", // Slightly wider center column
+          gridTemplateColumns: "1fr 85px 1fr",
           alignItems: "center",
           marginBottom: "8px",
           fontSize: "11px",
