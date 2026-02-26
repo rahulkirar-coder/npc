@@ -20,6 +20,9 @@ import { Footer } from "../components/PopulationFooter";
 import { ChartToggleBtn } from "../components/PopulationToggleBtn";
 import TogglePanel from "../components/TogglePanel";
 
+import { BarChart } from "lucide-react"; // Changed chevron direction conceptually
+
+
 // --- Styles ---
 const SCREEN_STYLE: React.CSSProperties = {
   width: "100%",
@@ -898,7 +901,10 @@ export const PopulationScreen = () => {
     }
   };
   const processTextAndNavigate = () => handleTransition("/establishment");
-  
+
+
+  const [showFilter, setShowFilter] = useState<boolean>(false)
+
 
   return (
     <div style={SCREEN_STYLE}>
@@ -985,20 +991,17 @@ export const PopulationScreen = () => {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20 }}>
             <ChartToggleBtn />
 
-            <div>
-              {selectedAgeGroups.map((item) => {
-              return (
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 5, pointerEvents: "auto", cursor: "pointer" }}
-                  onClick={() => {handleAgeGroupToggle(item) }}
-                >
-                  <p key={item}
-                    style={{ fontSize: "10px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                  <span style={{ fontSize: "15px" }}>X</span>
+
+            {(
+              selectedAgeGroups?.length >= 1 ||
+              selectedNationalities?.length >= 1 ||
+              selectedMaritalStatus?.length >= 1 ||
+              selectedEducation?.length >= 1
+            ) && (
+                <div style={{pointerEvents:"auto",cursor:"pointer"}}>
+                  <BarChart size={20} onClick={()=>setShowFilter(!showFilter)}/>
                 </div>
-              )
-            })}
-            </div>
+              )}
           </div>
 
 
@@ -1006,6 +1009,70 @@ export const PopulationScreen = () => {
             <span>Reset Filters</span>
           </button>
         </div>
+
+        {showFilter && <div>
+          {selectedAgeGroups?.length >= 1 &&
+            <div>
+              {selectedAgeGroups.map((item) => {
+                return (
+                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                    onClick={() => { handleAgeGroupToggle(item) }}
+                  >
+                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                    <p key={item}
+                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                    >{item}</p>
+                  </div>
+                )
+              })}
+            </div>}
+
+          {selectedNationalities?.length >= 1 && <div>
+            {selectedNationalities.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleNationalityToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+
+          {selectedMaritalStatus?.length >= 1 && <div>
+            {selectedMaritalStatus.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleMaritalStatusToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+          {selectedEducation?.length >= 1 && <div>
+            {selectedEducation.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleEducationToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+
+
+        </div>}
 
         {panelData && (
           <RightPanel

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleRightPanel, type AppState } from "../state/appReducer";
-import { BarChart2, ChevronDown, ChevronRight } from "lucide-react"; // Changed chevron direction conceptually
+import { BarChart2, ChevronDown } from "lucide-react"; // Changed chevron direction conceptually
 
 const BUTTON_STYLE: React.CSSProperties = {
   backgroundColor: "rgba(19, 27, 40, 0.85)",
