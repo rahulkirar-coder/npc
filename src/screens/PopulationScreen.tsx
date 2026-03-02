@@ -903,7 +903,41 @@ export const PopulationScreen = () => {
   const processTextAndNavigate = () => handleTransition("/establishment");
 
 
-  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [showFilter, setShowFilter] = useState<boolean>(false);
+
+  const [history, setHistory] = useState<any>([]);
+
+  const fetchQueryHistory = async () => {
+    try {
+
+      let sessionId = localStorage.getItem("sessionID");
+
+      const response = await fetch("https://rawi-backend.vercel.app/query/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId: sessionId ? sessionId : null,
+          limit: 10,
+          page: 1
+        }),
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        console.log(json.history, "===@@@@")
+        setHistory(json.history);
+      }
+
+    } catch (error) {
+
+    } finally {
+
+    }
+  };
+
+  useEffect(() => {
+    fetchQueryHistory();
+  }, [])
 
 
   return (
@@ -934,6 +968,13 @@ export const PopulationScreen = () => {
           recommendations={chatInfo?.recommendations}
           onRecommendationClick={handleRecommendationClick}
         />
+
+        <div style={{ backgroundColor: "#15161A", padding: "10px", borderRadius: "12px", width: "100%", pointerEvents: "auto" }}>
+          <p>History</p>
+          {history.map((item: any, index: number) => (
+            <p key={index}>{item.question}</p>
+          ))}
+        </div>
 
         <BottomInputPanel
           chips={chatInfo?.recommendations || []}
@@ -991,15 +1032,14 @@ export const PopulationScreen = () => {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20 }}>
             <ChartToggleBtn />
 
-
             {(
               selectedAgeGroups?.length >= 1 ||
               selectedNationalities?.length >= 1 ||
               selectedMaritalStatus?.length >= 1 ||
               selectedEducation?.length >= 1
             ) && (
-                <div style={{pointerEvents:"auto",cursor:"pointer"}}>
-                  <BarChart size={20} onClick={()=>setShowFilter(!showFilter)}/>
+                <div style={{ pointerEvents: "auto", cursor: "pointer" }}>
+                  <BarChart size={20} onClick={() => setShowFilter(!showFilter)} />
                 </div>
               )}
           </div>

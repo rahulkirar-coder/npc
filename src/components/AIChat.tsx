@@ -166,10 +166,13 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
     dispatch(setLoading(true, "Processing Query..."));
 
     try {
+
+      let sessionId = localStorage.getItem("sessionID");
+
       const response = await fetch("https://rawi-backend.vercel.app/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: queryText }),
+        body: JSON.stringify({ query: queryText, threadId : sessionId ? sessionId : null }),
       });
 
       console.log(response?.headers, "===@@@")
@@ -179,6 +182,8 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
         const json = await response.json();
         const data = json.ouptput;
         setInputValue("");
+
+        localStorage.setItem("sessionID", json?.sessionId);
 
         const isGeneric = json.genericQuery;
         // Prioritize summary (markdown), fallback to txt
@@ -314,10 +319,10 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
     <div
       className={
         window.location.pathname !== "/city"
-          ? "bottom-center-panel"
+          ? ""
           : "bottom-middle-panel"
       }
-      style={style} // Apply style override
+      style={{width:"100%"}} // Apply style override
     >
       <div className="chips-container">
         {uniqueChips.map((chip, index) => (

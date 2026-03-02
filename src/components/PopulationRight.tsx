@@ -489,7 +489,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
             {isRightPanelOpen && (
                 <div
                     style={{
-                        width: "430px",
+                        width: "100%",
                         display: "flex",
                         flexDirection: "column",
                         gap: "15px",

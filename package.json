@@ -13,6 +13,7 @@
     "@elevenlabs/elevenlabs-js": "^2.29.0",
     "@elevenlabs/react": "^0.12.3",
     "@lottiefiles/dotlottie-react": "^0.17.12",
+    "axios": "^1.13.6",
     "h3-js": "^4.4.0",
     "lodash": "4.17.21",
     "lucide-react": "^0.562.0",

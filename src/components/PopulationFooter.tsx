@@ -37,7 +37,7 @@ export const Footer = ({ title, minVal, maxVal }: FooterProps) => {
             style={{
                 padding: "16px 24px",
                 zIndex: 100,
-                width: "280px",
+                width: "100%",
                 color: "#fff",
                 pointerEvents: "auto",
             }}

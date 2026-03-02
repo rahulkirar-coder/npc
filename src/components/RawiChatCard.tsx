@@ -29,10 +29,10 @@ const COLORS = {
 };
 
 const CARD_STYLE: React.CSSProperties = {
+  width: "100%",
   backgroundColor: COLORS.bg,
   borderRadius: "12px",
   padding: "24px",
-  width: "350px",
   fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
   boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
   border: `1px solid ${COLORS.border}`,
@@ -186,7 +186,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
       </div>
 
       {/* Download button */}
-        <DownloadIcon />
+        {/* <DownloadIcon /> */}
 
       {/* Recommendations */}
       {/* {recommendations && recommendations.length > 0 && (
