@@ -969,12 +969,12 @@ export const PopulationScreen = () => {
           onRecommendationClick={handleRecommendationClick}
         />
 
-        <div style={{ backgroundColor: "#15161A", padding: "10px", borderRadius: "12px", width: "100%", pointerEvents: "auto" }}>
+        {history.length >= 1 && <div style={{ backgroundColor: "#15161A", padding: "10px", borderRadius: "12px", width: "100%", pointerEvents: "auto" }}>
           <p>History</p>
           {history.map((item: any, index: number) => (
             <p key={index}>{item.question}</p>
           ))}
-        </div>
+        </div>}
 
         <BottomInputPanel
           chips={chatInfo?.recommendations || []}
