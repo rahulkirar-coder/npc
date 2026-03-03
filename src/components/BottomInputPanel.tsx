@@ -169,7 +169,6 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
       const response = await fetch("https://rawi-backend.vercel.app/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",   // 👈 IMPORTANT
         body: JSON.stringify({ query: queryText }),
       });
 
