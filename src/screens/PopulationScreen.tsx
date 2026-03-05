@@ -121,8 +121,6 @@ export const PopulationScreen = () => {
 
   const [apiRange, setApiRange] = useState<any[] | null>(null);
 
-  const [nationalityData, setNationalityData] = useState<any>(null);
-
   // --- Initial Loading Check ---
   useEffect(() => {
     if (!zoneData) {
@@ -192,6 +190,26 @@ export const PopulationScreen = () => {
 
   const [updateData, setUpdateData] = useState<any>(null)
 
+  const applyFilters = (filters: any) => {
+    if (!filters) return;
+
+    if (Array.isArray(filters.gender) && filters.gender.length > 0) {
+      setSelectedGender(filters.gender);
+    }
+
+    if (Array.isArray(filters.maritalStatus) && filters.maritalStatus.length > 0) {
+      setSelectedMaritalStatus(filters.maritalStatus);
+    }
+
+    if (Array.isArray(filters.nationality) && filters.nationality.length > 0) {
+      setSelectedNationalities(filters.nationality);
+    }
+
+    if (Array.isArray(filters.educationLevel) && filters.educationLevel.length > 0) {
+      setSelectedEducation(filters.educationLevel);
+    }
+  };
+
   const handleDataUpdate = (stateData: any) => {
     setUpdateData(stateData)
 
@@ -211,6 +229,10 @@ export const PopulationScreen = () => {
         question: stateData.question,
       });
     }
+          const filters = updateData?.queryData?.filters;
+      if (filters) {
+        applyFilters(filters);
+      }
   };
 
   const handleRecommendationClick = async (question: string) => {
@@ -497,8 +519,6 @@ export const PopulationScreen = () => {
       fullApiData.nationalityWisePopulation || [],
       2020
     );
-
-    setNationalityData(nationalityCurrent);
 
     const zMap = new Map<number, number>();
     (fullApiData.zoneWisePopulation || [])
@@ -937,50 +957,15 @@ export const PopulationScreen = () => {
   };
   const processTextAndNavigate = () => handleTransition("/establishment");
 
-  const [history, setHistory] = useState<any>([]);
-
-  const fetchQueryHistory = async () => {
-    try {
-
-      let sessionId = localStorage.getItem("sessionID");
-
-      const response = await fetch("https://rawi-backend.vercel.app/query/history", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: sessionId ? sessionId : null,
-          limit: 10,
-          page: 1
-        }),
-      });
-
-      if (response.ok) {
-        const json = await response.json();
-        setHistory(json.history);
-      }
-
-    } catch (error) {
-
-    } finally {
-
-    }
-  };
-
-  useEffect(() => {
-    fetchQueryHistory();
-  }, [])
-
 
   const RaviChatText = chatInfo?.text || "Good morning. Qatar’s population is 3.7M (+4% vs 2020). 28.02% are university educated.";
   const RaviChatQuestion = chatInfo?.question || "Population analysis by block in Doha";
-
 
   return (
     <MainLayout
       leftSideRaviChatData={{
         text: RaviChatText,
         question: RaviChatQuestion,
-        history,
         recommendations: chatInfo?.recommendations,
         buttonText: "Show Employment",
         onButtonClick: () => processTextAndNavigate(),

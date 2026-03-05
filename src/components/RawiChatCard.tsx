@@ -30,7 +30,7 @@ const COLORS = {
 
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
-  maxHeight: "80%",
+  maxHeight: "70%",
   backgroundColor: COLORS.bg,
   borderRadius: "12px",
   padding: "24px",
@@ -163,8 +163,6 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
   recommendations,
   onRecommendationClick,
 }) => {
-
-
 
   const [history, setHistory] = useState<any>([]);
 
