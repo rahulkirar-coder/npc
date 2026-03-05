@@ -35,7 +35,7 @@ export const Footer = ({ title, minVal, maxVal }: FooterProps) => {
         <div
             className="glass-effect"
             style={{
-                padding: "16px 24px",
+                padding: "8px",
                 zIndex: 100,
                 width: "100%",
                 color: "#fff",

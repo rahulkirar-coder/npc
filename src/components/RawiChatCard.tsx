@@ -31,7 +31,7 @@ const COLORS = {
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
   maxHeight: "70%",
-  backgroundColor: COLORS.bg,
+  // backgroundColor: COLORS.bg,
   borderRadius: "12px",
   padding: "24px",
   fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -88,7 +88,7 @@ const GOLD_PIPE_STYLE: React.CSSProperties = {
 
 const ITALIC_TITLE_STYLE: React.CSSProperties = {
   fontStyle: "italic",
-  color: "#9D957B",
+  color: "#d4d4d8",
   fontSize: "14px",
 };
 
@@ -198,7 +198,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
   }, [])
 
   return (
-    <div style={CARD_STYLE}>
+    <div className="glass-card" style={CARD_STYLE}>
       {/* Header */}
       <div style={HEADER_STYLE}>
         <div style={BRAND_WRAPPER}>
@@ -225,7 +225,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
 
       {history && history.length > 0 && (<div style={RECOMMENDATIONS_CONTAINER}>
         <div
-          style={{ fontSize: "11px", color: "#9ca3af", marginBottom: "2px" }}
+          style={{ fontSize: "11px", color: "#d4d4d8", marginBottom: "2px" }}
         >
           Chat History:
         </div>

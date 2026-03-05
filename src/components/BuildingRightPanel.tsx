@@ -14,7 +14,6 @@ import { useMap } from "react-map-gl";
 import { DOHA_FLAG_COLOR, DOHA_FLAG_COLOR_RGBA_06 } from "../util";
 import { useSelector } from "react-redux";
 import type { AppState } from "../state/appReducer";
-import { COMMON_CHART_PANEL_TOP, ResetBtnStyle } from "../utils/style";
 
 // --- Types ---
 interface TypeDistributionItem {
@@ -407,7 +406,6 @@ export const BuildingRightPanel: React.FC<Props> = ({
             display: "flex",
             flexDirection: "column",
             gap: "15px",
-            border:"1px solid red"
           }}
         >
 
