@@ -52,6 +52,35 @@ const RESET_BTN_STYLE: React.CSSProperties = {
   border: "none",
 }
 
+const LEFT_PANEL_STYLE: React.CSSProperties = {
+  width: "25%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "50px 10px 30px 10px",
+};
+
+const MIDDLE_PANEL_STYLE: React.CSSProperties = {
+  width: "25%",
+  height: "100%",
+  paddingBottom: "30px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const RIGHT_PANEL_STYLE: React.CSSProperties = {
+  width: "30%",
+  height: "100%",
+  padding: "0px 20px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
+};
+
 export const PopulationScreen = () => {
   const dispatch = useDispatch();
   const { map } = useMap();
@@ -902,9 +931,6 @@ export const PopulationScreen = () => {
   };
   const processTextAndNavigate = () => handleTransition("/establishment");
 
-
-  const [showFilter, setShowFilter] = useState<boolean>(false);
-
   const [history, setHistory] = useState<any>([]);
 
   const fetchQueryHistory = async () => {
@@ -943,15 +969,7 @@ export const PopulationScreen = () => {
     <div style={SCREEN_STYLE}>
       <LoadingOverlay />
 
-      <div style={{
-        width: "25%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "50px 10px 30px 10px",
-      }}>
+      <div style={LEFT_PANEL_STYLE}>
 
         <RawiChatCard
           text={
@@ -978,15 +996,7 @@ export const PopulationScreen = () => {
         />
       </div>
 
-      <div style={{
-        width: "25%",
-        height: "100%",
-        paddingBottom: "30px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}>
+      <div style={MIDDLE_PANEL_STYLE}>
         <TogglePanel
           activeYear={activeYearBtn}
           viewMode={viewMode}
@@ -1015,14 +1025,7 @@ export const PopulationScreen = () => {
         />
       </div>
 
-      <div style={{
-        width: "30%",
-        height: "100%",
-        padding: "0px 20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-      }}>
+      <div style={RIGHT_PANEL_STYLE}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
           <div style={{

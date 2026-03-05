@@ -4,11 +4,11 @@ import { toggleRightPanel, type AppState } from "../state/appReducer";
 import { BarChart2, ChevronDown,ChevronLeft,ChevronRight } from "lucide-react"; // Changed chevron direction conceptually
 
 const BUTTON_STYLE: React.CSSProperties = {
+  width: "30px",
+  height: "30px",
   backgroundColor: "rgba(19, 27, 40, 0.85)",
   border: "1px solid rgba(255, 255, 255, 0.2)",
   borderRadius: "50%",
-  width: "40px",
-  height: "40px",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -38,7 +38,7 @@ export const ChartToggleBtn = () => {
             title={isOpen ? "Hide Charts" : "Show Charts"}
           >
             {/* CHANGED: Use ChevronLeft to indicate closing towards the left edge */}
-            <ChevronRight size={20} />
+            <ChevronRight size={25} />
           </button>
         </>
       ) : (
@@ -52,7 +52,7 @@ export const ChartToggleBtn = () => {
           title={isOpen ? "Hide Charts" : "Show Charts"}
         >
           {/* CHANGED: Use ChevronLeft to indicate closing towards the left edge */}
-          <ChevronLeft size={20} />
+          <ChevronLeft size={25} />
         </button>
       )}
     </>
