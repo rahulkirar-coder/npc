@@ -11,8 +11,6 @@ import {
 import { Building2, Hammer, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useMap } from "react-map-gl";
-import { BottomInputPanel } from "./BottomInputPanel";
-import { RawiChatCard } from "./RawiChatCard";
 import { DOHA_FLAG_COLOR, DOHA_FLAG_COLOR_RGBA_06 } from "../util";
 import { useSelector } from "react-redux";
 import type { AppState } from "../state/appReducer";
@@ -92,22 +90,6 @@ const BADGE_STYLE: React.CSSProperties = {
   fontWeight: "700",
   color: "#fff",
   marginLeft: "auto",
-};
-
-const RESET_BTN_STYLE: React.CSSProperties = {
-  pointerEvents: "auto",
-  backgroundColor: "#A30134",
-  borderRadius: "50px",
-  padding: "8px 18px",
-  color: "#fff",
-  fontSize: "14px",
-  fontWeight: "500",
-  cursor: "pointer",
-  alignItems: "center",
-  transition: "all 0.2s ease",
-  fontFamily: "Poppins",
-  border: "none",
-  maxWidth: "150px",
 };
 
 const SELECTED_CARD_STYLE: React.CSSProperties = {
@@ -416,35 +398,21 @@ export const BuildingRightPanel: React.FC<Props> = ({
 
   return (
     <>
-      <div className="top-left-panel hide-scroll">
 
-        <RawiChatCard
-          text={
-            chatData?.text ||
-            `While Doha anchors the vertical commercial core housing 67% of the nation's apartments, Al Rayyan defines the 'Horizontal Villa Belt,' a purely domestic sprawl dominated by low-rise family homes.`
-          }
-          buttonText="Show Household Lens"
-          onButtonClick={() => handleTransition("/household")}
-          minHeight="60px"
-          question={
-            chatData?.question || "Building distribution by type and status"
-          }
-          recommendations={chatData?.recommendations}
-          onRecommendationClick={onRecommendationClick}
-        />
-      </div>
       {isRightPanelOpen && (
-        <div className="right-side-panel"  style={{ top: COMMON_CHART_PANEL_TOP }}>
-          <div
-            style={ResetBtnStyle}
-          >
-            <button style={RESET_BTN_STYLE} onClick={onResetFilters}>
-              <span>Reset Filters</span>
-            </button>
-          </div>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            border:"1px solid red"
+          }}
+        >
 
           {/* CHART 1: TYPE */}
-          <div className="glass-card" style={{ padding: "12px" }}>
+          <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>Distribution by Buildings Type</div>
             <div
               style={{
@@ -586,7 +554,7 @@ export const BuildingRightPanel: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* CHART 3: STATUS */}
+          {/* CHART 2: STATUS */}
           <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>Distribution by Building Status</div>
             <div
@@ -642,7 +610,7 @@ export const BuildingRightPanel: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* CHART 2: UTILITY */}
+          {/* CHART 3: UTILITY */}
           <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>
               Completed building by Connection
@@ -815,14 +783,10 @@ export const BuildingRightPanel: React.FC<Props> = ({
               </div>
             </div>
           </div>
+
+          {/* end */}
         </div>
       )}
-
-      <BottomInputPanel
-        chips={chatData?.recommendations || COMMON_CHIPS}
-        onSubmit={processTextAndNavigate}
-        onDataUpdate={onDataUpdate}
-      />
     </>
   );
 };

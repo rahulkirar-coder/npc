@@ -13,30 +13,11 @@ import {
   DOHA_FLAG_COLOR,
 } from "../util";
 import { useLocation, useNavigate } from "react-router-dom";
-import { LoadingOverlay } from "../components/LoadingOverlay";
-import { BottomInputPanel } from "../components/AIChat";
-import { RawiChatCard } from "../components/RawiChatCard";
-import { Footer } from "../components/PopulationFooter";
 import { ChartToggleBtn } from "../components/PopulationToggleBtn";
-import TogglePanel from "../components/TogglePanel";
-
-import { BarChart } from "lucide-react"; // Changed chevron direction conceptually
+import { MainLayout } from "../wrappers/mainWrapper";
 
 
 // --- Styles ---
-const SCREEN_STYLE: React.CSSProperties = {
-  width: "100%",
-  height: "100%",
-  position: "absolute",
-  top: 0,
-  left: 0,
-  overflow: "hidden",
-  pointerEvents: "none",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
 const RESET_BTN_STYLE: React.CSSProperties = {
   pointerEvents: "auto",
   backgroundColor: "#A30134",
@@ -140,6 +121,8 @@ export const PopulationScreen = () => {
 
   const [apiRange, setApiRange] = useState<any[] | null>(null);
 
+  const [nationalityData, setNationalityData] = useState<any>(null);
+
   // --- Initial Loading Check ---
   useEffect(() => {
     if (!zoneData) {
@@ -206,7 +189,12 @@ export const PopulationScreen = () => {
   };
 
   // --- Logic for updating data from Query API (Same Screen) ---
+
+  const [updateData, setUpdateData] = useState<any>(null)
+
   const handleDataUpdate = (stateData: any) => {
+    setUpdateData(stateData)
+
     const data = stateData.queryData;
     if (data && data !== lastQueryDataRef.current) {
       setFullApiData(data);
@@ -494,7 +482,24 @@ export const PopulationScreen = () => {
 
   useEffect(() => {
     if (!fullApiData) return;
+
     const yearForMap = activeYearBtn;
+
+    const getYearData = (arr: any[], year: number) =>
+      arr.filter((item: any) => Number(item.year) === year);
+
+    const nationalityCurrent = getYearData(
+      fullApiData.nationalityWisePopulation || [],
+      2025
+    );
+
+    const nationalityCompare = getYearData(
+      fullApiData.nationalityWisePopulation || [],
+      2020
+    );
+
+    setNationalityData(nationalityCurrent);
+
     const zMap = new Map<number, number>();
     (fullApiData.zoneWisePopulation || [])
       .filter((item: any) => Number(item.year) === yearForMap)
@@ -509,23 +514,23 @@ export const PopulationScreen = () => {
         bMap.set(Number(item.blockNumber), Number(item.totalPopulation)),
       );
     setBlockPeopleMap(bMap);
-    const getYearData = (arr: any[], year: number) =>
-      arr.filter((item: any) => Number(item.year) === year);
     const currentData = {
       education: getYearData(fullApiData.distributionByEducation || [], 2025),
       marital: getYearData(
         fullApiData.distributionByMaritalStatusAndGender || [],
-        2025,
+        2025
       ),
       pyramid: getYearData(fullApiData.populationPyramid || [], 2025),
+      nationality: nationalityCurrent
     };
     const compareData = {
       education: getYearData(fullApiData.distributionByEducation || [], 2020),
       marital: getYearData(
         fullApiData.distributionByMaritalStatusAndGender || [],
-        2020,
+        2020
       ),
       pyramid: getYearData(fullApiData.populationPyramid || [], 2020),
+      nationality: nationalityCompare
     };
     setPanelData({
       current: formatPanelData(currentData),
@@ -576,6 +581,7 @@ export const PopulationScreen = () => {
       marital: Object.values(maritalMap),
       education: Object.values(eduMap),
       pyramid: pyramid,
+      nationality: rawData.nationality || []
     };
   };
 
@@ -965,175 +971,153 @@ export const PopulationScreen = () => {
   }, [])
 
 
+  const RaviChatText = chatInfo?.text || "Good morning. Qatar’s population is 3.7M (+4% vs 2020). 28.02% are university educated.";
+  const RaviChatQuestion = chatInfo?.question || "Population analysis by block in Doha";
+
+
   return (
-    <div style={SCREEN_STYLE}>
-      <LoadingOverlay />
+    <MainLayout
+      leftSideRaviChatData={{
+        text: RaviChatText,
+        question: RaviChatQuestion,
+        history,
+        recommendations: chatInfo?.recommendations,
+        buttonText: "Show Employment",
+        onButtonClick: () => processTextAndNavigate(),
+        onRecommendationClick: handleRecommendationClick
+      }}
 
-      <div style={LEFT_PANEL_STYLE}>
+      leftSideChatInputData={{
+        chips: chatInfo?.recommendations || [],
+        onSubmit: processTextAndNavigate,
+        onDataUpdate: handleDataUpdate
+      }}
 
-        <RawiChatCard
-          text={
-            chatInfo?.text ||
-            "Good morning. Qatar’s population is 3.7M (+4% vs 2020). 28.02% are university educated."
-          }
-          buttonText="Show Employment"
-          onButtonClick={() => processTextAndNavigate()}
-          minHeight="60px"
-          question={
-            chatInfo?.question || "Population analysis by block in Doha"
-          }
-          recommendations={chatInfo?.recommendations}
-          onRecommendationClick={handleRecommendationClick}
+      middleTopData={{
+        activeYear: activeYearBtn,
+        viewMode: viewMode,
+        isTransitioning: isTransitioning,
+        onChangeYear: (year) => performZoomTransition(() => setActiveYearBtn(year)),
+        onChangeViewMode: (mode) => performZoomTransition(() => {
+          setViewMode(mode);
+          setSelectedZone(null);
+        })
+      }}
 
-          //History
-          history={history}
-        />
-
-        <BottomInputPanel
-          chips={chatInfo?.recommendations || []}
-          onSubmit={processTextAndNavigate}
-          onDataUpdate={handleDataUpdate}
-        />
-      </div>
-
-      <div style={MIDDLE_PANEL_STYLE}>
-        <TogglePanel
-          activeYear={activeYearBtn}
-          viewMode={viewMode}
-          isTransitioning={isTransitioning}
-          onChangeYear={(year) =>
-            performZoomTransition(() => setActiveYearBtn(year))
-          }
-          onChangeViewMode={(mode) =>
-            performZoomTransition(() => {
-              setViewMode(mode);
-              setSelectedZone(null);
-            })
-          }
-        />
-
-        <Footer
-          title={
-            selectedZone
-              ? `Population (Zone ${selectedZone} Blocks)`
-              : viewMode === "zone"
-                ? "Population Distribution (Zone)"
-                : "Population Distribution (Block)"
-          }
-          minVal={minVal}
-          maxVal={maxVal}
-        />
-      </div>
-
-      <div style={RIGHT_PANEL_STYLE}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-
-          <div style={{
-            display: "flex", gap: 10, marginLeft: "50px"
-          }}>
-            {selectedAgeGroups?.length >= 1 &&
-              <div>
-                {selectedAgeGroups.map((item) => {
-                  return (
-                    <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                      onClick={() => { handleAgeGroupToggle(item) }}
-                    >
-                      <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                      <p key={item}
-                        style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                      >{item}</p>
-                    </div>
-                  )
-                })}
-              </div>}
-
-            {selectedNationalities?.length >= 1 && <div>
-              {selectedNationalities.map((item) => {
-                return (
-                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                    onClick={() => { handleNationalityToggle(item) }}
-                  >
-                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                    <p key={item}
-                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                    >{item}</p>
-                  </div>
-                )
-              })}
-            </div>}
-
-            {selectedMaritalStatus?.length >= 1 && <div>
-              {selectedMaritalStatus.map((item) => {
-                return (
-                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                    onClick={() => { handleMaritalStatusToggle(item) }}
-                  >
-                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                    <p key={item}
-                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                    >{item}</p>
-                  </div>
-                )
-              })}
-            </div>}
-
-            {selectedEducation?.length >= 1 && <div>
-              {selectedEducation.map((item) => {
-                return (
-                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                    onClick={() => { handleEducationToggle(item) }}
-                  >
-                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                    <p key={item}
-                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                    >{item}</p>
-                  </div>
-                )
-              })}
-            </div>}
-          </div>
-
-
-          <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
-            <span>Reset Filters</span>
-          </button>
-        </div>
+      middleBottomData={{
+        title: selectedZone ? `Population (Zone ${selectedZone} Blocks)` : viewMode === "zone" ? "Population Distribution (Zone)" : "Population Distribution (Block)",
+        minVal: minVal,
+        maxVal: maxVal
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
         <div style={{
-          maxHeight: "75%",
-          zIndex: 100,
-          overflowY: "auto",
-          scrollbarWidth: "none", // Firefox
-          pointerEvents: "auto",
-          display: "flex",
-          gap: 5,
-          justifyContent: "flex-end"
+          display: "flex", gap: 10, marginLeft: "50px"
         }}>
-          <ChartToggleBtn />
+          {selectedAgeGroups?.length >= 1 &&
+            <div>
+              {selectedAgeGroups.map((item) => {
+                return (
+                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                    onClick={() => { handleAgeGroupToggle(item) }}
+                  >
+                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                    <p key={item}
+                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                    >{item}</p>
+                  </div>
+                )
+              })}
+            </div>}
 
-          {panelData && (
-            <RightPanel
-              data={panelData}
-              onStartTransition={stopCinematicMode}
-              selectedAgeGroups={selectedAgeGroups}
-              onAgeGroupToggle={handleAgeGroupToggle}
-              selectedGender={selectedGender}
-              onGenderToggle={handleGenderToggle}
-              selectedMaritalStatus={selectedMaritalStatus}
-              onMaritalStatusToggle={handleMaritalStatusToggle}
-              selectedEducation={selectedEducation}
-              onEducationToggle={handleEducationToggle}
-              // Added Props
-              selectedNationalities={selectedNationalities}
-              onNationalityToggle={handleNationalityToggle}
-              onResetFilters={handleResetFilters}
-              chatData={chatInfo}
-              onRecommendationClick={handleRecommendationClick}
-              onDataUpdate={handleDataUpdate}
-            />
-          )}
+          {selectedNationalities?.length >= 1 && <div>
+            {selectedNationalities.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleNationalityToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+
+          {selectedMaritalStatus?.length >= 1 && <div>
+            {selectedMaritalStatus.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleMaritalStatusToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+
+          {selectedEducation?.length >= 1 && <div>
+            {selectedEducation.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleEducationToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
         </div>
+
+
+        <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
+          <span>Reset Filters</span>
+        </button>
       </div>
-    </div>
+
+      <div style={{
+        maxHeight: "75%",
+        zIndex: 100,
+        overflowY: "auto",
+        scrollbarWidth: "none", // Firefox
+        pointerEvents: "auto",
+        display: "flex",
+        gap: 5,
+        justifyContent: "flex-end"
+      }}>
+        <ChartToggleBtn />
+
+        {panelData && (
+          <RightPanel
+            data={panelData}
+            onStartTransition={stopCinematicMode}
+            selectedAgeGroups={selectedAgeGroups}
+            onAgeGroupToggle={handleAgeGroupToggle}
+            selectedGender={selectedGender}
+            onGenderToggle={handleGenderToggle}
+            selectedMaritalStatus={selectedMaritalStatus}
+            onMaritalStatusToggle={handleMaritalStatusToggle}
+            selectedEducation={selectedEducation}
+            onEducationToggle={handleEducationToggle}
+            // Added Props
+            selectedNationalities={selectedNationalities}
+            onNationalityToggle={handleNationalityToggle}
+            onResetFilters={handleResetFilters}
+            chatData={chatInfo}
+            onRecommendationClick={handleRecommendationClick}
+            onDataUpdate={handleDataUpdate}
+          />
+        )}
+      </div>
+
+    </MainLayout>
   );
 };

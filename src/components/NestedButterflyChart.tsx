@@ -102,8 +102,6 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
     const [maleValStr, malePercStr] = splitLabel(row.maleLabel);
     const [femaleValStr, femalePercStr] = splitLabel(row.femaleLabel);
 
-    console.log(maleValStr, typeof maleValStr, "===@@@@")
-
     return (
       <div
         onClick={() =>

@@ -30,7 +30,7 @@ const COLORS = {
 
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
-  maxHeight:"50%",
+  maxHeight: "80%",
   backgroundColor: COLORS.bg,
   borderRadius: "12px",
   padding: "24px",
@@ -150,11 +150,9 @@ interface RawiChatCardProps {
   text: string;
   buttonText?: string;
   onButtonClick?: () => void;
-  minHeight?: string;
   question?: string;
   recommendations?: string[];
   onRecommendationClick?: (rec: string) => void;
-  history?: any[];
 }
 
 export const RawiChatCard: React.FC<RawiChatCardProps> = ({
@@ -164,8 +162,43 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
   onButtonClick,
   recommendations,
   onRecommendationClick,
-  history
 }) => {
+
+
+
+  const [history, setHistory] = useState<any>([]);
+
+  const fetchQueryHistory = async () => {
+    try {
+
+      let sessionId = localStorage.getItem("sessionID");
+
+      const response = await fetch("https://rawi-backend.vercel.app/query/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId: sessionId ? sessionId : null,
+          limit: 10,
+          page: 1
+        }),
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        setHistory(json.history);
+      }
+
+    } catch (error) {
+
+    } finally {
+
+    }
+  };
+
+  useEffect(() => {
+    fetchQueryHistory();
+  }, [])
+
   return (
     <div style={CARD_STYLE}>
       {/* Header */}

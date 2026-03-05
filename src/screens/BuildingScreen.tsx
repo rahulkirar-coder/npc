@@ -15,6 +15,8 @@ import {
 } from "../util";
 import { LoadingOverlay } from "../components/LoadingOverlay";
 import { useLocation, useNavigate } from "react-router-dom";
+import { MainLayout } from "../wrappers/mainWrapper";
+import { ChartToggleBtn } from "../components/PopulationToggleBtn";
 
 // ... [STYLES KEPT SAME] ...
 const SCREEN_STYLE: React.CSSProperties = {
@@ -87,6 +89,24 @@ const FOOTER_POINTER_STYLE: React.CSSProperties = {
   pointerEvents: "auto",
   marginBottom: "30px",
 };
+
+
+
+// --- Styles ---
+const RESET_BTN_STYLE: React.CSSProperties = {
+  pointerEvents: "auto",
+  backgroundColor: "#A30134",
+  borderRadius: "50px",
+  padding: "8px 18px",
+  color: "#fff",
+  fontSize: "14px",
+  fontWeight: "500",
+  cursor: "pointer",
+  alignItems: "center",
+  transition: "all 0.2s ease",
+  fontFamily: "Poppins",
+  border: "none",
+}
 
 // --- Helper: Parse WKT Polygon with Z to GeoJSON & Height ---
 const parseBuildingGeometry = (
@@ -1128,101 +1148,213 @@ export const BuildingScreen = () => {
 
   const { min, max } = getMinMax();
 
+  const handleTransition = (path: string) => {
+    if (stopCinematicMode) stopCinematicMode();
+    if (map) {
+      map.stop();
+      map.flyTo({
+        center: [51.5348, 25.2867],
+        zoom: 9,
+        pitch: 0,
+        bearing: 0,
+        duration: 2000,
+        essential: true,
+      });
+      map.once("moveend", () => navigate(path));
+    } else {
+      navigate(path);
+    }
+  };
+
+  const processTextAndNavigate = (text: string) => {
+    const lowerText = text.toLowerCase().trim();
+    if (!lowerText) return;
+    if (lowerText.includes("establishment")) handleTransition("/establishment");
+    else if (lowerText.includes("building")) handleTransition("/building");
+    else if (lowerText.includes("population")) handleTransition("/population");
+    else if (lowerText.includes("employment")) handleTransition("/employment");
+    else handleTransition("/household");
+  };
+
   return (
-    <div style={SCREEN_STYLE}>
-      <LoadingOverlay />
-      <div style={TOGGLE_STYLE}>
-        <div style={TOGGLE_WRAPPER_STYLE}>
-          <button
-            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
-            onClick={() => {
-              if (activeYearBtn !== 2020 && !isTransitioning.current) {
-                performZoomTransition(() => setActiveYearBtn(2020));
-              }
-            }}
-          >
-            2020
-          </button>
-          <button
-            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
-            onClick={() => {
-              if (activeYearBtn !== 2025 && !isTransitioning.current) {
-                performZoomTransition(() => setActiveYearBtn(2025));
-              }
-            }}
-          >
-            2025
-          </button>
+    // <div style={SCREEN_STYLE}>
+    //   <LoadingOverlay />
+    //   <div style={TOGGLE_STYLE}>
+    //     <div style={TOGGLE_WRAPPER_STYLE}>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
+    //         onClick={() => {
+    //           if (activeYearBtn !== 2020 && !isTransitioning.current) {
+    //             performZoomTransition(() => setActiveYearBtn(2020));
+    //           }
+    //         }}
+    //       >
+    //         2020
+    //       </button>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
+    //         onClick={() => {
+    //           if (activeYearBtn !== 2025 && !isTransitioning.current) {
+    //             performZoomTransition(() => setActiveYearBtn(2025));
+    //           }
+    //         }}
+    //       >
+    //         2025
+    //       </button>
+    //     </div>
+    //     <div style={{ width: "10px" }}></div>
+    //     <div style={TOGGLE_WRAPPER_STYLE}>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
+    //         onClick={() => {
+    //           if (viewMode !== "zone" && !isTransitioning.current) {
+    //             performZoomTransition(() => setViewMode("zone"));
+    //           }
+    //         }}
+    //       >
+    //         Zone
+    //       </button>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
+    //         onClick={() => {
+    //           if (viewMode !== "block" && !isTransitioning.current) {
+    //             performZoomTransition(() => setViewMode("block"));
+    //           }
+    //         }}
+    //       >
+    //         Block
+    //       </button>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(viewMode === "building")}
+    //         onClick={() => {
+    //           if (viewMode !== "building" && !isTransitioning.current) {
+    //             performZoomTransition(() => setViewMode("building"));
+    //           }
+    //         }}
+    //       >
+    //         Building
+    //       </button>
+    //     </div>
+    //   </div>
+    //   <div style={UI_CONTAINER_STYLE}>
+    //     <div style={INTERACTIVE_STYLE}>
+    //       {panelData && (
+    //         <BuildingRightPanel
+    //           data={panelData}
+    //           onStartTransition={stopCinematicMode}
+    //           selectedStatuses={selectedStatuses}
+    //           onStatusToggle={handleStatusToggle}
+    //           selectedTypes={selectedTypes}
+    //           onTypeToggle={handleTypeToggle}
+    //           onResetFilters={handleResetFilters}
+    //           chatData={chatInfo}
+    //           onRecommendationClick={handleRecommendationClick}
+    //           onDataUpdate={handleDataUpdate}
+    //         />
+    //       )}
+    //     </div>
+
+    //     <div style={FOOTER_WRAPPER_STYLE}>
+    //       <div style={FOOTER_POINTER_STYLE}>
+    //         <Footer
+    //           title={`Building Count (${viewMode == "zone"
+    //               ? "Zone"
+    //               : viewMode == "block"
+    //                 ? "Block"
+    //                 : "Building"
+    //             })`}
+    //           minVal={min}
+    //           maxVal={max}
+    //         />
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+
+    <MainLayout
+      leftSideRaviChatData={{
+        text: chatInfo?.text ||
+          `While Doha anchors the vertical commercial core housing 67% of the nation's apartments, Al Rayyan defines the 'Horizontal Villa Belt,' a purely domestic sprawl dominated by low-rise family homes.`
+        ,
+        question: chatInfo?.question || "Building distribution by type and status",
+        recommendations: chatInfo?.recommendations,
+        buttonText: "Show Employment",
+        onButtonClick: () => handleTransition("/household"),
+        onRecommendationClick: handleRecommendationClick
+      }}
+
+      leftSideChatInputData={{
+        chips: chatInfo?.recommendations || [],
+        onSubmit: processTextAndNavigate,
+        onDataUpdate: handleDataUpdate
+      }}
+
+      middleTopData={{
+        activeYear: activeYearBtn,
+        viewMode: viewMode,
+        isTransitioning: isTransitioning,
+        onChangeYear: (year) => performZoomTransition(() => setActiveYearBtn(year)),
+        onChangeViewMode: (mode) => performZoomTransition(() => {
+          setViewMode(mode);
+          setSelectedZone(null);
+        })
+      }}
+
+      middleBottomData={{
+        title: `Building Count (${viewMode == "zone"
+          ? "Zone"
+          : viewMode == "block"
+            ? "Block"
+            : "Building"
+          })`,
+        minVal: min,
+        maxVal: max
+      }}
+    >
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+
+        <div style={{
+          display: "flex", gap: 10, marginLeft: "50px"
+        }}>
+
         </div>
-        <div style={{ width: "10px" }}></div>
-        <div style={TOGGLE_WRAPPER_STYLE}>
-          <button
-            style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
-            onClick={() => {
-              if (viewMode !== "zone" && !isTransitioning.current) {
-                performZoomTransition(() => setViewMode("zone"));
-              }
-            }}
-          >
-            Zone
-          </button>
-          <button
-            style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
-            onClick={() => {
-              if (viewMode !== "block" && !isTransitioning.current) {
-                performZoomTransition(() => setViewMode("block"));
-              }
-            }}
-          >
-            Block
-          </button>
-          <button
-            style={TOGGLE_BUTTON_STYLE(viewMode === "building")}
-            onClick={() => {
-              if (viewMode !== "building" && !isTransitioning.current) {
-                performZoomTransition(() => setViewMode("building"));
-              }
-            }}
-          >
-            Building
-          </button>
-        </div>
+
+
+        <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
+          <span>Reset Filters</span>
+        </button>
       </div>
 
-      <div style={UI_CONTAINER_STYLE}>
-        <div style={INTERACTIVE_STYLE}>
-          {panelData && (
-            <BuildingRightPanel
-              data={panelData}
-              onStartTransition={stopCinematicMode}
-              selectedStatuses={selectedStatuses}
-              onStatusToggle={handleStatusToggle}
-              selectedTypes={selectedTypes}
-              onTypeToggle={handleTypeToggle}
-              onResetFilters={handleResetFilters}
-              chatData={chatInfo}
-              onRecommendationClick={handleRecommendationClick}
-              onDataUpdate={handleDataUpdate}
-            />
-          )}
-        </div>
+      <div style={{
+        maxHeight: "75%",
+        zIndex: 100,
+        overflowY: "auto",
+        scrollbarWidth: "none", // Firefox
+        pointerEvents: "auto",
+        display: "flex",
+        gap: 5,
+        justifyContent: "flex-end"
+      }}>
+        <ChartToggleBtn />
 
-        <div style={FOOTER_WRAPPER_STYLE}>
-          <div style={FOOTER_POINTER_STYLE}>
-            <Footer
-              title={`Building Count (${
-                viewMode == "zone"
-                  ? "Zone"
-                  : viewMode == "block"
-                    ? "Block"
-                    : "Building"
-              })`}
-              minVal={min}
-              maxVal={max}
-            />
-          </div>
-        </div>
+        {panelData && (
+          <BuildingRightPanel
+            data={panelData}
+            onStartTransition={stopCinematicMode}
+            selectedStatuses={selectedStatuses}
+            onStatusToggle={handleStatusToggle}
+            selectedTypes={selectedTypes}
+            onTypeToggle={handleTypeToggle}
+            onResetFilters={handleResetFilters}
+            chatData={chatInfo}
+            onRecommendationClick={handleRecommendationClick}
+            onDataUpdate={handleDataUpdate}
+          />
+        )}
       </div>
-    </div>
+
+
+    </MainLayout>
   );
 };

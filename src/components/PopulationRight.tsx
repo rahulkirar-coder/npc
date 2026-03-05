@@ -188,28 +188,28 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
     // 3. Nationality Chart Data
     const { nationalityChartData, nationalityMax } = useMemo(() => {
-        if (!populationData.length)
+        if (!data || !data.current || !data.current.nationality)
             return { nationalityChartData: [], nationalityMax: 100 };
 
-        let qM = 0,
-            qF = 0,
-            nqM = 0,
-            nqF = 0;
-        let qM20 = 0,
-            qF20 = 0,
-            nqM20 = 0,
-            nqF20 = 0;
+        const current = data.current.nationality;
+        const compare = data.comparison?.nationality || [];
 
-        populationData.forEach((item: any) => {
-            qM += item.mq;
-            qF += item.fq;
-            nqM += item.mnq;
-            nqF += item.fnq;
-            qM20 += item.mq20;
-            qF20 += item.fq20;
-            nqM20 += item.mnq20;
-            nqF20 += item.fnq20;
-        });
+        const getVal = (arr: any[], nat: string, gender: string) => {
+            const found = arr.find(
+                (i: any) => i.nationality === nat && i.gender === gender
+            );
+            return found ? found.totalPopulation : 0;
+        };
+
+        const qM = getVal(current, "Qatari", "Male");
+        const qF = getVal(current, "Qatari", "Female");
+        const nqM = getVal(current, "Non-Qatari", "Male");
+        const nqF = getVal(current, "Non-Qatari", "Female");
+
+        const qM20 = getVal(compare, "Qatari", "Male");
+        const qF20 = getVal(compare, "Qatari", "Female");
+        const nqM20 = getVal(compare, "Non-Qatari", "Male");
+        const nqF20 = getVal(compare, "Non-Qatari", "Female");
 
         const totalPop = qM + qF + nqM + nqF;
 
@@ -236,8 +236,9 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
         const max =
             Math.max(...rows.map((d) => Math.max(d.maleVal, d.femaleVal))) || 100;
+
         return { nationalityChartData: rows, nationalityMax: max };
-    }, [populationData]);
+    }, [data]);
 
     // 4. Marital Data
     const { maritalChartData, maritalMax } = useMemo(() => {
