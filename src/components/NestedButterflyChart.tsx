@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { DOHA_FLAG_COLOR, DOHA_FLAG_COLOR_RGBA_06 } from "../util";
+import { getValidNumber } from "../utils/commonFunction";
 
 // --- Types ---
 export interface ButterflyData {
@@ -70,6 +71,7 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
         return (
           value === null ||
           value === undefined ||
+          value === 0 ||
           (typeof value === "number" && Number.isNaN(value)) ||
           (typeof value === "string" && value.includes("NaN"))
         );
@@ -99,6 +101,8 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
 
     const [maleValStr, malePercStr] = splitLabel(row.maleLabel);
     const [femaleValStr, femalePercStr] = splitLabel(row.femaleLabel);
+
+    console.log(maleValStr, typeof maleValStr, "===@@@@")
 
     return (
       <div
@@ -151,7 +155,7 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
               flexShrink: 0,
             }}
           >
-            <span style={{ color: "#fff", fontWeight: 600 }}>{maleValStr}</span>
+            <span style={{ color: "#fff", fontWeight: 600 }}>{getValidNumber(maleValStr)}</span>
             <span style={{ color: "#94a3b8", fontSize: "9px" }}>
               {malePercStr}
             </span>
@@ -266,7 +270,7 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
             }}
           >
             <span style={{ color: "#fff", fontWeight: 600 }}>
-              {femaleValStr}
+              {getValidNumber(femaleValStr)}
             </span>
             <span style={{ color: "#94a3b8", fontSize: "9px" }}>
               {femalePercStr}

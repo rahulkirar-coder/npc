@@ -25,7 +25,7 @@ const LEGEND_TABLE_STYLE: React.CSSProperties = {
     border: "1px solid rgba(255,255,255,0.1)",
     borderRadius: "8px",
     overflow: "hidden",
-    background: "rgba(0,0,0,0.2)",
+    background: "rgba(255, 255, 255, 0.1)",
 };
 const LEGEND_TH_STYLE: React.CSSProperties = {
     padding: "2px",
@@ -33,7 +33,7 @@ const LEGEND_TH_STYLE: React.CSSProperties = {
     borderBottom: "1px solid rgba(255,255,255,0.1)",
     background: "rgba(255,255,255,0.05)",
     fontWeight: 600,
-    color: "#94a3b8",
+    color: "#e2e8f0",
 };
 const LEGEND_TD_STYLE: React.CSSProperties = {
     padding: "4px",
@@ -490,14 +490,10 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                 <div
                     style={{
                         width: "100%",
+                        height: "100%",
                         display: "flex",
                         flexDirection: "column",
                         gap: "15px",
-                        zIndex: 100,
-                        maxHeight: "82%",
-                        overflowY: "auto",
-                        scrollbarWidth: "none", // Firefox
-                        pointerEvents: "auto",
                     }}
                 >
 
@@ -516,7 +512,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                                 showComparison={yearMode === "compare"}
                             />
                         </div>
-                        <LegendTable type="simple" />
+                        {/* <LegendTable type="simple" /> */}
                     </div>
 
                     {/* --- CHART 2: Nationality Distribution --- */}
@@ -531,7 +527,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                             onItemToggle={onNationalityToggle} // Added Handler
                             showComparison={yearMode === "compare"}
                         />
-                        <LegendTable type="simple" />
+                        {/* <LegendTable type="simple" /> */}
                     </div>
 
                     {/* --- CHART 3: MARITAL --- */}
@@ -546,7 +542,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                             onItemToggle={onMaritalStatusToggle}
                             showComparison={yearMode === "compare"}
                         />
-                        <LegendTable type="simple" />
+                        {/* <LegendTable type="simple" /> */}
                     </div>
 
                     {/* --- CHART 4: EDUCATION (Converted to Nested Butterfly) --- */}
@@ -561,8 +557,10 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                             onItemToggle={onEducationToggle}
                             showComparison={yearMode === "compare"}
                         />
-                        <LegendTable type="simple" />
                     </div>
+
+                    <LegendTable type="simple" />
+
                 </div>
             )}
         </>

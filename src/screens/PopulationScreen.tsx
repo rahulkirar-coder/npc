@@ -924,7 +924,6 @@ export const PopulationScreen = () => {
 
       if (response.ok) {
         const json = await response.json();
-        console.log(json.history, "===@@@@")
         setHistory(json.history);
       }
 
@@ -967,15 +966,10 @@ export const PopulationScreen = () => {
           }
           recommendations={chatInfo?.recommendations}
           onRecommendationClick={handleRecommendationClick}
-        />
 
-        {history.length >= 1 &&
-          <div style={{ backgroundColor: "#15161A", padding: "10px", borderRadius: "12px", width: "100%", pointerEvents: "auto" }}>
-            <p>History</p>
-            {history.map((item: any, index: number) => (
-              <p key={index}>{item.question}</p>
-            ))}
-          </div>}
+          //History
+          history={history}
+        />
 
         <BottomInputPanel
           chips={chatInfo?.recommendations || []}
@@ -1029,35 +1023,32 @@ export const PopulationScreen = () => {
         flexDirection: "column",
         gap: "20px",
       }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20 }}>
-            <ChartToggleBtn />
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
-            {(
-              selectedAgeGroups?.length >= 1 ||
-              selectedNationalities?.length >= 1 ||
-              selectedMaritalStatus?.length >= 1 ||
-              selectedEducation?.length >= 1
-            ) && (
-                <div style={{ pointerEvents: "auto", cursor: "pointer" }}>
-                  <BarChart size={20} onClick={() => setShowFilter(!showFilter)} />
-                </div>
-              )}
-          </div>
+          <div style={{
+            display: "flex", gap: 10, marginLeft: "50px"
+          }}>
+            {selectedAgeGroups?.length >= 1 &&
+              <div>
+                {selectedAgeGroups.map((item) => {
+                  return (
+                    <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                      onClick={() => { handleAgeGroupToggle(item) }}
+                    >
+                      <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                      <p key={item}
+                        style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                      >{item}</p>
+                    </div>
+                  )
+                })}
+              </div>}
 
-
-          <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
-            <span>Reset Filters</span>
-          </button>
-        </div>
-
-        {showFilter && <div>
-          {selectedAgeGroups?.length >= 1 &&
-            <div>
-              {selectedAgeGroups.map((item) => {
+            {selectedNationalities?.length >= 1 && <div>
+              {selectedNationalities.map((item) => {
                 return (
                   <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                    onClick={() => { handleAgeGroupToggle(item) }}
+                    onClick={() => { handleNationalityToggle(item) }}
                   >
                     <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
                     <p key={item}
@@ -1068,74 +1059,77 @@ export const PopulationScreen = () => {
               })}
             </div>}
 
-          {selectedNationalities?.length >= 1 && <div>
-            {selectedNationalities.map((item) => {
-              return (
-                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                  onClick={() => { handleNationalityToggle(item) }}
-                >
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                  <p key={item}
-                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                </div>
-              )
-            })}
-          </div>}
+            {selectedMaritalStatus?.length >= 1 && <div>
+              {selectedMaritalStatus.map((item) => {
+                return (
+                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                    onClick={() => { handleMaritalStatusToggle(item) }}
+                  >
+                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                    <p key={item}
+                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                    >{item}</p>
+                  </div>
+                )
+              })}
+            </div>}
 
-          {selectedMaritalStatus?.length >= 1 && <div>
-            {selectedMaritalStatus.map((item) => {
-              return (
-                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                  onClick={() => { handleMaritalStatusToggle(item) }}
-                >
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                  <p key={item}
-                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                </div>
-              )
-            })}
-          </div>}
-          {selectedEducation?.length >= 1 && <div>
-            {selectedEducation.map((item) => {
-              return (
-                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                  onClick={() => { handleEducationToggle(item) }}
-                >
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                  <p key={item}
-                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                </div>
-              )
-            })}
-          </div>}
+            {selectedEducation?.length >= 1 && <div>
+              {selectedEducation.map((item) => {
+                return (
+                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                    onClick={() => { handleEducationToggle(item) }}
+                  >
+                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                    <p key={item}
+                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                    >{item}</p>
+                  </div>
+                )
+              })}
+            </div>}
+          </div>
 
 
-        </div>}
+          <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
+            <span>Reset Filters</span>
+          </button>
+        </div>
 
-        {panelData && (
-          <RightPanel
-            data={panelData}
-            onStartTransition={stopCinematicMode}
-            selectedAgeGroups={selectedAgeGroups}
-            onAgeGroupToggle={handleAgeGroupToggle}
-            selectedGender={selectedGender}
-            onGenderToggle={handleGenderToggle}
-            selectedMaritalStatus={selectedMaritalStatus}
-            onMaritalStatusToggle={handleMaritalStatusToggle}
-            selectedEducation={selectedEducation}
-            onEducationToggle={handleEducationToggle}
-            // Added Props
-            selectedNationalities={selectedNationalities}
-            onNationalityToggle={handleNationalityToggle}
-            onResetFilters={handleResetFilters}
-            chatData={chatInfo}
-            onRecommendationClick={handleRecommendationClick}
-            onDataUpdate={handleDataUpdate}
-          />
-        )}
+        <div style={{
+          maxHeight: "75%",
+          zIndex: 100,
+          overflowY: "auto",
+          scrollbarWidth: "none", // Firefox
+          pointerEvents: "auto",
+          display: "flex",
+          gap: 5,
+          justifyContent: "flex-end"
+        }}>
+          <ChartToggleBtn />
+
+          {panelData && (
+            <RightPanel
+              data={panelData}
+              onStartTransition={stopCinematicMode}
+              selectedAgeGroups={selectedAgeGroups}
+              onAgeGroupToggle={handleAgeGroupToggle}
+              selectedGender={selectedGender}
+              onGenderToggle={handleGenderToggle}
+              selectedMaritalStatus={selectedMaritalStatus}
+              onMaritalStatusToggle={handleMaritalStatusToggle}
+              selectedEducation={selectedEducation}
+              onEducationToggle={handleEducationToggle}
+              // Added Props
+              selectedNationalities={selectedNationalities}
+              onNationalityToggle={handleNationalityToggle}
+              onResetFilters={handleResetFilters}
+              chatData={chatInfo}
+              onRecommendationClick={handleRecommendationClick}
+              onDataUpdate={handleDataUpdate}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -42,24 +42,26 @@ export const Footer = ({ title, minVal, maxVal }: FooterProps) => {
                 pointerEvents: "auto",
             }}
         >
-      <div style={TITLE_STYLE}>{title}</div>
-      <div style={LEGEND_BAR_STYLE} />
-      <div style={LABELS_STYLE}>
-        <span>Low</span>
-        <span>High</span>
-      </div>
-{
-    (minVal !== undefined || maxVal !== undefined) && (
-        <div style={LABELS_STYLE}>
-            <span>
-                {typeof minVal === "number" ? minVal.toLocaleString() : minVal}
-            </span>
-            <span>
-                {typeof maxVal === "number" ? maxVal.toLocaleString() : maxVal}
-            </span>
-        </div>
-    )
-}
-    </div >
-  );
+            <div style={TITLE_STYLE}>{title}</div>
+            <div style={LEGEND_BAR_STYLE} />
+            <div style={LABELS_STYLE}>
+                <div>
+                    <span>Low: {typeof minVal === "number" ? minVal.toLocaleString() : minVal}</span>
+                </div>
+                <span>High: {typeof maxVal === "number" ? maxVal.toLocaleString() : maxVal}</span>
+            </div>
+            {/* {
+                (minVal !== undefined || maxVal !== undefined) && (
+                    <div style={LABELS_STYLE}>
+                        <span>
+                            {typeof minVal === "number" ? minVal.toLocaleString() : minVal}
+                        </span>
+                        <span>
+                            {typeof maxVal === "number" ? maxVal.toLocaleString() : maxVal}
+                        </span>
+                    </div>
+                )
+            } */}
+        </div >
+    );
 };

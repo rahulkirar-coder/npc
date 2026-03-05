@@ -10,6 +10,7 @@ import {
   HOVER_COLOR,
   parseRobustCSV,
   ZOOM_OUT_VAL,
+  DOHA_FLAG_COLOR,
 } from "../util";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingOverlay } from "../components/LoadingOverlay";
@@ -17,6 +18,10 @@ import { BottomInputPanel } from "../components/AIChat";
 import { RawiChatCard } from "../components/RawiChatCard";
 import { Footer } from "../components/PopulationFooter";
 import { ChartToggleBtn } from "../components/PopulationToggleBtn";
+import TogglePanel from "../components/TogglePanel";
+
+import { BarChart } from "lucide-react"; // Changed chevron direction conceptually
+
 
 // --- Styles ---
 const SCREEN_STYLE: React.CSSProperties = {
@@ -31,34 +36,6 @@ const SCREEN_STYLE: React.CSSProperties = {
   justifyContent: "space-between",
   alignItems: "center",
 };
-
-const TOGGLE_STYLE: React.CSSProperties = {
-  pointerEvents: "auto",
-  display: "flex",
-};
-
-const TOGGLE_WRAPPER_STYLE: React.CSSProperties = {
-  backgroundColor: "rgba(19, 27, 40, 0.9)",
-  borderRadius: "30px",
-  padding: "4px",
-  display: "flex",
-  alignItems: "center",
-  gap: "2px",
-  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.4)",
-};
-
-const TOGGLE_BUTTON_STYLE = (active: boolean): React.CSSProperties => ({
-  padding: "8px 24px",
-  borderRadius: "24px",
-  border: "none",
-  backgroundColor: active ? "#ffffff" : "transparent",
-  color: active ? "#1b1b1b" : "#ffffff",
-  cursor: "pointer",
-  fontSize: "14px",
-  fontWeight: "500",
-  transition: "all 0.2s ease",
-  pointerEvents: "auto",
-});
 
 const RESET_BTN_STYLE: React.CSSProperties = {
   pointerEvents: "auto",
@@ -75,14 +52,43 @@ const RESET_BTN_STYLE: React.CSSProperties = {
   border: "none",
 }
 
-export const MainWrapper = () => {
+const LEFT_PANEL_STYLE: React.CSSProperties = {
+  width: "25%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "50px 10px 30px 10px",
+};
+
+const MIDDLE_PANEL_STYLE: React.CSSProperties = {
+  width: "25%",
+  height: "100%",
+  paddingBottom: "30px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const RIGHT_PANEL_STYLE: React.CSSProperties = {
+  width: "30%",
+  height: "100%",
+  padding: "0px 20px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
+};
+
+export const MainLayoutWrapper = ({ children }: { children?: React.ReactNode }) => {
   const dispatch = useDispatch();
   const { map } = useMap();
   const location = useLocation();
   const navigate = useNavigate();
 
   // State
-  const [activeYearBtn, setActiveYearBtn] = useState<2025 | 2020>(2020);
+  const [activeYearBtn, setActiveYearBtn] = useState<2020 | 2025>(2020);
   const [viewMode, setViewMode] = useState<"zone" | "block">("zone");
 
   // Drill-down State
@@ -925,19 +931,48 @@ export const MainWrapper = () => {
   };
   const processTextAndNavigate = () => handleTransition("/establishment");
 
+
+  const [showFilter, setShowFilter] = useState<boolean>(false);
+
+  const [history, setHistory] = useState<any>([]);
+
+  const fetchQueryHistory = async () => {
+    try {
+
+      let sessionId = localStorage.getItem("sessionID");
+
+      const response = await fetch("https://rawi-backend.vercel.app/query/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId: sessionId ? sessionId : null,
+          limit: 10,
+          page: 1
+        }),
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        setHistory(json.history);
+      }
+
+    } catch (error) {
+
+    } finally {
+
+    }
+  };
+
+  useEffect(() => {
+    fetchQueryHistory();
+  }, [])
+
+
   return (
     <div style={SCREEN_STYLE}>
       <LoadingOverlay />
 
-      <div style={{
-        width: "25%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "30px 0px",
-      }}>
+      <div style={LEFT_PANEL_STYLE}>
 
         <RawiChatCard
           text={
@@ -954,6 +989,14 @@ export const MainWrapper = () => {
           onRecommendationClick={handleRecommendationClick}
         />
 
+        {history.length >= 1 &&
+          <div style={{ backgroundColor: "#15161A", padding: "10px", borderRadius: "12px", width: "100%", pointerEvents: "auto" }}>
+            <p>History</p>
+            {history.map((item: any, index: number) => (
+              <p key={index}>{item.question}</p>
+            ))}
+          </div>}
+
         <BottomInputPanel
           chips={chatInfo?.recommendations || []}
           onSubmit={processTextAndNavigate}
@@ -961,67 +1004,21 @@ export const MainWrapper = () => {
         />
       </div>
 
-      <div style={{
-        width: "25%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}>
-        <div style={TOGGLE_STYLE}>
-          <div style={TOGGLE_WRAPPER_STYLE}>
-            <button
-              style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
-              onClick={() => {
-                if (activeYearBtn !== 2020 && !isTransitioning.current) {
-                  performZoomTransition(() => setActiveYearBtn(2020));
-                }
-              }}
-            >
-              2020
-            </button>
-            <button
-              style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
-              onClick={() => {
-                if (activeYearBtn !== 2025 && !isTransitioning.current) {
-                  performZoomTransition(() => setActiveYearBtn(2025));
-                }
-              }}
-            >
-              2025
-            </button>
-          </div>
-          <div style={{ width: "10px" }}></div>
-          <div style={TOGGLE_WRAPPER_STYLE}>
-            <button
-              style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
-              onClick={() => {
-                if (viewMode !== "zone" && !isTransitioning.current) {
-                  performZoomTransition(() => {
-                    setViewMode("zone");
-                    setSelectedZone(null);
-                  });
-                }
-              }}
-            >
-              Zone
-            </button>
-            <button
-              style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
-              onClick={() => {
-                if (viewMode !== "block" && !isTransitioning.current) {
-                  performZoomTransition(() => {
-                    setViewMode("block");
-                    setSelectedZone(null);
-                  });
-                }
-              }}
-            >
-              Block
-            </button>
-          </div>
-        </div>
+      <div style={MIDDLE_PANEL_STYLE}>
+        <TogglePanel
+          activeYear={activeYearBtn}
+          viewMode={viewMode}
+          isTransitioning={isTransitioning}
+          onChangeYear={(year) =>
+            performZoomTransition(() => setActiveYearBtn(year))
+          }
+          onChangeViewMode={(mode) =>
+            performZoomTransition(() => {
+              setViewMode(mode);
+              setSelectedZone(null);
+            })
+          }
+        />
 
         <Footer
           title={
@@ -1036,20 +1033,92 @@ export const MainWrapper = () => {
         />
       </div>
 
-      <div style={{
-        width: "30%",
-        height: "100%",
-        padding: "0px 20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-      }}>
+      <div style={RIGHT_PANEL_STYLE}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <ChartToggleBtn />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20 }}>
+            <ChartToggleBtn />
+
+            {(
+              selectedAgeGroups?.length >= 1 ||
+              selectedNationalities?.length >= 1 ||
+              selectedMaritalStatus?.length >= 1 ||
+              selectedEducation?.length >= 1
+            ) && (
+                <div style={{ pointerEvents: "auto", cursor: "pointer" }}>
+                  <BarChart size={20} onClick={() => setShowFilter(!showFilter)} />
+                </div>
+              )}
+          </div>
+
+
           <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
             <span>Reset Filters</span>
           </button>
         </div>
+
+        {showFilter && <div>
+          {selectedAgeGroups?.length >= 1 &&
+            <div>
+              {selectedAgeGroups.map((item) => {
+                return (
+                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                    onClick={() => { handleAgeGroupToggle(item) }}
+                  >
+                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                    <p key={item}
+                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                    >{item}</p>
+                  </div>
+                )
+              })}
+            </div>}
+
+          {selectedNationalities?.length >= 1 && <div>
+            {selectedNationalities.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleNationalityToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+
+          {selectedMaritalStatus?.length >= 1 && <div>
+            {selectedMaritalStatus.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleMaritalStatusToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+          {selectedEducation?.length >= 1 && <div>
+            {selectedEducation.map((item) => {
+              return (
+                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
+                  onClick={() => { handleEducationToggle(item) }}
+                >
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
+                  <p key={item}
+                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
+                  >{item}</p>
+                </div>
+              )
+            })}
+          </div>}
+
+
+        </div>}
 
         {panelData && (
           <RightPanel

@@ -30,6 +30,7 @@ const COLORS = {
 
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
+  maxHeight:"50%",
   backgroundColor: COLORS.bg,
   borderRadius: "12px",
   padding: "24px",
@@ -41,6 +42,7 @@ const CARD_STYLE: React.CSSProperties = {
   gap: "16px",
   position: "relative",
   pointerEvents: "auto",
+
 };
 
 const HEADER_STYLE: React.CSSProperties = {
@@ -152,6 +154,7 @@ interface RawiChatCardProps {
   question?: string;
   recommendations?: string[];
   onRecommendationClick?: (rec: string) => void;
+  history?: any[];
 }
 
 export const RawiChatCard: React.FC<RawiChatCardProps> = ({
@@ -161,6 +164,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
   onButtonClick,
   recommendations,
   onRecommendationClick,
+  history
 }) => {
   return (
     <div style={CARD_STYLE}>
@@ -186,7 +190,22 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
       </div>
 
       {/* Download button */}
-        {/* <DownloadIcon /> */}
+      {/* <DownloadIcon /> */}
+
+      {history && history.length > 0 && (<div style={RECOMMENDATIONS_CONTAINER}>
+        <div
+          style={{ fontSize: "11px", color: "#9ca3af", marginBottom: "2px" }}
+        >
+          Chat History:
+        </div>
+
+        <div>
+          {history.map((item: any, index: number) => (
+            <p key={index} style={{ fontSize: "11px", marginBottom: "5px" }}>{item.question}</p>
+          ))}
+        </div>
+      </div>)}
+
 
       {/* Recommendations */}
       {/* {recommendations && recommendations.length > 0 && (
