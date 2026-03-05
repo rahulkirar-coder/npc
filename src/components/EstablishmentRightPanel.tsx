@@ -561,7 +561,7 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
           }
           buttonText="Show Building Lens"
           onButtonClick={() => handleTransition("/building")}
-          minHeight="80px"
+          // minHeight="80px"
           question={chatData?.question || "Analyze establishment distribution"}
           recommendations={chatData?.recommendations}
           onRecommendationClick={onRecommendationClick}

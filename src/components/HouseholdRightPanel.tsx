@@ -303,7 +303,7 @@ export const HouseholdRightPanel: React.FC<Props> = ({
           }
           buttonText="Show Disability Breakdown"
           onButtonClick={() => handleTransition("/disability")}
-          minHeight="80px"
+          // minHeight="80px"
           question={chatData?.question || "Analyze Household Demographics"}
           recommendations={chatData?.recommendations}
           onRecommendationClick={onRecommendationClick}

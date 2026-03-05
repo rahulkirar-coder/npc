@@ -517,7 +517,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
           }
           buttonText="Show Employment"
           onButtonClick={() => processTextAndNavigate()}
-          minHeight="60px"
+          // minHeight="60px"
           question={
             chatData?.question || "Population analysis by block in Doha"
           }

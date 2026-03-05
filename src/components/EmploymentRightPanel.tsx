@@ -364,7 +364,7 @@ export const EmploymentRightPanel: React.FC<Props> = ({
           }
           buttonText="Show Business Ecosystem"
           onButtonClick={() => handleTransition("/establishment")}
-          minHeight="60px"
+          // minHeight="60px"
           question={
             chatData?.question ||
             "Analyze workforce distribution by Economic Activity"

@@ -207,7 +207,7 @@ export const DisabilityRightPanel: React.FC<Props> = ({
           text={chatText}
           buttonText=""
           onButtonClick={() => handleTransition("/establishment")}
-          minHeight="80px"
+          // minHeight="80px"
         />
       </div>
 
