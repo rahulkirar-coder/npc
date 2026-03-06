@@ -174,9 +174,6 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: queryText, threadId : sessionId ? sessionId : null }),
       });
-
-      console.log(response?.headers, "===@@@")
-      console.log(document.cookie,"===@@@ cookie");
       
       if (response.ok) {
         const json = await response.json();

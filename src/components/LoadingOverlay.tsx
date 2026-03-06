@@ -104,8 +104,7 @@ export const LoadingOverlay = () => {
   useEffect(() => {
     if (!isLoading) return;
 
-    const eventSource = new EventSource(
-      "https://rawi-backend.vercel.app/notifications/sse-steps");
+    const eventSource = new EventSource("https://rawi-backend.vercel.app/notifications/sse-steps");
 
     eventSource.onmessage = (event) => {
       const update = JSON.parse(event.data);

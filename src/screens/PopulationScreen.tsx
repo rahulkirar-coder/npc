@@ -15,6 +15,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { ChartToggleBtn } from "../components/PopulationToggleBtn";
 import { MainLayout } from "../wrappers/mainWrapper";
+import { LegendTable } from "../components/molicules";
 
 
 // --- Styles ---
@@ -67,6 +68,12 @@ export const PopulationScreen = () => {
   const { map } = useMap();
   const location = useLocation();
   const navigate = useNavigate();
+
+
+  //Reducer
+  const isRightPanelOpen = useSelector(
+    (state: AppState) => state.app.isRightPanelOpen,
+  );
 
   // State
   const [activeYearBtn, setActiveYearBtn] = useState<2020 | 2025>(2020);
@@ -213,7 +220,15 @@ export const PopulationScreen = () => {
   const handleDataUpdate = (stateData: any) => {
     setUpdateData(stateData)
 
+    const filters = updateData?.queryData?.filters;
+    console.log(filters, "===@@@")
+    if (filters) {
+      applyFilters(filters);
+    }
+
     const data = stateData.queryData;
+
+    
     if (data && data !== lastQueryDataRef.current) {
       setFullApiData(data);
       if (data.range) {
@@ -229,10 +244,6 @@ export const PopulationScreen = () => {
         question: stateData.question,
       });
     }
-          const filters = updateData?.queryData?.filters;
-      if (filters) {
-        applyFilters(filters);
-      }
   };
 
   const handleRecommendationClick = async (question: string) => {
@@ -1069,37 +1080,48 @@ export const PopulationScreen = () => {
       </div>
 
       <div style={{
-        maxHeight: "75%",
-        zIndex: 100,
-        overflowY: "auto",
-        scrollbarWidth: "none", // Firefox
-        pointerEvents: "auto",
         display: "flex",
         gap: 5,
         justifyContent: "flex-end"
       }}>
         <ChartToggleBtn />
 
-        {panelData && (
-          <RightPanel
-            data={panelData}
-            onStartTransition={stopCinematicMode}
-            selectedAgeGroups={selectedAgeGroups}
-            onAgeGroupToggle={handleAgeGroupToggle}
-            selectedGender={selectedGender}
-            onGenderToggle={handleGenderToggle}
-            selectedMaritalStatus={selectedMaritalStatus}
-            onMaritalStatusToggle={handleMaritalStatusToggle}
-            selectedEducation={selectedEducation}
-            onEducationToggle={handleEducationToggle}
-            // Added Props
-            selectedNationalities={selectedNationalities}
-            onNationalityToggle={handleNationalityToggle}
-            onResetFilters={handleResetFilters}
-            chatData={chatInfo}
-            onRecommendationClick={handleRecommendationClick}
-            onDataUpdate={handleDataUpdate}
-          />
+        {panelData && isRightPanelOpen && (
+          <div>
+            <div style={{
+              maxHeight: "45%", zIndex: 100,
+              overflowY: "auto",
+              scrollbarWidth: "none",
+              pointerEvents: "auto",
+              marginBottom: "10px"
+            }}>
+
+              <RightPanel
+                data={panelData}
+                onStartTransition={stopCinematicMode}
+                selectedAgeGroups={selectedAgeGroups}
+                onAgeGroupToggle={handleAgeGroupToggle}
+                selectedGender={selectedGender}
+                onGenderToggle={handleGenderToggle}
+                selectedMaritalStatus={selectedMaritalStatus}
+                onMaritalStatusToggle={handleMaritalStatusToggle}
+                selectedEducation={selectedEducation}
+                onEducationToggle={handleEducationToggle}
+                selectedNationalities={selectedNationalities}
+                onNationalityToggle={handleNationalityToggle}
+                onResetFilters={handleResetFilters}
+                chatData={chatInfo}
+                onRecommendationClick={handleRecommendationClick}
+                onDataUpdate={handleDataUpdate}
+              />
+            </div>
+            <LegendTable
+              type="simple"
+              selectedGender={selectedGender}
+              onGenderToggle={handleGenderToggle}
+              data={panelData}
+            />
+          </div>
         )}
       </div>
 

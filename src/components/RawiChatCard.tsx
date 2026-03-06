@@ -30,7 +30,7 @@ const COLORS = {
 
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
-  maxHeight: "70%",
+  maxHeight: "60%",
   borderRadius: "12px",
   padding: "24px",
   fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -40,7 +40,6 @@ const CARD_STYLE: React.CSSProperties = {
   gap: "16px",
   position: "relative",
   pointerEvents: "auto",
-
 };
 
 const HEADER_STYLE: React.CSSProperties = {
@@ -95,8 +94,9 @@ const BODY_TEXT_STYLE: React.CSSProperties = {
   lineHeight: "1.6",
   color: COLORS.textMain,
   whiteSpace: "pre-wrap",
-  maxHeight: "100px",
+  maxHeight: "200px",
   overflow: "scroll",
+  // border:"1px solid red"
 };
 
 const RECOMMENDATIONS_CONTAINER: React.CSSProperties = {
@@ -221,19 +221,20 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
       {/* Download button */}
       {/* <DownloadIcon /> */}
 
-      {history && history.length > 0 && (<div style={RECOMMENDATIONS_CONTAINER}>
-        <div
-          style={{ fontSize: "11px", color: "#d4d4d8", marginBottom: "2px" }}
-        >
-          Chat History:
-        </div>
+      {history && history.length > 0 &&
+        (<div style={RECOMMENDATIONS_CONTAINER}>
+          <div
+            style={{ fontSize: "11px", color: "#d4d4d8", marginBottom: "2px" }}
+          >
+            Chat History:
+          </div>
 
-        <div>
-          {history.map((item: any, index: number) => (
-            <p key={index} style={{ fontSize: "11px", marginBottom: "5px" }}>{item.question}</p>
-          ))}
-        </div>
-      </div>)}
+          <div>
+            {history.map((item: any, index: number) => (
+              <p key={index} style={{ fontSize: "11px", marginBottom: "5px" }}>{item.question}</p>
+            ))}
+          </div>
+        </div>)}
 
 
       {/* Recommendations */}

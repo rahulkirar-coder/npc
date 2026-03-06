@@ -17,6 +17,7 @@ const SCREEN_STYLE: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  padding:"0px 25px 0px 20px"
 };
 
 const LEFT_PANEL_STYLE: React.CSSProperties = {
