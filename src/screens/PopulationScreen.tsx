@@ -220,8 +220,7 @@ export const PopulationScreen = () => {
   const handleDataUpdate = (stateData: any) => {
     setUpdateData(stateData)
 
-    const filters = updateData?.queryData?.filters;
-    console.log(filters, "===@@@")
+    const filters = stateData?.queryData?.filters;
     if (filters) {
       applyFilters(filters);
     }
