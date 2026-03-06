@@ -102,6 +102,14 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
     const [maleValStr, malePercStr] = splitLabel(row.maleLabel);
     const [femaleValStr, femalePercStr] = splitLabel(row.femaleLabel);
 
+    console.log(getValidNumber(maleValStr), malePercStr)
+
+    const maleValue = getValidNumber(maleValStr);
+    const malePercent = parseFloat(malePercStr);
+
+    const femaleValue = getValidNumber(femaleValStr);
+    const femalePercent = parseFloat(femalePercStr);
+
     return (
       <div
         onClick={() =>
@@ -153,9 +161,17 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
               flexShrink: 0,
             }}
           >
-            <span style={{ color: "#fff", fontWeight: 600 }}>{getValidNumber(maleValStr)}</span>
+            {/* <span style={{ color: "#fff", fontWeight: 600 }}>{getValidNumber(maleValStr) !== 0 ? getValidNumber(maleValStr) : ""}</span>
             <span style={{ color: "#94a3b8", fontSize: "9px" }}>
-              {malePercStr}
+              {malePercStr !== "0%" && malePercStr}
+            </span> */}
+
+            <span style={{ color: "#fff", fontWeight: 600 }}>
+              {maleValue > 0 && maleValue}
+            </span>
+
+            <span style={{ color: "#94a3b8", fontSize: "9px" }}>
+              {malePercent > 0 && malePercStr}
             </span>
           </div>
 
@@ -268,10 +284,10 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
             }}
           >
             <span style={{ color: "#fff", fontWeight: 600 }}>
-              {getValidNumber(femaleValStr)}
+              {femaleValue  > 0 && femaleValue}
             </span>
             <span style={{ color: "#94a3b8", fontSize: "9px" }}>
-              {femalePercStr}
+              {femalePercent > 0 && femalePercStr}
             </span>
           </div>
         </div>
