@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LoadingOverlay } from "../components/LoadingOverlay";
 import { BottomInputPanel } from "../components/AIChat";
 import { RawiChatCard } from "../components/RawiChatCard";
 import { Footer } from "../components/PopulationFooter";
 import TogglePanel from "../components/TogglePanel";
+import { FilterTags } from "../components/atoms";
 
 // --- Styles ---
 const SCREEN_STYLE: React.CSSProperties = {
@@ -17,7 +18,7 @@ const SCREEN_STYLE: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding:"0px 25px 0px 20px"
+  padding: "0px 25px 0px 20px"
 };
 
 const LEFT_PANEL_STYLE: React.CSSProperties = {
@@ -27,7 +28,7 @@ const LEFT_PANEL_STYLE: React.CSSProperties = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "50px 10px 30px 10px",
+  padding: "50px 0px 30px 0px",
 };
 
 const MIDDLE_PANEL_STYLE: React.CSSProperties = {
@@ -43,20 +44,70 @@ const MIDDLE_PANEL_STYLE: React.CSSProperties = {
 const RIGHT_PANEL_STYLE: React.CSSProperties = {
   width: "30%",
   height: "100%",
-  padding: "0px 20px",
+  paddingRight: "25px",
   display: "flex",
   flexDirection: "column",
   gap: "20px",
 };
 
-export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middleTopData, middleBottomData, children }: any) => {
+// --- Styles ---
+const RESET_BTN_STYLE: React.CSSProperties = {
+  pointerEvents: "auto",
+  backgroundColor: "#A30134",
+  borderRadius: "50px",
+  padding: "8px 18px",
+  color: "#fff",
+  fontSize: "14px",
+  fontWeight: "500",
+  cursor: "pointer",
+  alignItems: "center",
+  transition: "all 0.2s ease",
+  fontFamily: "Poppins",
+  border: "none",
+}
+
+export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middleTopData, middleBottomData, filterTagsSet, onReset, children }: any) => {
+
+  const [history, setHistory] = useState<any>([]);
+
+  const fetchQueryHistory = async () => {
+    try {
+
+      let sessionId = localStorage.getItem("sessionID");
+
+      const response = await fetch("https://rawi-backend.vercel.app/query/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId: sessionId ? sessionId : null,
+          limit: 10,
+          page: 1
+        }),
+      });
+
+      if (response.ok) {
+        const json = await response.json();
+        setHistory(json.history);
+      }
+
+    } catch (error) {
+
+    } finally {
+
+    }
+  };
+
+  useEffect(() => {
+    fetchQueryHistory();
+  }, [leftSideRaviChatData?.text])
+
   return (
     <div style={SCREEN_STYLE}>
       <LoadingOverlay />
 
       <div style={LEFT_PANEL_STYLE}>
 
-        <RawiChatCard {...leftSideRaviChatData} />
+        <RawiChatCard {...leftSideRaviChatData} history={history} />
 
         <BottomInputPanel {...leftSideChatInputData} />
       </div>
@@ -70,6 +121,25 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
       </div>
 
       <div style={RIGHT_PANEL_STYLE}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            {filterTagsSet?.map((item, index) => {
+              return (
+                <FilterTags
+                  key={index}
+                  items={item?.item}
+                  onToggle={item?.toggle}
+                />
+              )
+            })}
+
+          </div>
+
+          <button style={RESET_BTN_STYLE} onClick={onReset}>
+            <span>Reset Filters</span>
+          </button>
+        </div>
         {children}
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMap } from "react-map-gl";
-import { DOHA_FLAG_COLOR, DOHA_FLAG_COLOR_RGBA_06 } from "../util";
 import { useSelector } from "react-redux";
 import type { AppState } from "../state/appReducer";
 import {
@@ -274,16 +273,13 @@ export const RightPanel: React.FC<RightPanelProps> = ({
 
 
     return (
-        <>
-
-            {isRightPanelOpen && (
                 <div
                     style={{
                         width: "100%",
                         height: "100%",
                         display: "flex",
                         flexDirection: "column",
-                        gap: "15px",
+                        gap: "15px"
                     }}
                 >
 
@@ -349,7 +345,5 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                         />
                     </div>
                 </div>
-            )}
-        </>
     );
 };

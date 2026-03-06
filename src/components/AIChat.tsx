@@ -319,9 +319,9 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
           ? ""
           : "bottom-middle-panel"
       }
-      style={{width:"100%"}} // Apply style override
+      style={ window.location.pathname !== "/city" ? {width:"100%"} : {width:"400px"}} // Apply style override
     >
-      <div className="chips-container">
+      <div className="chips-container" style={{ width: window.location.pathname !== "/city" ? "100%" : "800px" }}>
         {uniqueChips.map((chip, index) => (
           <div
             key={index}

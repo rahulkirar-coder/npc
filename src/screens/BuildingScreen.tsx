@@ -17,6 +17,7 @@ import { LoadingOverlay } from "../components/LoadingOverlay";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MainLayout } from "../wrappers/mainWrapper";
 import { ChartToggleBtn } from "../components/PopulationToggleBtn";
+import { FilterTags } from "../components/atoms";
 
 // ... [STYLES KEPT SAME] ...
 const SCREEN_STYLE: React.CSSProperties = {
@@ -90,24 +91,6 @@ const FOOTER_POINTER_STYLE: React.CSSProperties = {
   marginBottom: "30px",
 };
 
-
-
-// --- Styles ---
-const RESET_BTN_STYLE: React.CSSProperties = {
-  pointerEvents: "auto",
-  backgroundColor: "#A30134",
-  borderRadius: "50px",
-  padding: "8px 18px",
-  color: "#fff",
-  fontSize: "14px",
-  fontWeight: "500",
-  cursor: "pointer",
-  alignItems: "center",
-  transition: "all 0.2s ease",
-  fontFamily: "Poppins",
-  border: "none",
-}
-
 // --- Helper: Parse WKT Polygon with Z to GeoJSON & Height ---
 const parseBuildingGeometry = (
   wkt: string,
@@ -158,6 +141,11 @@ export const BuildingScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+  //Reducer
+  const isRightPanelOpen = useSelector(
+    (state: AppState) => state.app.isRightPanelOpen,
+  );
 
   // Zone Filter
   const [selectedZone, setSelectedZone] = useState<number | null>(null);
@@ -1176,6 +1164,13 @@ export const BuildingScreen = () => {
     else handleTransition("/household");
   };
 
+  const COMMON_CHIPS = [
+  "Population analysis by block in Doha",
+  "Analyze establishment distribution",
+  "Building distribution by type and status",
+  "Compare population between Doha and Al Daayen",
+];
+
   return (
     // <div style={SCREEN_STYLE}>
     //   <LoadingOverlay />
@@ -1284,7 +1279,7 @@ export const BuildingScreen = () => {
       }}
 
       leftSideChatInputData={{
-        chips: chatInfo?.recommendations || [],
+        chips: chatInfo?.recommendations || COMMON_CHIPS,
         onSubmit: processTextAndNavigate,
         onDataUpdate: handleDataUpdate
       }}
@@ -1310,47 +1305,43 @@ export const BuildingScreen = () => {
         minVal: min,
         maxVal: max
       }}
+
+      onReset={handleResetFilters}
+
+      filterTagsSet={
+        [{ item: selectedStatuses, toggle: handleStatusToggle },
+        { item: selectedTypes, toggle: handleTypeToggle },
+        { item: selectedTypes, toggle: handleTypeToggle }
+        ]}
     >
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-
-        <div style={{
-          display: "flex", gap: 10, marginLeft: "50px"
-        }}>
-
-        </div>
-
-
-        <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
-          <span>Reset Filters</span>
-        </button>
-      </div>
-
       <div style={{
-        maxHeight: "75%",
-        zIndex: 100,
-        overflowY: "auto",
-        scrollbarWidth: "none", // Firefox
-        pointerEvents: "auto",
         display: "flex",
         gap: 5,
-        justifyContent: "flex-end"
+        justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
       }}>
         <ChartToggleBtn />
 
-        {panelData && (
-          <BuildingRightPanel
-            data={panelData}
-            onStartTransition={stopCinematicMode}
-            selectedStatuses={selectedStatuses}
-            onStatusToggle={handleStatusToggle}
-            selectedTypes={selectedTypes}
-            onTypeToggle={handleTypeToggle}
-            onResetFilters={handleResetFilters}
-            chatData={chatInfo}
-            onRecommendationClick={handleRecommendationClick}
-            onDataUpdate={handleDataUpdate}
-          />
+        {panelData && isRightPanelOpen && (
+          <div style={{
+            maxHeight: "70%",
+            zIndex: 100,
+            overflowY: "auto",
+            scrollbarWidth: "none",
+            pointerEvents: "auto",
+          }}>
+            <BuildingRightPanel
+              data={panelData}
+              onStartTransition={stopCinematicMode}
+              selectedStatuses={selectedStatuses}
+              onStatusToggle={handleStatusToggle}
+              selectedTypes={selectedTypes}
+              onTypeToggle={handleTypeToggle}
+              chatData={chatInfo}
+              onRecommendationClick={handleRecommendationClick}
+              onDataUpdate={handleDataUpdate}
+            />
+          </div>
         )}
       </div>
 

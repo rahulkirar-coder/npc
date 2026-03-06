@@ -132,7 +132,6 @@ export const HouseholdRightPanel: React.FC<Props> = ({
   onGenderToggle,
   selectedMunicipalities = [],
   onMunicipalityToggle,
-  onResetFilters,
   chatData,
   onRecommendationClick,
   onDataUpdate,
@@ -295,28 +294,17 @@ export const HouseholdRightPanel: React.FC<Props> = ({
 
   return (
     <>
-      <div className="top-left-panel hide-scroll">
-        <RawiChatCard
-          text={
-            chatData?.text ||
-            `Shift your focus to the 'Household Lens.' This view is vital for community planning. Doha, with smaller average household sizes, likely hosting singles and couples; and Al Rayyan, peaking at 4.5 persons per household, cementing its status as the 'Family Capital' of the country.`
-          }
-          buttonText="Show Disability Breakdown"
-          onButtonClick={() => handleTransition("/disability")}
-          // minHeight="80px"
-          question={chatData?.question || "Analyze Household Demographics"}
-          recommendations={chatData?.recommendations}
-          onRecommendationClick={onRecommendationClick}
-        />
-      </div>
+      {/* 1. CHARTS - MOVED TO LEFT */}
       {isRightPanelOpen && (
-        <div className="right-side-panel"  style={{ top: COMMON_CHART_PANEL_TOP }}>
-          <div style={ResetBtnStyle}>
-            <button style={RESET_BTN_STYLE} onClick={onResetFilters}>
-              <span>Reset Filters</span>
-            </button>
-          </div>
-
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+          }}
+        >
           {/* CHART 1: Nationality Pie Chart */}
           <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>
@@ -738,12 +726,6 @@ export const HouseholdRightPanel: React.FC<Props> = ({
           </div>
         </div>
       )}
-
-      <BottomInputPanel
-        chips={chatData?.recommendations || COMMON_CHIPS}
-        onSubmit={processTextAndNavigate}
-        onDataUpdate={onDataUpdate}
-      />
     </>
   );
 };

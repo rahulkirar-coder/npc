@@ -81,22 +81,6 @@ const CHART_TITLE_STYLE: React.CSSProperties = {
   marginBottom: "8px",
 };
 
-const RESET_BTN_STYLE: React.CSSProperties = {
-  pointerEvents: "auto",
-  backgroundColor: "#A30134",
-  borderRadius: "20px",
-  padding: "10px 14px",
-  color: "#fff",
-  fontSize: "12px",
-  fontWeight: "500",
-  cursor: "pointer",
-  alignItems: "center",
-  transition: "all 0.2s ease",
-  fontFamily: "Poppins",
-  border: "none",
-  maxWidth: "150px",
-};
-
 const SECTION_HEADER_STYLE: React.CSSProperties = {
   color: "white",
   fontSize: "11px",
@@ -122,7 +106,6 @@ const COLORS = {
 
 export const EstablishmentRightPanel: React.FC<Props> = ({
   data,
-  onResetFilters,
   selectedActivities = [],
   onActivityToggle,
   selectedSizeTypes = [],
@@ -544,48 +527,25 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
     );
   };
 
-  const COMMON_CHIPS = [
-    "Population analysis by block in Doha",
-    "Analyze establishment distribution",
-    "Building distribution by type and status",
-    "Compare population between Doha and Al Daayen",
-  ];
-
   return (
     <>
-      <div className="top-left-panel hide-scroll" style={{ gap: "8px" }}>
-        <RawiChatCard
-          text={
-            chatData?.text ||
-            `This lens maps the commercial heartbeat of the nation. Tracking ${totalEstablishments2025.toLocaleString()} active Establishments. Revenue is concentrated in West Bay. The Leaderboard shows Retail Trade is the dominant activity.\n\nWe've covered their work and their businesses. Now, let's follow the population home.`
-          }
-          buttonText="Show Building Lens"
-          onButtonClick={() => handleTransition("/building")}
-          // minHeight="80px"
-          question={chatData?.question || "Analyze establishment distribution"}
-          recommendations={chatData?.recommendations}
-          onRecommendationClick={onRecommendationClick}
-        />
-      </div>
+      {/* 1. CHARTS - MOVED TO LEFT */}
       {isRightPanelOpen && (
         <div
-        className="right-side-panel"
-        style={{ top: COMMON_CHART_PANEL_TOP }}
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px"
+          }}
         >
-          <div
-            style={ResetBtnStyle}
-          >
-            <button style={RESET_BTN_STYLE} onClick={onResetFilters}>
-              <span>Reset Filters</span>
-            </button>
-          </div>
-
           {/* CHART 1: Sector Distribution (REVERTED TO HORIZONTAL + NESTED) */}
-          <div className="glass-card" style={{ padding: "12px" }}>
+          <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>
               Distribution by Economic Activity
             </div>
-            <div style={{ height: "170px", width: "100%" }}>
+            <div style={{ height: "170px" }}>
               <ResponsiveContainer>
                 <BarChart
                   layout="vertical"
@@ -696,8 +656,8 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* CHART 2: Type Distribution (Composed Chart) */}
-          <div className="glass-card" style={{ padding: "12px" }}>
+           {/* CHART 2: Type Distribution (Composed Chart) */}
+          <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>
               Distribution by Sector and Employees
             </div>
@@ -965,7 +925,7 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
           </div>
 
           {/* CHART 3: Establishment Size (Layered Donut - Interactive) */}
-          <div className="glass-card" style={{ padding: "12px" }}>
+          <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>
               Distribution by Establishment Size
             </div>
@@ -1123,14 +1083,12 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
               </div>
             </div>
           </div>
+
+         
         </div>
       )}
 
-      <BottomInputPanel
-        chips={chatData?.recommendations || COMMON_CHIPS}
-        onSubmit={processTextAndNavigate}
-        onDataUpdate={onDataUpdate}
-      />
+     
     </>
   );
 };

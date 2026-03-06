@@ -96,11 +96,13 @@ const HIGHLIGHT_TEXT_STYLE: React.CSSProperties = {
 };
 
 export const LoadingOverlay = () => {
-  const { isLoading, loadingMessage, loadingDuration } = useSelector(
+  const { isLoading, loadingDuration } = useSelector(
     (state: AppState) => state.app
   );
 
   const [progress, setProgress] = useState(0);
+
+  const [loadingMessage, setLoadingMessage] = useState("Analyzing Data...")
 
   useEffect(() => {
     if (!isLoading) return;
@@ -116,10 +118,12 @@ export const LoadingOverlay = () => {
     eventSource.onmessage = (event) => {
       const update = JSON.parse(event.data);
 
-      console.log(update, "===@@@")
+      console.log(update?.data, "===@@@")
 
       if (update.apiName === "query") {
+        setLoadingMessage("Analyzing Data...");
         setProgress(update.percentage);
+        setLoadingMessage(update?.data?.step);
       }
 
       if (update.status === "complete") {
@@ -127,6 +131,9 @@ export const LoadingOverlay = () => {
         eventSource.close();
       }
     };
+
+    return () => eventSource.close();
+
 
 
     // let interval: any;
@@ -170,7 +177,7 @@ export const LoadingOverlay = () => {
     // }
 
     // return () => clearInterval(interval);
-  }, [isLoading, loadingDuration]);
+  }, [isLoading]);
 
   // Don't render if not loading
   if (!isLoading) return null;

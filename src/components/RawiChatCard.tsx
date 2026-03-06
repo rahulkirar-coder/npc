@@ -30,7 +30,7 @@ const COLORS = {
 
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
-  maxHeight: "60%",
+  maxHeight: "50%",
   borderRadius: "12px",
   padding: "24px",
   fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -40,6 +40,7 @@ const CARD_STYLE: React.CSSProperties = {
   gap: "16px",
   position: "relative",
   pointerEvents: "auto",
+  background: "rgba(30, 41, 59, 0.8)",
 };
 
 const HEADER_STYLE: React.CSSProperties = {
@@ -104,6 +105,8 @@ const RECOMMENDATIONS_CONTAINER: React.CSSProperties = {
   flexDirection: "column",
   gap: "8px",
   marginTop: "8px",
+  maxHeight: "150px",
+  overflow: "scroll",
 };
 
 const RECOMMENDATION_BTN_STYLE: React.CSSProperties = {
@@ -151,6 +154,7 @@ interface RawiChatCardProps {
   question?: string;
   recommendations?: string[];
   onRecommendationClick?: (rec: string) => void;
+  history:any
 }
 
 export const RawiChatCard: React.FC<RawiChatCardProps> = ({
@@ -160,43 +164,11 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
   onButtonClick,
   recommendations,
   onRecommendationClick,
+  history
 }) => {
 
-  const [history, setHistory] = useState<any>([]);
-
-  const fetchQueryHistory = async () => {
-    try {
-
-      let sessionId = localStorage.getItem("sessionID");
-
-      const response = await fetch("https://rawi-backend.vercel.app/query/history", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: sessionId ? sessionId : null,
-          limit: 10,
-          page: 1
-        }),
-      });
-
-      if (response.ok) {
-        const json = await response.json();
-        setHistory(json.history);
-      }
-
-    } catch (error) {
-
-    } finally {
-
-    }
-  };
-
-  useEffect(() => {
-    fetchQueryHistory();
-  }, [])
-
   return (
-    <div className="glass-card" style={CARD_STYLE}>
+    <div style={CARD_STYLE}>
       {/* Header */}
       <div style={HEADER_STYLE}>
         <div style={BRAND_WRAPPER}>
@@ -222,7 +194,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
       {/* <DownloadIcon /> */}
 
       {history && history.length > 0 &&
-        (<div style={RECOMMENDATIONS_CONTAINER}>
+        (<div style={RECOMMENDATIONS_CONTAINER} className="custom-scroll">
           <div
             style={{ fontSize: "11px", color: "#d4d4d8", marginBottom: "2px" }}
           >
@@ -235,6 +207,8 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
             ))}
           </div>
         </div>)}
+
+        
 
 
       {/* Recommendations */}

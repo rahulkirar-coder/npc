@@ -49,7 +49,6 @@ interface Props {
   onStatusToggle?: (status: string) => void;
   selectedTypes?: string[];
   onTypeToggle?: (type: string) => void;
-  onResetFilters?: () => void;
   // Added:
   chatData?: {
     text: string;
@@ -62,18 +61,17 @@ interface Props {
 
 const MERGED_CARD_STYLE: React.CSSProperties = {
   borderRadius: "16px",
-  paddingTop: "12px",
-  paddingRight: "12px",
+  padding: "4px",
   display: "flex",
   alignItems: "flex-start",
-  gap: "12px",
+  gap: "5px",
   cursor: "pointer",
   transition: "all 0.2s ease",
 };
 
 const ICON_BOX_STYLE: React.CSSProperties = {
-  width: "38px",
-  height: "38px",
+  width: "35px",
+  height: "35px",
   borderRadius: "12px",
   display: "flex",
   alignItems: "center",
@@ -112,13 +110,6 @@ const SECTION_HEADER_STYLE: React.CSSProperties = {
   marginBottom: "4px",
 };
 
-const COMMON_CHIPS = [
-  "Population analysis by block in Doha",
-  "Analyze establishment distribution",
-  "Building distribution by type and status",
-  "Compare population between Doha and Al Daayen",
-];
-
 const CATEGORY_COLORS: Record<string, string> = {
   "Commercial Tower": "#636EFA",
   "Residential Building": "#EF553B",
@@ -134,7 +125,6 @@ export const BuildingRightPanel: React.FC<Props> = ({
   onStatusToggle,
   selectedTypes = [],
   onTypeToggle,
-  onResetFilters,
   chatData,
   onRecommendationClick,
   onDataUpdate,
@@ -331,8 +321,8 @@ export const BuildingRightPanel: React.FC<Props> = ({
       <div
         style={{
           ...getCardStyle(statusKey),
-          marginTop: statusKey === "under_demolition" ? "12px" : "0",
-          marginLeft: statusKey === "under_construction" ? "12px" : "0",
+          // marginTop: statusKey === "under_demolition" ? "12px" : "0",
+          // marginLeft: statusKey === "under_construction" ? "12px" : "0",
           backgroundColor:
             isHovered && !isSelected
               ? DOHA_FLAG_COLOR_RGBA_06
@@ -347,6 +337,7 @@ export const BuildingRightPanel: React.FC<Props> = ({
                 : "transparent",
           borderWidth: "1px",
           borderStyle: "solid",
+          width: "165px",
         }}
         onClick={() => onStatusToggle && onStatusToggle(statusKey)}
         onMouseEnter={() => setIsHovered(true)}
@@ -396,395 +387,390 @@ export const BuildingRightPanel: React.FC<Props> = ({
   if (!data) return null;
 
   return (
-    <>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "15px",
+      }}
+    >
 
-      {isRightPanelOpen && (
+      {/* CHART 1: TYPE */}
+      <div className="glass-card">
+        <div style={CHART_TITLE_STYLE}>Distribution by Buildings Type</div>
         <div
           style={{
-            width: "100%",
-            height: "100%",
             display: "flex",
-            flexDirection: "column",
-            gap: "15px",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
           }}
         >
-
-          {/* CHART 1: TYPE */}
-          <div className="glass-card">
-            <div style={CHART_TITLE_STYLE}>Distribution by Buildings Type</div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "space-between",
-              }}
-            >
-              <div
-                style={{ width: "40%", height: "160px", position: "relative" }}
-              >
-                <ResponsiveContainer>
-                  <PieChart>
-                    <Pie
-                      data={typeData2025}
-                      innerRadius={45}
-                      outerRadius={65}
-                      paddingAngle={0}
-                      dataKey="value"
-                      stroke="none"
-                      startAngle={90}
-                      endAngle={-270}
-                      onClick={(data) =>
-                        onTypeToggle && onTypeToggle(data.category)
-                      }
-                    >
-                      {typeData2025.map((entry, index) => (
-                        <Cell
-                          key={`cell-25-${index}`}
-                          fill={entry.color}
-                          fillOpacity={
-                            !selectedTypes ||
-                              selectedTypes.length === 0 ||
-                              selectedTypes.includes(entry.category)
-                              ? 1
-                              : 0.3
-                          }
-                          style={{ cursor: "pointer", transition: "all 0.3s" }}
-                        />
-                      ))}
-                    </Pie>
-                    <Pie
-                      data={typeData2020}
-                      innerRadius={25}
-                      outerRadius={40}
-                      paddingAngle={0}
-                      dataKey="value"
-                      stroke="none"
-                      startAngle={90}
-                      endAngle={-270}
-                      onClick={(data) =>
-                        onTypeToggle && onTypeToggle(data.category)
-                      }
-                    >
-                      {typeData2020.map((entry, index) => (
-                        <Cell
-                          key={`cell-20-${index}`}
-                          fill={entry.color}
-                          fillOpacity={
-                            !selectedTypes ||
-                              selectedTypes.length === 0 ||
-                              selectedTypes.includes(entry.category)
-                              ? 0.6
-                              : 0.1
-                          }
-                          style={{ cursor: "pointer", transition: "all 0.3s" }}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#1f2937",
-                        border: "none",
-                        color: "#fff",
-                        fontSize: "10px",
-                        borderRadius: "8px",
-                      }}
-                      itemStyle={{ color: "#fff" }}
-                      // @ts-ignore
-                      formatter={(val) => val.toLocaleString()}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    textAlign: "center",
-                    color: "white",
-                    lineHeight: "1.1",
-                  }}
+          <div
+            style={{ width: "40%", height: "160px", position: "relative" }}
+          >
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={typeData2025}
+                  innerRadius={45}
+                  outerRadius={65}
+                  paddingAngle={0}
+                  dataKey="value"
+                  stroke="none"
+                  startAngle={90}
+                  endAngle={-270}
+                  onClick={(data) =>
+                    onTypeToggle && onTypeToggle(data.category)
+                  }
                 >
-                  <div style={{ fontSize: "12px", fontWeight: "700" }}>
-                    {totalBuildings2025.toLocaleString()}
-                  </div>
-                  <div style={{ fontSize: "9px", fontWeight: "500" }}>Est.</div>
-                </div>
-              </div>
-
-              <div
-                style={{
-                  width: "58%",
-                  paddingLeft: "5px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <div style={SECTION_HEADER_STYLE}>2025</div>
-                {typeData2025.map((item, index) => (
-                  <TypeLegendRow
-                    key={`2025-${index}`}
-                    item={item}
-                    opacity={
-                      !selectedTypes.length ||
-                        selectedTypes.includes(item.category || item.name)
-                        ? 1
-                        : 0.3
-                    }
-                    onClick={() => onTypeToggle && onTypeToggle(item.category)}
-                  />
-                ))}
-                <div style={SECTION_HEADER_STYLE}>2020</div>
-                {typeData2020.map((item, index) => (
-                  <TypeLegendRow
-                    key={`2020-${index}`}
-                    item={item}
-                    opacity={
-                      !selectedTypes.length ||
-                        selectedTypes.includes(item.category || item.name)
-                        ? 1
-                        : 0.3
-                    }
-                    onClick={() => onTypeToggle && onTypeToggle(item.category)}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* CHART 2: STATUS */}
-          <div className="glass-card">
-            <div style={CHART_TITLE_STYLE}>Distribution by Building Status</div>
+                  {typeData2025.map((entry, index) => (
+                    <Cell
+                      key={`cell-25-${index}`}
+                      fill={entry.color}
+                      fillOpacity={
+                        !selectedTypes ||
+                          selectedTypes.length === 0 ||
+                          selectedTypes.includes(entry.category)
+                          ? 1
+                          : 0.3
+                      }
+                      style={{ cursor: "pointer", transition: "all 0.3s" }}
+                    />
+                  ))}
+                </Pie>
+                <Pie
+                  data={typeData2020}
+                  innerRadius={25}
+                  outerRadius={40}
+                  paddingAngle={0}
+                  dataKey="value"
+                  stroke="none"
+                  startAngle={90}
+                  endAngle={-270}
+                  onClick={(data) =>
+                    onTypeToggle && onTypeToggle(data.category)
+                  }
+                >
+                  {typeData2020.map((entry, index) => (
+                    <Cell
+                      key={`cell-20-${index}`}
+                      fill={entry.color}
+                      fillOpacity={
+                        !selectedTypes ||
+                          selectedTypes.length === 0 ||
+                          selectedTypes.includes(entry.category)
+                          ? 0.6
+                          : 0.1
+                      }
+                      style={{ cursor: "pointer", transition: "all 0.3s" }}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#1f2937",
+                    border: "none",
+                    color: "#fff",
+                    fontSize: "10px",
+                    borderRadius: "8px",
+                  }}
+                  itemStyle={{ color: "#fff" }}
+                  // @ts-ignore
+                  formatter={(val) => val.toLocaleString()}
+                />
+              </PieChart>
+            </ResponsiveContainer>
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                width: "100%",
-                paddingTop: "6px",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                textAlign: "center",
+                color: "white",
+                lineHeight: "1.1",
               }}
             >
-              <StatusCard
-                statusKey="completed"
-                title="Completed"
-                icon={
-                  <div
-                    style={{
-                      ...ICON_BOX_STYLE,
-                      backgroundColor: "rgba(34, 197, 94, 0.2)",
-                    }}
-                  >
-                    <Building2 size={24} color="#4ade80" />
-                  </div>
-                }
-              />
-              <StatusCard
-                statusKey="under_construction"
-                title="Construction"
-                icon={
-                  <div
-                    style={{
-                      ...ICON_BOX_STYLE,
-                      backgroundColor: "rgba(249, 115, 22, 0.2)",
-                    }}
-                  >
-                    <Hammer size={24} color="#fb923c" />
-                  </div>
-                }
-              />
-              <StatusCard
-                statusKey="under_demolition"
-                title="Demolition"
-                icon={
-                  <div
-                    style={{
-                      ...ICON_BOX_STYLE,
-                      backgroundColor: "rgba(239, 68, 68, 0.2)",
-                    }}
-                  >
-                    <AlertTriangle size={24} color="#f87171" />
-                  </div>
-                }
-              />
+              <div style={{ fontSize: "12px", fontWeight: "700" }}>
+                {totalBuildings2025.toLocaleString()}
+              </div>
+              <div style={{ fontSize: "9px", fontWeight: "500" }}>Est.</div>
             </div>
           </div>
 
-          {/* CHART 3: UTILITY */}
-          <div className="glass-card">
-            <div style={CHART_TITLE_STYLE}>
-              Completed building by Connection
-            </div>
+          <div
+            style={{
+              width: "58%",
+              paddingLeft: "5px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div style={SECTION_HEADER_STYLE}>2025</div>
+            {typeData2025.map((item, index) => (
+              <TypeLegendRow
+                key={`2025-${index}`}
+                item={item}
+                opacity={
+                  !selectedTypes.length ||
+                    selectedTypes.includes(item.category || item.name)
+                    ? 1
+                    : 0.3
+                }
+                onClick={() => onTypeToggle && onTypeToggle(item.category)}
+              />
+            ))}
+            <div style={SECTION_HEADER_STYLE}>2020</div>
+            {typeData2020.map((item, index) => (
+              <TypeLegendRow
+                key={`2020-${index}`}
+                item={item}
+                opacity={
+                  !selectedTypes.length ||
+                    selectedTypes.includes(item.category || item.name)
+                    ? 1
+                    : 0.3
+                }
+                onClick={() => onTypeToggle && onTypeToggle(item.category)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CHART 2: STATUS */}
+      <div className="glass-card">
+        <div style={CHART_TITLE_STYLE}>Distribution by Building Status</div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
+          <StatusCard
+            statusKey="completed"
+            title="Completed"
+            icon={
+              <div
+                style={{
+                  ...ICON_BOX_STYLE,
+                  backgroundColor: "rgba(34, 197, 94, 0.2)",
+                }}
+              >
+                <Building2 size={24} color="#4ade80" />
+              </div>
+            }
+          />
+          <StatusCard
+            statusKey="under_construction"
+            title="Construction"
+            icon={
+              <div
+                style={{
+                  ...ICON_BOX_STYLE,
+                  backgroundColor: "rgba(249, 115, 22, 0.2)",
+                }}
+              >
+                <Hammer size={24} color="#fb923c" />
+              </div>
+            }
+          />
+          <StatusCard
+            statusKey="under_demolition"
+            title="Demolition"
+            icon={
+              <div
+                style={{
+                  ...ICON_BOX_STYLE,
+                  backgroundColor: "rgba(239, 68, 68, 0.2)",
+                }}
+              >
+                <AlertTriangle size={24} color="#f87171" />
+              </div>
+            }
+          />
+        </div>
+      </div>
+
+      {/* CHART 3: UTILITY */}
+      <div className="glass-card">
+        <div style={CHART_TITLE_STYLE}>
+          Completed building by Connection
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              width: "45%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <ResponsiveContainer>
+              <RadialBarChart
+                innerRadius="40%"
+                outerRadius="100%"
+                barSize={12}
+                data={radialChartData}
+                startAngle={90}
+                endAngle={-270}
+              >
+                <RadialBar
+                  background={{ fill: "rgba(255,255,255,0.05)" }}
+                  dataKey="percent"
+                  cornerRadius={5}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#1f2937",
+                    border: "none",
+                    color: "#fff",
+                    fontSize: "12px",
+                    borderRadius: "8px",
+                  }}
+                />
+              </RadialBarChart>
+            </ResponsiveContainer>
+          </div>
+          <div style={{ width: "55%" }}>
             <div
               style={{
                 display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "space-between",
+                fontSize: "10px",
+                color: "#94a3b8",
+                fontWeight: 600,
               }}
             >
+              <div style={{ textAlign: "left", color: "#fff" }}>Type</div>
               <div
                 style={{
-                  width: "45%",
-                  height: "200px",
-                  display: "flex",
-                  alignItems: "center",
+                  flex: 1,
+                  width: "45px",
+                  textAlign: "center",
+                  color: "#fff",
                 }}
               >
-                <ResponsiveContainer>
-                  <RadialBarChart
-                    innerRadius="40%"
-                    outerRadius="100%"
-                    barSize={12}
-                    data={radialChartData}
-                    startAngle={90}
-                    endAngle={-270}
-                  >
-                    <RadialBar
-                      background={{ fill: "rgba(255,255,255,0.05)" }}
-                      dataKey="percent"
-                      cornerRadius={5}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#1f2937",
-                        border: "none",
-                        color: "#fff",
-                        fontSize: "12px",
-                        borderRadius: "8px",
-                      }}
-                    />
-                  </RadialBarChart>
-                </ResponsiveContainer>
+                Connected
               </div>
-              <div style={{ width: "55%" }}>
+              <div
+                style={{
+                  width: "45px",
+                  textAlign: "center",
+                  color: "#fff",
+                }}
+              >
+                Not connected
+              </div>
+            </div>
+            <div style={SECTION_HEADER_STYLE}>2025</div>
+            {connectionData2025 &&
+              [...connectionData2025].reverse().map((item: any) => (
                 <div
+                  key={`2025-${item.name}`}
                   style={{
                     display: "flex",
+                    alignItems: "center",
+                    marginBottom: "4px",
                     fontSize: "10px",
-                    color: "#94a3b8",
-                    fontWeight: 600,
+                    borderBottom: "1px solid rgba(255,255,255,0.05)",
                   }}
                 >
-                  <div style={{ textAlign: "left", color: "#fff" }}>Type</div>
                   <div
                     style={{
                       flex: 1,
-                      width: "45px",
-                      textAlign: "center",
-                      color: "#fff",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
                     }}
                   >
-                    Connected
+                    <div
+                      style={{
+                        width: "8px",
+                        height: "8px",
+                        borderRadius: "50%",
+                        backgroundColor: item.fill,
+                      }}
+                    />
+                    <span style={{ color: "#fff", fontSize: "9px" }}>
+                      {item.name}
+                    </span>
+                  </div>
+                  <div style={{ flex: 1, color: "#fff", fontWeight: 700 }}>
+                    {item.connected.toLocaleString()}
                   </div>
                   <div
                     style={{
                       width: "45px",
                       textAlign: "center",
-                      color: "#fff",
+                      color: "#e2e8f0",
                     }}
                   >
-                    Not connected
+                    {item.notConnected.toLocaleString()}
                   </div>
                 </div>
-                <div style={SECTION_HEADER_STYLE}>2025</div>
-                {connectionData2025 &&
-                  [...connectionData2025].reverse().map((item: any) => (
+              ))}
+            <div style={SECTION_HEADER_STYLE}>2020</div>
+            {connectionData2020 &&
+              [...connectionData2020].reverse().map((item: any) => (
+                <div
+                  key={`2020-${item.name}`}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "4px",
+                    fontSize: "10px",
+                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
                     <div
-                      key={`2025-${item.name}`}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "4px",
-                        fontSize: "10px",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
+                        width: "8px",
+                        height: "8px",
+                        borderRadius: "50%",
+                        backgroundColor: item.fill,
                       }}
-                    >
-                      <div
-                        style={{
-                          flex: 1,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: "8px",
-                            height: "8px",
-                            borderRadius: "50%",
-                            backgroundColor: item.fill,
-                          }}
-                        />
-                        <span style={{ color: "#fff", fontSize: "9px" }}>
-                          {item.name}
-                        </span>
-                      </div>
-                      <div style={{ flex: 1, color: "#fff", fontWeight: 700 }}>
-                        {item.connected.toLocaleString()}
-                      </div>
-                      <div
-                        style={{
-                          width: "45px",
-                          textAlign: "center",
-                          color: "#e2e8f0",
-                        }}
-                      >
-                        {item.notConnected.toLocaleString()}
-                      </div>
-                    </div>
-                  ))}
-                <div style={SECTION_HEADER_STYLE}>2020</div>
-                {connectionData2020 &&
-                  [...connectionData2020].reverse().map((item: any) => (
-                    <div
-                      key={`2020-${item.name}`}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "4px",
-                        fontSize: "10px",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
-                      }}
-                    >
-                      <div
-                        style={{
-                          flex: 1,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: "8px",
-                            height: "8px",
-                            borderRadius: "50%",
-                            backgroundColor: item.fill,
-                          }}
-                        />
-                        <span style={{ color: "#fff", fontSize: "9px" }}>
-                          {item.name}
-                        </span>
-                      </div>
-                      <div style={{ flex: 1, color: "#fff", fontWeight: 700 }}>
-                        {item.connected.toLocaleString()}
-                      </div>
-                      <div
-                        style={{
-                          width: "45px",
-                          textAlign: "center",
-                          color: "#e2e8f0",
-                        }}
-                      >
-                        {item.notConnected.toLocaleString()}
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
+                    />
+                    <span style={{ color: "#fff", fontSize: "9px" }}>
+                      {item.name}
+                    </span>
+                  </div>
+                  <div style={{ flex: 1, color: "#fff", fontWeight: 700 }}>
+                    {item.connected.toLocaleString()}
+                  </div>
+                  <div
+                    style={{
+                      width: "45px",
+                      textAlign: "center",
+                      color: "#e2e8f0",
+                    }}
+                  >
+                    {item.notConnected.toLocaleString()}
+                  </div>
+                </div>
+              ))}
           </div>
-
-          {/* end */}
         </div>
-      )}
-    </>
+      </div>
+
+      {/* end */}
+    </div>
   );
 };

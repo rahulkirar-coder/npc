@@ -115,7 +115,6 @@ export const EmploymentRightPanel: React.FC<Props> = ({
   onActivityToggle,
   selectedSkills = [],
   onSkillToggle,
-  onResetFilters,
   chatData,
   onRecommendationClick,
   onDataUpdate,
@@ -356,37 +355,17 @@ export const EmploymentRightPanel: React.FC<Props> = ({
 
   return (
     <>
-      <div className="top-left-panel hide-scroll">
-        <RawiChatCard
-          text={
-            chatData?.text ||
-            `The 'Skills Intensity' map visualizes a distinct segregation through color—intense reds mark the low-skilled industrial zones to the south, contrasting with the green high-skilled administrative hubs in the center.`
-          }
-          buttonText="Show Business Ecosystem"
-          onButtonClick={() => handleTransition("/establishment")}
-          // minHeight="60px"
-          question={
-            chatData?.question ||
-            "Analyze workforce distribution by Economic Activity"
-          }
-          recommendations={chatData?.recommendations}
-          onRecommendationClick={onRecommendationClick}
-        />
-      </div>
-
       {/* 1. CHARTS - MOVED TO LEFT */}
       {isRightPanelOpen && (
         <div
-          className="right-side-panel"
-          style={{ top: COMMON_CHART_PANEL_TOP }}
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+          }}
         >
-          {/* Reset Button */}
-          <div style={ResetBtnStyle}>
-            <button style={RESET_BTN_STYLE} onClick={onResetFilters}>
-              <span>Reset Filters</span>
-            </button>
-          </div>
-
           {/* CHART 1: Activity Butterfly (Nested Bars) - UPDATED to use NestedButterflyChart */}
           <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>
@@ -688,7 +667,7 @@ export const EmploymentRightPanel: React.FC<Props> = ({
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      fontSize: "10px", 
+                      fontSize: "10px",
                       color: "#ccc",
                     }}
                   >
@@ -714,13 +693,6 @@ export const EmploymentRightPanel: React.FC<Props> = ({
           </div>
         </div>
       )}
-
-      {/* 3. BOTTOM INPUT PANEL - MOVED TO RIGHT */}
-      <BottomInputPanel
-        chips={chatData?.recommendations || EMPLOYMENT_CHIPS}
-        onSubmit={processTextAndNavigate}
-        onDataUpdate={onDataUpdate}
-      />
     </>
   );
 };

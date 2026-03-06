@@ -26,9 +26,9 @@ const Root = () => (
             <Route element={<MapLayout />}>
               <Route path="/city" element={<CityScreen />} />
               <Route path="/population" element={<PopulationScreen />} />
+              <Route path="/building" element={<BuildingScreen />} />
               <Route path="/employment" element={<EmploymentScreen />} />
               <Route path="/establishment" element={<EstablishmentScreen />} />
-              <Route path="/building" element={<BuildingScreen />} />
               <Route path="/household" element={<HouseholdScreen />} />
               {/* 2. Add Route */}
               <Route path="/disability" element={<DisabilityScreen />} />

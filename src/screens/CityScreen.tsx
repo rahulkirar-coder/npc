@@ -5,9 +5,10 @@ import { useMap } from "react-map-gl";
 import type { LineLayer, FillExtrusionLayer } from "mapbox-gl";
 import type { FeatureCollection, Feature } from "geojson";
 import { useNavigate } from "react-router-dom";
-import { BottomInputPanel } from "../components/BottomInputPanel";
+import { BottomInputPanel } from "../components/AIChat";
 import { YELLOW_LAYER_COLOR, parseRobustCSV, getMaxZFromWkt } from "../util";
 import { Header } from "../components/Header";
+import { LoadingOverlay } from "../components/LoadingOverlay";
 
 // --- Styles ---
 const SCREEN_STYLE: React.CSSProperties = {
@@ -392,6 +393,7 @@ export const CityScreen = () => {
 
   return (
     <div style={SCREEN_STYLE}>
+      <LoadingOverlay/>
       <div style={UI_CONTAINER_STYLE}>
         <BottomInputPanel
           chips={COMMON_CHIPS}

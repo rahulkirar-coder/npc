@@ -19,6 +19,8 @@ import {
 import { LoadingOverlay } from "../components/LoadingOverlay";
 import { useLocation, useNavigate } from "react-router-dom";
 import { COMMON_TOGGLE_TOP } from "../utils/style";
+import { ChartToggleBtn } from "../components/PopulationToggleBtn";
+import { MainLayout } from "../wrappers/mainWrapper";
 
 // ... [styles remain same] ...
 const SCREEN_STYLE: React.CSSProperties = {
@@ -97,6 +99,12 @@ export const HouseholdScreen = () => {
   const { map } = useMap();
   const location = useLocation();
   const navigate = useNavigate();
+
+  //Reducer
+  const isRightPanelOpen = useSelector(
+    (state: AppState) => state.app.isRightPanelOpen,
+  );
+
 
   // State
   const [activeYearBtn, setActiveYearBtn] = useState<2025 | 2020>(2020);
@@ -863,60 +871,187 @@ export const HouseholdScreen = () => {
 
   const { min, max } = getMinMax();
 
-  return (
-    <div style={SCREEN_STYLE}>
-      <LoadingOverlay />
-      <div style={TOGGLE_STYLE}>
-        <div style={TOGGLE_WRAPPER_STYLE}>
-          <button
-            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
-            onClick={() => {
-              if (activeYearBtn !== 2020 && !isTransitioning.current) {
-                performZoomTransition(() => setActiveYearBtn(2020));
-              }
-            }}
-          >
-            2020
-          </button>
-          <button
-            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
-            onClick={() => {
-              if (activeYearBtn !== 2025 && !isTransitioning.current) {
-                performZoomTransition(() => setActiveYearBtn(2025));
-              }
-            }}
-          >
-            2025
-          </button>
-        </div>
-        <div style={{ width: "10px" }}></div>
-        <div style={TOGGLE_WRAPPER_STYLE}>
-          <button
-            style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
-            onClick={() => {
-              if (viewMode !== "zone" && !isTransitioning.current) {
-                performZoomTransition(() => setViewMode("zone"));
-              }
-            }}
-          >
-            Zone
-          </button>
-          <button
-            style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
-            onClick={() => {
-              if (viewMode !== "block" && !isTransitioning.current) {
-                performZoomTransition(() => setViewMode("block"));
-              }
-            }}
-          >
-            Block
-          </button>
-        </div>
-      </div>
+  const RaviChatText = chatInfo?.text || `Shift your focus to the 'Household Lens.' This view is vital for community planning. Doha, with smaller average household sizes, likely hosting singles and couples; and Al Rayyan, peaking at 4.5 persons per household, cementing its status as the 'Family Capital' of the country.`;
+  const RaviChatQuestion = chatInfo?.question || "Analyze Household Demographics";
 
-      <div style={UI_CONTAINER_STYLE}>
-        <div style={INTERACTIVE_STYLE}>
-          {panelData && (
+  const handleTransition = (path: string) => {
+    if (stopCinematicMode) stopCinematicMode();
+    if (map) {
+      map.stop();
+      map.flyTo({
+        center: [51.5348, 25.2867],
+        zoom: 9,
+        pitch: 0,
+        bearing: 0,
+        duration: 2000,
+        essential: true,
+      });
+      map.once("moveend", () => navigate(path));
+    } else {
+      navigate(path);
+    }
+  };
+
+  const processTextAndNavigate = (text: string) => {
+    const lowerText = text.toLowerCase().trim();
+    if (!lowerText) return;
+    if (lowerText.includes("establishment")) handleTransition("/establishment");
+    else if (lowerText.includes("building")) handleTransition("/building");
+    else if (lowerText.includes("population")) handleTransition("/population");
+    else if (lowerText.includes("employment")) handleTransition("/employment");
+    else if (lowerText.includes("household")) handleTransition("/household");
+    else handleTransition("/population");
+  };
+
+  const COMMON_CHIPS = [
+    "Population analysis by block in Doha",
+    "Analyze establishment distribution",
+    "Building distribution by type and status",
+    "Compare population between Doha and Al Daayen",
+  ];
+
+  return (
+    // <div style={SCREEN_STYLE}>
+    //   <LoadingOverlay />
+    //   <div style={TOGGLE_STYLE}>
+    //     <div style={TOGGLE_WRAPPER_STYLE}>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
+    //         onClick={() => {
+    //           if (activeYearBtn !== 2020 && !isTransitioning.current) {
+    //             performZoomTransition(() => setActiveYearBtn(2020));
+    //           }
+    //         }}
+    //       >
+    //         2020
+    //       </button>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
+    //         onClick={() => {
+    //           if (activeYearBtn !== 2025 && !isTransitioning.current) {
+    //             performZoomTransition(() => setActiveYearBtn(2025));
+    //           }
+    //         }}
+    //       >
+    //         2025
+    //       </button>
+    //     </div>
+    //     <div style={{ width: "10px" }}></div>
+    //     <div style={TOGGLE_WRAPPER_STYLE}>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
+    //         onClick={() => {
+    //           if (viewMode !== "zone" && !isTransitioning.current) {
+    //             performZoomTransition(() => setViewMode("zone"));
+    //           }
+    //         }}
+    //       >
+    //         Zone
+    //       </button>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
+    //         onClick={() => {
+    //           if (viewMode !== "block" && !isTransitioning.current) {
+    //             performZoomTransition(() => setViewMode("block"));
+    //           }
+    //         }}
+    //       >
+    //         Block
+    //       </button>
+    //     </div>
+    //   </div>
+
+    //   <div style={UI_CONTAINER_STYLE}>
+    //     <div style={INTERACTIVE_STYLE}>
+    //       {panelData && (
+    //         <HouseholdRightPanel
+    //           data={panelData}
+    //           onStartTransition={stopCinematicMode}
+    //           selectedNationalities={selectedNationalities}
+    //           onNationalityToggle={handleNationalityToggle}
+    //           selectedGenders={selectedGenders}
+    //           onGenderToggle={handleGenderToggle}
+    //           selectedMunicipalities={selectedMunicipalities}
+    //           onMunicipalityToggle={handleMunicipalityToggle}
+    //           onResetFilters={handleResetFilters}
+    //           chatData={chatInfo}
+    //           onRecommendationClick={handleRecommendationClick}
+    //           onDataUpdate={handleDataUpdate}
+    //         />
+    //       )}
+    //     </div>
+
+    //     <div style={FOOTER_WRAPPER_STYLE}>
+    //       <div style={FOOTER_POINTER_STYLE}>
+    //         <Footer
+    //           title={`Household Density (${
+    //             viewMode == "zone" ? "Zone" : "Block"
+    //           })`}
+    //           minVal={min}
+    //           maxVal={max}
+    //         />
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+
+    <MainLayout
+      leftSideRaviChatData={{
+        text: RaviChatText,
+        question: RaviChatQuestion,
+        recommendations: chatInfo?.recommendations,
+        buttonText: "Show Employment",
+        onButtonClick: () => handleTransition("/establishment"),
+        onRecommendationClick: handleRecommendationClick
+      }}
+
+      leftSideChatInputData={{
+        chips: chatInfo?.recommendations || COMMON_CHIPS,
+        onSubmit: processTextAndNavigate,
+        onDataUpdate: handleDataUpdate
+      }}
+
+      middleTopData={{
+        activeYear: activeYearBtn,
+        viewMode: viewMode,
+        isTransitioning: isTransitioning,
+        onChangeYear: (year) => performZoomTransition(() => setActiveYearBtn(year)),
+        onChangeViewMode: (mode) => performZoomTransition(() => {
+          setViewMode(mode);
+          setSelectedZone(null);
+        })
+      }}
+
+      middleBottomData={{
+        title: `Employment Distribution (${viewMode == "zone" ? "Zone" : "Block"})`,
+        minVal: min,
+        maxVal: max
+      }}
+
+      onReset={handleResetFilters}
+
+      filterTagsSet={[
+        { item: selectedNationalities, toggle: handleNationalityToggle },
+        { item: selectedGenders, toggle: handleGenderToggle },
+        { item: selectedMunicipalities, toggle: handleMunicipalityToggle },
+      ]}
+    >
+      <div style={{
+        display: "flex",
+        gap: 5,
+        justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
+      }}>
+        <ChartToggleBtn />
+
+        {panelData && isRightPanelOpen && (
+          <div style={{
+            width: "100%",
+            maxHeight: "65%",
+            zIndex: 100,
+            overflowY: "auto",
+            scrollbarWidth: "none",
+            pointerEvents: "auto",
+          }}>
             <HouseholdRightPanel
               data={panelData}
               onStartTransition={stopCinematicMode}
@@ -926,26 +1061,14 @@ export const HouseholdScreen = () => {
               onGenderToggle={handleGenderToggle}
               selectedMunicipalities={selectedMunicipalities}
               onMunicipalityToggle={handleMunicipalityToggle}
-              onResetFilters={handleResetFilters}
               chatData={chatInfo}
               onRecommendationClick={handleRecommendationClick}
               onDataUpdate={handleDataUpdate}
             />
-          )}
-        </div>
-
-        <div style={FOOTER_WRAPPER_STYLE}>
-          <div style={FOOTER_POINTER_STYLE}>
-            <Footer
-              title={`Household Density (${
-                viewMode == "zone" ? "Zone" : "Block"
-              })`}
-              minVal={min}
-              maxVal={max}
-            />
           </div>
-        </div>
+        )}
       </div>
-    </div>
+
+    </MainLayout>
   );
 };

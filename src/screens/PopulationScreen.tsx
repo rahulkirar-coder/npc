@@ -34,35 +34,6 @@ const RESET_BTN_STYLE: React.CSSProperties = {
   border: "none",
 }
 
-const LEFT_PANEL_STYLE: React.CSSProperties = {
-  width: "25%",
-  height: "100%",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "50px 10px 30px 10px",
-};
-
-const MIDDLE_PANEL_STYLE: React.CSSProperties = {
-  width: "25%",
-  height: "100%",
-  paddingBottom: "30px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  alignItems: "center",
-};
-
-const RIGHT_PANEL_STYLE: React.CSSProperties = {
-  width: "30%",
-  height: "100%",
-  padding: "0px 20px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "20px",
-};
-
 export const PopulationScreen = () => {
   const dispatch = useDispatch();
   const { map } = useMap();
@@ -1000,91 +971,29 @@ export const PopulationScreen = () => {
         minVal: minVal,
         maxVal: maxVal
       }}
+
+      onReset={handleResetFilters}
+
+      filterTagsSet={
+        [{ item: selectedAgeGroups, toggle: handleAgeGroupToggle },
+        { item: selectedNationalities, toggle: handleNationalityToggle },
+        { item: selectedMaritalStatus, toggle: handleMaritalStatusToggle },
+        { item: selectedEducation, toggle: handleEducationToggle }]
+      }
+
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-
-        <div style={{
-          display: "flex", gap: 10, marginLeft: "50px"
-        }}>
-          {selectedAgeGroups?.length >= 1 &&
-            <div>
-              {selectedAgeGroups.map((item) => {
-                return (
-                  <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                    onClick={() => { handleAgeGroupToggle(item) }}
-                  >
-                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                    <p key={item}
-                      style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                    >{item}</p>
-                  </div>
-                )
-              })}
-            </div>}
-
-          {selectedNationalities?.length >= 1 && <div>
-            {selectedNationalities.map((item) => {
-              return (
-                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                  onClick={() => { handleNationalityToggle(item) }}
-                >
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                  <p key={item}
-                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                </div>
-              )
-            })}
-          </div>}
-
-          {selectedMaritalStatus?.length >= 1 && <div>
-            {selectedMaritalStatus.map((item) => {
-              return (
-                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                  onClick={() => { handleMaritalStatusToggle(item) }}
-                >
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                  <p key={item}
-                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                </div>
-              )
-            })}
-          </div>}
-
-          {selectedEducation?.length >= 1 && <div>
-            {selectedEducation.map((item) => {
-              return (
-                <div style={{ pointerEvents: "auto", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}
-                  onClick={() => { handleEducationToggle(item) }}
-                >
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: DOHA_FLAG_COLOR }} />
-                  <p key={item}
-                    style={{ fontSize: "12px", margin: 0, padding: 0 }}
-                  >{item}</p>
-                </div>
-              )
-            })}
-          </div>}
-        </div>
-
-
-        <button style={RESET_BTN_STYLE} onClick={handleResetFilters}>
-          <span>Reset Filters</span>
-        </button>
-      </div>
 
       <div style={{
         display: "flex",
         gap: 5,
-        justifyContent: "flex-end"
+        justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
       }}>
         <ChartToggleBtn />
 
         {panelData && isRightPanelOpen && (
           <div>
             <div style={{
-              maxHeight: "45%", zIndex: 100,
+              maxHeight: "50%", zIndex: 100,
               overflowY: "auto",
               scrollbarWidth: "none",
               pointerEvents: "auto",

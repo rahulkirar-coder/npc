@@ -16,6 +16,8 @@ import {
 import { LoadingOverlay } from "../components/LoadingOverlay";
 import { useLocation, useNavigate } from "react-router-dom";
 import { COMMON_TOGGLE_TOP } from "../utils/style";
+import { MainLayout } from "../wrappers/mainWrapper";
+import { ChartToggleBtn } from "../components/PopulationToggleBtn";
 
 // ... [STYLES KEPT SAME] ...
 const SCREEN_STYLE: React.CSSProperties = {
@@ -94,6 +96,11 @@ export const EmploymentScreen = () => {
   const { map } = useMap();
   const location = useLocation();
   const navigate = useNavigate();
+
+  //Reducer
+  const isRightPanelOpen = useSelector(
+    (state: AppState) => state.app.isRightPanelOpen,
+  );
 
   // State
   const [activeYearBtn, setActiveYearBtn] = useState<2025 | 2020>(2020);
@@ -940,60 +947,173 @@ export const EmploymentScreen = () => {
   };
   const { min, max } = getMinMax();
 
-  return (
-    <div style={SCREEN_STYLE}>
-      <LoadingOverlay />
-      <div style={TOGGLE_STYLE}>
-        <div style={TOGGLE_WRAPPER_STYLE}>
-          <button
-            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
-            onClick={() => {
-              if (activeYearBtn !== 2020 && !isTransitioning.current) {
-                performZoomTransition(() => setActiveYearBtn(2020));
-              }
-            }}
-          >
-            2020
-          </button>
-          <button
-            style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
-            onClick={() => {
-              if (activeYearBtn !== 2025 && !isTransitioning.current) {
-                performZoomTransition(() => setActiveYearBtn(2025));
-              }
-            }}
-          >
-            2025
-          </button>
-        </div>
-        <div style={{ width: "10px" }}></div>
-        <div style={TOGGLE_WRAPPER_STYLE}>
-          <button
-            style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
-            onClick={() => {
-              if (viewMode !== "zone" && !isTransitioning.current) {
-                performZoomTransition(() => setViewMode("zone"));
-              }
-            }}
-          >
-            Zone
-          </button>
-          <button
-            style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
-            onClick={() => {
-              if (viewMode !== "block" && !isTransitioning.current) {
-                performZoomTransition(() => setViewMode("block"));
-              }
-            }}
-          >
-            Block
-          </button>
-        </div>
-      </div>
+  const RaviChatText = chatInfo?.text || `The 'Skills Intensity' map visualizes a distinct segregation through color—intense reds mark the low-skilled industrial zones to the south, contrasting with the green high-skilled administrative hubs in the center.`
+  const RaviChatQuestion = chatInfo?.question || "Analyze workforce distribution by Economic Activity"
 
-      <div style={UI_CONTAINER_STYLE}>
-        <div style={INTERACTIVE_STYLE}>
-          {panelData && (
+  const handleTransition = (path: string) => {
+    if (stopCinematicMode) stopCinematicMode();
+    if (map) {
+      map.stop();
+      map.flyTo({
+        center: [51.5348, 25.2867],
+        zoom: 9,
+        pitch: 0,
+        bearing: 0,
+        duration: 2000,
+        essential: true,
+      });
+      map.once("moveend", () => navigate(path));
+    } else {
+      navigate(path);
+    }
+  };
+
+  const processTextAndNavigate = (text: string) => {
+    const lowerText = text.toLowerCase().trim();
+    if (!lowerText) return;
+    if (lowerText.includes("establishment")) handleTransition("/establishment");
+    else if (lowerText.includes("building")) handleTransition("/building");
+    else if (lowerText.includes("population")) handleTransition("/population");
+    else if (lowerText.includes("employment")) handleTransition("/employment");
+    else handleTransition("/establishment");
+  };
+
+  return (
+    // <div style={SCREEN_STYLE}>
+    //   <div style={TOGGLE_STYLE}>
+    //     <div style={TOGGLE_WRAPPER_STYLE}>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
+    //         onClick={() => {
+    //           if (activeYearBtn !== 2020 && !isTransitioning.current) {
+    //             performZoomTransition(() => setActiveYearBtn(2020));
+    //           }
+    //         }}
+    //       >
+    //         2020
+    //       </button>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
+    //         onClick={() => {
+    //           if (activeYearBtn !== 2025 && !isTransitioning.current) {
+    //             performZoomTransition(() => setActiveYearBtn(2025));
+    //           }
+    //         }}
+    //       >
+    //         2025
+    //       </button>
+    //     </div>
+    //     <div style={{ width: "10px" }}></div>
+    //     <div style={TOGGLE_WRAPPER_STYLE}>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
+    //         onClick={() => {
+    //           if (viewMode !== "zone" && !isTransitioning.current) {
+    //             performZoomTransition(() => setViewMode("zone"));
+    //           }
+    //         }}
+    //       >
+    //         Zone
+    //       </button>
+    //       <button
+    //         style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
+    //         onClick={() => {
+    //           if (viewMode !== "block" && !isTransitioning.current) {
+    //             performZoomTransition(() => setViewMode("block"));
+    //           }
+    //         }}
+    //       >
+    //         Block
+    //       </button>
+    //     </div>
+    //   </div>
+
+    //   <div style={UI_CONTAINER_STYLE}>
+    //     <div style={INTERACTIVE_STYLE}>
+    //       {panelData && (
+    //         <EmploymentRightPanel
+    //           data={panelData}
+    //           onStartTransition={stopCinematicMode}
+    //           selectedActivities={selectedActivities}
+    //           onActivityToggle={handleActivityToggle}
+    //           selectedSkills={selectedSkills}
+    //           onSkillToggle={handleSkillToggle}
+    //           onResetFilters={handleResetFilters}
+    //           chatData={chatInfo}
+    //           onRecommendationClick={handleRecommendationClick}
+    //           onDataUpdate={handleDataUpdate}
+    //         />
+    //       )}
+    //     </div>
+    //     <div style={FOOTER_WRAPPER_STYLE}>
+    //       <div style={FOOTER_POINTER_STYLE}>
+    //         <Footer
+    //           title={`Employment Distribution (${
+    //             viewMode == "zone" ? "Zone" : "Block"
+    //           })`}
+    //           minVal={min}
+    //           maxVal={max}
+    //         />
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+    <MainLayout
+      leftSideRaviChatData={{
+        text: RaviChatText,
+        question: RaviChatQuestion,
+        recommendations: chatInfo?.recommendations,
+        buttonText: "Show Employment",
+        onButtonClick: () => handleTransition("/establishment"),
+        onRecommendationClick: handleRecommendationClick
+      }}
+
+      leftSideChatInputData={{
+        chips: chatInfo?.recommendations || [],
+        onSubmit: processTextAndNavigate,
+        onDataUpdate: handleDataUpdate
+      }}
+
+      middleTopData={{
+        activeYear: activeYearBtn,
+        viewMode: viewMode,
+        isTransitioning: isTransitioning,
+        onChangeYear: (year) => performZoomTransition(() => setActiveYearBtn(year)),
+        onChangeViewMode: (mode) => performZoomTransition(() => {
+          setViewMode(mode);
+          setSelectedZone(null);
+        })
+      }}
+
+      middleBottomData={{
+        title: `Employment Distribution (${viewMode == "zone" ? "Zone" : "Block"})`,
+        minVal: min,
+        maxVal: max
+      }}
+      
+      onReset={handleResetFilters}
+
+      filterTagsSet={
+        [{ item: selectedActivities, toggle: handleActivityToggle },
+        { item: selectedSkills, toggle: handleSkillToggle }]
+      }
+    >
+
+      <div style={{
+        display: "flex",
+        gap: 5,
+        justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
+      }}>
+        <ChartToggleBtn />
+
+        {panelData && isRightPanelOpen && (
+          <div style={{
+            maxHeight: "45%",
+            zIndex: 100,
+            overflowY: "auto",
+            scrollbarWidth: "none",
+            pointerEvents: "auto",
+          }}>
             <EmploymentRightPanel
               data={panelData}
               onStartTransition={stopCinematicMode}
@@ -1001,25 +1121,14 @@ export const EmploymentScreen = () => {
               onActivityToggle={handleActivityToggle}
               selectedSkills={selectedSkills}
               onSkillToggle={handleSkillToggle}
-              onResetFilters={handleResetFilters}
               chatData={chatInfo}
               onRecommendationClick={handleRecommendationClick}
               onDataUpdate={handleDataUpdate}
             />
-          )}
-        </div>
-        <div style={FOOTER_WRAPPER_STYLE}>
-          <div style={FOOTER_POINTER_STYLE}>
-            <Footer
-              title={`Employment Distribution (${
-                viewMode == "zone" ? "Zone" : "Block"
-              })`}
-              minVal={min}
-              maxVal={max}
-            />
           </div>
-        </div>
+        )}
       </div>
-    </div>
+
+    </MainLayout>
   );
 };
