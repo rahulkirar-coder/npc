@@ -154,7 +154,7 @@ interface RawiChatCardProps {
   question?: string;
   recommendations?: string[];
   onRecommendationClick?: (rec: string) => void;
-  history:any
+  history: any
 }
 
 export const RawiChatCard: React.FC<RawiChatCardProps> = ({
@@ -208,7 +208,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
           </div>
         </div>)}
 
-        
+
 
 
       {/* Recommendations */}

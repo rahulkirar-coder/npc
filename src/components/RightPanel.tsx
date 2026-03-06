@@ -523,6 +523,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
           }
           recommendations={chatData?.recommendations}
           onRecommendationClick={onRecommendationClick}
+          history={[]}
         />
       </div>
 
