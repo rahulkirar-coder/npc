@@ -219,15 +219,11 @@ export const PopulationScreen = () => {
 
   const handleDataUpdate = (stateData: any) => {
     setUpdateData(stateData)
-
     const filters = stateData?.queryData?.filters;
     if (filters) {
       applyFilters(filters);
     }
-
     const data = stateData.queryData;
-
-    
     if (data && data !== lastQueryDataRef.current) {
       setFullApiData(data);
       if (data.range) {
