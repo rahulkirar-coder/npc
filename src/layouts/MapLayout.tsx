@@ -27,7 +27,7 @@ export const MapLayout = () => {
       <GraphArea />
 
       {/* 2. Global Loading Overlay */}
-      <LoadingOverlay />
+      {/* <LoadingOverlay /> */}
 
       {/* 3. Route Content (Overlays) */}
       <div

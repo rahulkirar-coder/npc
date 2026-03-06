@@ -52,6 +52,7 @@ const BAR_FILL_STYLE = (progress: number): React.CSSProperties => ({
   width: `${progress}%`,
   backgroundColor: DOHA_FLAG_COLOR,
   borderRadius: "3px",
+  // Smooth transition for the fill
   transition: "width 0.2s ease-out",
   boxShadow: "0 0 10px rgba(255, 140, 105, 0.6)",
 });
@@ -104,36 +105,75 @@ export const LoadingOverlay = () => {
   useEffect(() => {
     if (!isLoading) return;
 
-    const eventSource = new EventSource(
-      "https://rawi-backend.vercel.app/notifications/sse-steps",
-      { withCredentials: true }
-    );
-    console.log(eventSource)
+    const url = "https://rawi-backend.vercel.app/notifications/sse-steps";
+    const eventSource = new EventSource(url);
+    console.log(`Connecting to ${url}...`);
+    setProgress(0);
+    eventSource.onopen = () => {
+      console.log("✅ SSE Connection established");
+    };
 
     eventSource.onmessage = (event) => {
       const update = JSON.parse(event.data);
+
+      console.log(update, "===@@@")
 
       if (update.apiName === "query") {
         setProgress(update.percentage);
       }
 
       if (update.status === "complete") {
+        console.log("✅ SSE Connection completed");
         eventSource.close();
       }
     };
 
-    eventSource.onerror = (err) => {
-      console.error("SSE Error:", err);
-      eventSource.close();
-    };
 
-    return () => eventSource.close();
-  }, [isLoading]);
+    // let interval: any;
 
+    // if (isLoading) {
+    //   setProgress(0);
+
+    //   const updateFrequency = 50; // ms
+
+    //   // Determine increment based on duration
+    //   // If duration is provided (e.g. 30000ms), we want to reach 90% in that time.
+    //   // Total updates = duration / updateFrequency.
+    //   // Increment = 90 / Total updates.
+
+    //   // Default (Fast) behavior: reaches 90% in ~0.9s (increment 5 per 50ms)
+    //   let increment = 5;
+
+    //   if (loadingDuration && loadingDuration > 0) {
+    //     const totalUpdates = loadingDuration / updateFrequency;
+    //     increment = 90 / totalUpdates;
+    //   }
+
+    //   interval = setInterval(() => {
+    //     setProgress((prev) => {
+    //       // 1. PHASE: Move up to 90% based on calculated speed
+    //       if (prev < 90) {
+    //         return Math.min(prev + increment, 90);
+    //       }
+
+    //       // 2. STALL PHASE: Once at 90%, creep very slowly
+    //       if (prev < 99) {
+    //         return prev + 0.1;
+    //       }
+
+    //       return 99;
+    //     });
+    //   }, updateFrequency);
+    // } else {
+    //   // API Finished: Snap to 100% immediately
+    //   setProgress(100);
+    // }
+
+    // return () => clearInterval(interval);
+  }, [isLoading, loadingDuration]);
 
   // Don't render if not loading
   if (!isLoading) return null;
-
 
   return (
     <div style={OVERLAY_STYLE}>
