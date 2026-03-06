@@ -18,7 +18,7 @@ const SCREEN_STYLE: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "0px 25px 0px 20px"
+  padding: "0px 25px 20px 20px"
 };
 
 const LEFT_PANEL_STYLE: React.CSSProperties = {
@@ -28,13 +28,14 @@ const LEFT_PANEL_STYLE: React.CSSProperties = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "50px 0px 30px 0px",
+  padding: "50px 10px 30px 10px",
+  background: "rgba(30, 41, 59, 0.8)",
+  borderRadius:"25px",
 };
 
 const MIDDLE_PANEL_STYLE: React.CSSProperties = {
   width: "25%",
   height: "100%",
-  paddingBottom: "30px",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -121,10 +122,15 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
       </div>
 
       <div style={RIGHT_PANEL_STYLE}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingLeft: "30px"
+        }}>
 
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {filterTagsSet?.map((item, index) => {
+            {filterTagsSet?.map((item: any, index: any) => {
               return (
                 <FilterTags
                   key={index}

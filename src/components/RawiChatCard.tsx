@@ -30,17 +30,17 @@ const COLORS = {
 
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
-  maxHeight: "50%",
+  maxHeight: "70%",
   borderRadius: "12px",
   padding: "24px",
   fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+  // boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
   display: "flex",
   flexDirection: "column",
   gap: "16px",
   position: "relative",
   pointerEvents: "auto",
-  background: "rgba(30, 41, 59, 0.8)",
+  // background: "rgba(30, 41, 59, 0.8)",
 };
 
 const HEADER_STYLE: React.CSSProperties = {

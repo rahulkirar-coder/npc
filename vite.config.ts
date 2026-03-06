@@ -9,7 +9,7 @@ import { resolve } from "path";
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5000,
+    port: 5001,
     open: true,
   },
   build: {

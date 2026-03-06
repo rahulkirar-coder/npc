@@ -125,7 +125,7 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
               ? `1px solid ${DOHA_FLAG_COLOR}`
               : "1px solid transparent",
 
-          backgroundColor: hasInvalidValue(row) ? "rgba(255, 140, 105, 0.15)" : isSelected
+          backgroundColor: hasInvalidValue(row) ? "transparent" : isSelected
             ? "rgba(255, 140, 105, 0.15)"
             : isHovered && isInteractive
               ? DOHA_FLAG_COLOR_RGBA_06
