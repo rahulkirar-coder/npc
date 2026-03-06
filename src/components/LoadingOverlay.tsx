@@ -52,7 +52,6 @@ const BAR_FILL_STYLE = (progress: number): React.CSSProperties => ({
   width: `${progress}%`,
   backgroundColor: DOHA_FLAG_COLOR,
   borderRadius: "3px",
-  // Smooth transition for the fill
   transition: "width 0.2s ease-out",
   boxShadow: "0 0 10px rgba(255, 140, 105, 0.6)",
 });
@@ -103,51 +102,35 @@ export const LoadingOverlay = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    let interval: any;
+    if (!isLoading) return;
 
-    if (isLoading) {
-      setProgress(0);
+    const eventSource = new EventSource(
+      "https://rawi-backend.vercel.app/notifications/sse-steps");
 
-      const updateFrequency = 50; // ms
+    eventSource.onmessage = (event) => {
+      const update = JSON.parse(event.data);
 
-      // Determine increment based on duration
-      // If duration is provided (e.g. 30000ms), we want to reach 90% in that time.
-      // Total updates = duration / updateFrequency.
-      // Increment = 90 / Total updates.
-
-      // Default (Fast) behavior: reaches 90% in ~0.9s (increment 5 per 50ms)
-      let increment = 5;
-
-      if (loadingDuration && loadingDuration > 0) {
-        const totalUpdates = loadingDuration / updateFrequency;
-        increment = 90 / totalUpdates;
+      if (update.apiName === "query") {
+        setProgress(update.percentage);
       }
 
-      interval = setInterval(() => {
-        setProgress((prev) => {
-          // 1. PHASE: Move up to 90% based on calculated speed
-          if (prev < 90) {
-            return Math.min(prev + increment, 90);
-          }
+      if (update.status === "complete") {
+        eventSource.close();
+      }
+    };
 
-          // 2. STALL PHASE: Once at 90%, creep very slowly
-          if (prev < 99) {
-            return prev + 0.1;
-          }
+    eventSource.onerror = (err) => {
+      console.error("SSE Error:", err);
+      eventSource.close();
+    };
 
-          return 99;
-        });
-      }, updateFrequency);
-    } else {
-      // API Finished: Snap to 100% immediately
-      setProgress(100);
-    }
+    return () => eventSource.close();
+  }, [isLoading]);
 
-    return () => clearInterval(interval);
-  }, [isLoading, loadingDuration]);
 
   // Don't render if not loading
   if (!isLoading) return null;
+
 
   return (
     <div style={OVERLAY_STYLE}>
