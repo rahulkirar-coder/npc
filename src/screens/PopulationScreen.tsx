@@ -206,13 +206,15 @@ export const PopulationScreen = () => {
       setSelectedAgeGroups(ageGroups);
     }
 
+    setTimeout(() => {
+      setUpdateData(null);
+    }, 3000);
+
   };
 
   const handleDataUpdate = (stateData: any) => {
-    setUpdateData(stateData)
     const filters = stateData?.queryData?.filters;
-
-    console.log(filters)
+    setUpdateData(filters);
 
     if (filters) {
       applyFilters(filters);
@@ -426,6 +428,12 @@ export const PopulationScreen = () => {
   // --- API Call & Data Processing ---
   useEffect(() => {
     const loadApiData = async () => {
+
+      if (updateData && Object.keys(updateData).length > 0) {
+        console.log("Object has data");
+        return;
+      } 
+
       const isDefaultFilters =
         selectedAgeGroups.length === 0 &&
         selectedGender === null &&

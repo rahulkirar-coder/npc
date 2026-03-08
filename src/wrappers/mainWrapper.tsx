@@ -68,38 +68,38 @@ const RESET_BTN_STYLE: React.CSSProperties = {
 
 export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middleTopData, middleBottomData, filterTagsSet, onReset, children }: any) => {
 
-  const [history, setHistory] = useState<any>([]);
+  // const [history, setHistory] = useState<any>([]);
 
-  const fetchQueryHistory = async () => {
-    try {
+  // const fetchQueryHistory = async () => {
+  //   try {
 
-      let sessionId = localStorage.getItem("sessionID");
+  //     let sessionId = localStorage.getItem("sessionID");
 
-      const response = await fetch("https://rawi-backend.vercel.app/query/history", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: sessionId ? sessionId : null,
-          limit: 10,
-          page: 1
-        }),
-      });
+  //     const response = await fetch("https://rawi-backend.vercel.app/query/history", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         sessionId: sessionId ? sessionId : null,
+  //         limit: 10,
+  //         page: 1
+  //       }),
+  //     });
 
-      if (response.ok) {
-        const json = await response.json();
-        setHistory(json.history);
-      }
+  //     if (response.ok) {
+  //       const json = await response.json();
+  //       setHistory(json.history);
+  //     }
 
-    } catch (error) {
+  //   } catch (error) {
 
-    } finally {
+  //   } finally {
 
-    }
-  };
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchQueryHistory();
-  }, [leftSideRaviChatData?.text])
+  // useEffect(() => {
+  //   fetchQueryHistory();
+  // }, [leftSideRaviChatData?.text])
 
   return (
     <div style={SCREEN_STYLE}>
@@ -117,7 +117,7 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
           borderRadius: "25px",
           padding:"10px 10px"
         }}>
-          <RawiChatCard {...leftSideRaviChatData} history={history} />
+          <RawiChatCard {...leftSideRaviChatData} />
 
           <BottomInputPanel {...leftSideChatInputData} />
         </div>
