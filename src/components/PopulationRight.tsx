@@ -270,8 +270,6 @@ export const RightPanel: React.FC<RightPanelProps> = ({
         return { educationChartData: chartData, educationMax: max };
     }, [data]);
 
-
-
     return (
                 <div
                     style={{

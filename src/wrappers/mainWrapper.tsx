@@ -28,9 +28,7 @@ const LEFT_PANEL_STYLE: React.CSSProperties = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "50px 10px 30px 10px",
-  background: "rgba(30, 41, 59, 0.8)",
-  borderRadius:"25px",
+  padding: "50px 10px 0px 10px",
 };
 
 const MIDDLE_PANEL_STYLE: React.CSSProperties = {
@@ -40,6 +38,7 @@ const MIDDLE_PANEL_STYLE: React.CSSProperties = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
+  paddingBottom: "10px",
 };
 
 const RIGHT_PANEL_STYLE: React.CSSProperties = {
@@ -107,10 +106,21 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
       <LoadingOverlay />
 
       <div style={LEFT_PANEL_STYLE}>
+        <div style={{
+          width: "100%",
+          height: "100%",
+          background: "rgba(30, 41, 59, 0.8)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderRadius: "25px",
+          padding:"10px 10px"
+        }}>
+          <RawiChatCard {...leftSideRaviChatData} history={history} />
 
-        <RawiChatCard {...leftSideRaviChatData} history={history} />
-
-        <BottomInputPanel {...leftSideChatInputData} />
+          <BottomInputPanel {...leftSideChatInputData} />
+        </div>
       </div>
 
       <div style={MIDDLE_PANEL_STYLE}>

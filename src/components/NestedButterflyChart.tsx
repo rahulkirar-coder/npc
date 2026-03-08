@@ -102,8 +102,6 @@ export const NestedButterflyChart: React.FC<NestedButterflyChartProps> = ({
     const [maleValStr, malePercStr] = splitLabel(row.maleLabel);
     const [femaleValStr, femalePercStr] = splitLabel(row.femaleLabel);
 
-    console.log(getValidNumber(maleValStr), malePercStr)
-
     const maleValue = getValidNumber(maleValStr);
     const malePercent = parseFloat(malePercStr);
 

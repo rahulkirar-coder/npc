@@ -110,15 +110,19 @@ export const LoadingOverlay = () => {
     const url = "https://rawi-backend.vercel.app/notifications/sse-steps";
     const eventSource = new EventSource(url);
     console.log(`Connecting to ${url}...`);
+
     setProgress(0);
+    
     eventSource.onopen = () => {
       console.log("✅ SSE Connection established");
+      setProgress(5)
+      setLoadingMessage("Analyzing Data...");
     };
 
     eventSource.onmessage = (event) => {
       const update = JSON.parse(event.data);
+      setProgress(10)
 
-      console.log(update?.data, "===@@@")
 
       if (update.apiName === "query") {
         setLoadingMessage("Analyzing Data...");

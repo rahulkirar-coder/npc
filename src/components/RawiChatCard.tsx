@@ -30,7 +30,7 @@ const COLORS = {
 
 const CARD_STYLE: React.CSSProperties = {
   width: "100%",
-  maxHeight: "70%",
+  maxHeight: "80%",
   borderRadius: "12px",
   padding: "24px",
   fontFamily: "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -44,6 +44,7 @@ const CARD_STYLE: React.CSSProperties = {
 };
 
 const HEADER_STYLE: React.CSSProperties = {
+  width: "100%",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -72,6 +73,7 @@ const RAWI_TEXT_STYLE: React.CSSProperties = {
 };
 
 const TITLE_SECTION_STYLE: React.CSSProperties = {
+  width: "100%",
   display: "flex",
   alignItems: "center",
   gap: "10px",
@@ -91,13 +93,13 @@ const ITALIC_TITLE_STYLE: React.CSSProperties = {
 };
 
 const BODY_TEXT_STYLE: React.CSSProperties = {
+  width: "100%",
   fontSize: "14px",
   lineHeight: "1.6",
   color: COLORS.textMain,
   whiteSpace: "pre-wrap",
   maxHeight: "200px",
   overflow: "scroll",
-  // border:"1px solid red"
 };
 
 const RECOMMENDATIONS_CONTAINER: React.CSSProperties = {
@@ -193,7 +195,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
       {/* Download button */}
       {/* <DownloadIcon /> */}
 
-      {history && history.length > 0 &&
+      {/* {history && history.length > 0 &&
         (<div style={RECOMMENDATIONS_CONTAINER} className="custom-scroll">
           <div
             style={{ fontSize: "11px", color: "#d4d4d8", marginBottom: "2px" }}
@@ -206,10 +208,7 @@ export const RawiChatCard: React.FC<RawiChatCardProps> = ({
               <p key={index} style={{ fontSize: "11px", marginBottom: "5px" }}>{item.question}</p>
             ))}
           </div>
-        </div>)}
-
-
-
+        </div>)} */}
 
       {/* Recommendations */}
       {/* {recommendations && recommendations.length > 0 && (

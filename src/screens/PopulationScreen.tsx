@@ -183,14 +183,37 @@ export const PopulationScreen = () => {
       setSelectedNationalities(filters.nationality);
     }
 
+    // educationLevel
     if (Array.isArray(filters.educationLevel) && filters.educationLevel.length > 0) {
       setSelectedEducation(filters.educationLevel);
     }
+
+    if (Array.isArray(filters.age) && filters.age.length > 0) {
+
+      const getAgeLabel = (from: number, to: number) => {
+        if (from >= 0 && to <= 14) return `Children (${from}-${to})`;
+        if (from >= 15 && to <= 29) return `Youth (${from}-${to})`;
+        if (from >= 20 && to <= 59) return `Working (${from}-${to})`;
+        if (from >= 60) return `Elderly (${from}+)`;
+
+        return `${from}-${to}`;
+      };
+
+      const ageGroups = filters.age.map(({ from, to }) =>
+        getAgeLabel(from, to)
+      );
+
+      setSelectedAgeGroups(ageGroups);
+    }
+
   };
 
   const handleDataUpdate = (stateData: any) => {
     setUpdateData(stateData)
     const filters = stateData?.queryData?.filters;
+
+    console.log(filters)
+
     if (filters) {
       applyFilters(filters);
     }
@@ -980,7 +1003,6 @@ export const PopulationScreen = () => {
         { item: selectedMaritalStatus, toggle: handleMaritalStatusToggle },
         { item: selectedEducation, toggle: handleEducationToggle }]
       }
-
     >
 
       <div style={{
