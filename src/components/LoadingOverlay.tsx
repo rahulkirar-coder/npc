@@ -95,8 +95,6 @@ const HIGHLIGHT_TEXT_STYLE: React.CSSProperties = {
   fontWeight: 600,
 };
 
-
-
 export const LoadingOverlay = () => {
   const { isLoading, loadingDuration, loadingMessage } = useSelector(
     (state: AppState) => state.app
@@ -104,43 +102,43 @@ export const LoadingOverlay = () => {
 
   const dispatch = useDispatch();
 
-  const localLoading = () => {
-    let interval: any;
+  // const localLoading = () => {
+  //   let interval: any;
 
-    if (isLoading) {
-      setProgress(0);
+  //   if (isLoading) {
+  //     setProgress(0);
 
-      const updateFrequency = 50; // ms
+  //     const updateFrequency = 50; // ms
 
-      let increment = 5;
+  //     let increment = 5;
 
-      if (loadingDuration && loadingDuration > 0) {
-        const totalUpdates = loadingDuration / updateFrequency;
-        increment = 90 / totalUpdates;
-      }
+  //     if (loadingDuration && loadingDuration > 0) {
+  //       const totalUpdates = loadingDuration / updateFrequency;
+  //       increment = 90 / totalUpdates;
+  //     }
 
-      interval = setInterval(() => {
-        setProgress((prev) => {
-          // 1. PHASE: Move up to 90% based on calculated speed
-          if (prev < 90) {
-            return Math.min(prev + increment, 90);
-          }
+  //     interval = setInterval(() => {
+  //       setProgress((prev) => {
+  //         // 1. PHASE: Move up to 90% based on calculated speed
+  //         if (prev < 90) {
+  //           return Math.min(prev + increment, 90);
+  //         }
 
-          // 2. STALL PHASE: Once at 90%, creep very slowly
-          if (prev < 99) {
-            return prev + 0.1;
-          }
+  //         // 2. STALL PHASE: Once at 90%, creep very slowly
+  //         if (prev < 99) {
+  //           return prev + 0.1;
+  //         }
 
-          return 99;
-        });
-      }, updateFrequency);
-    } else {
-      // API Finished: Snap to 100% immediately
-      setProgress(100);
-    }
+  //         return 99;
+  //       });
+  //     }, updateFrequency);
+  //   } else {
+  //     // API Finished: Snap to 100% immediately
+  //     setProgress(100);
+  //   }
 
-    return () => clearInterval(interval);
-  }
+  //   return () => clearInterval(interval);
+  // }
 
   useEffect(() => {
     if (!isLoading) return;
