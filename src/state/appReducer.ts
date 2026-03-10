@@ -63,7 +63,9 @@ const SET_ZONE_DATA = "app/SET_ZONE_DATA";
 const UPDATE_VIEW_STATE = "app/UPDATE_VIEW_STATE";
 const SET_MAP_LAYER = "app/SET_MAP_LAYER";
 const SET_LOADING = "app/SET_LOADING";
+const SET_LOADING_MESSAGE = "app/SET_LOADING_MESSAGE";
 const SET_LOADING_PROGRESS = "app/SET_LOADING_PROGRESS";
+const SET_LOADING_DURATION = "app/SET_LOADING_DURATION";
 const TOGGLE_RIGHT_PANEL = "app/TOGGLE_RIGHT_PANEL";
 
 // Reducer
@@ -111,6 +113,17 @@ export const appReducer = (
       return {
         ...state,
         loadingProgress: action.payload,
+      };
+    case SET_LOADING_MESSAGE:
+      return {
+        ...state,
+        loadingMessage: action.payload,
+      };
+
+    case SET_LOADING_DURATION:
+      return {
+        ...state,
+        loadingDuration: action.payload,
       };
     case TOGGLE_RIGHT_PANEL:
       return {
@@ -166,6 +179,16 @@ export const setLoading = (
 export const setLoadingProgress = (progress: number | null) => ({
   type: SET_LOADING_PROGRESS,
   payload: progress,
+});
+
+export const setLoadingMessage = (text: string) => ({
+  type: SET_LOADING_MESSAGE,
+  payload: text,
+});
+
+export const setLoadingDuration = (duration: number) => ({
+  type: SET_LOADING_DURATION,
+  payload: duration,
 });
 
 export const toggleRightPanel = () => ({

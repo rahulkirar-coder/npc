@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import type { AppState } from "../state/appReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoading, setLoadingMessage, setLoadingDuration, type AppState } from "../state/appReducer";
 import { DOHA_FLAG_COLOR } from "../util";
 
 // --- Styles ---
@@ -95,14 +95,52 @@ const HIGHLIGHT_TEXT_STYLE: React.CSSProperties = {
   fontWeight: 600,
 };
 
+
+
 export const LoadingOverlay = () => {
-  const { isLoading, loadingDuration } = useSelector(
+  const { isLoading, loadingDuration, loadingMessage } = useSelector(
     (state: AppState) => state.app
   );
 
-  const [progress, setProgress] = useState(0);
+  const dispatch = useDispatch();
 
-  const [loadingMessage, setLoadingMessage] = useState("Analyzing Data...")
+  const localLoading = () => {
+    let interval: any;
+
+    if (isLoading) {
+      setProgress(0);
+
+      const updateFrequency = 50; // ms
+
+      let increment = 5;
+
+      if (loadingDuration && loadingDuration > 0) {
+        const totalUpdates = loadingDuration / updateFrequency;
+        increment = 90 / totalUpdates;
+      }
+
+      interval = setInterval(() => {
+        setProgress((prev) => {
+          // 1. PHASE: Move up to 90% based on calculated speed
+          if (prev < 90) {
+            return Math.min(prev + increment, 90);
+          }
+
+          // 2. STALL PHASE: Once at 90%, creep very slowly
+          if (prev < 99) {
+            return prev + 0.1;
+          }
+
+          return 99;
+        });
+      }, updateFrequency);
+    } else {
+      // API Finished: Snap to 100% immediately
+      setProgress(100);
+    }
+
+    return () => clearInterval(interval);
+  }
 
   useEffect(() => {
     if (!isLoading) return;
@@ -111,23 +149,23 @@ export const LoadingOverlay = () => {
     const eventSource = new EventSource(url);
     console.log(`Connecting to ${url}...`);
 
-    setProgress(0);
-    
+    dispatch(setLoadingDuration(0));
+
     eventSource.onopen = () => {
       console.log("✅ SSE Connection established");
-      setProgress(5)
-      setLoadingMessage("Analyzing Data...");
+      dispatch(setLoadingDuration(5))
+      dispatch(setLoadingMessage("Analyzing Data..."));
     };
 
     eventSource.onmessage = (event) => {
       const update = JSON.parse(event.data);
-      setProgress(10)
+      dispatch(setLoadingDuration(10))
 
 
       if (update.apiName === "query") {
-        setLoadingMessage("Analyzing Data...");
-        setProgress(update.percentage);
-        setLoadingMessage(update?.data?.step);
+        dispatch(setLoadingMessage("Analyzing Data..."));
+        dispatch(setLoadingDuration(update.percentage));
+        dispatch(setLoadingMessage(update?.data?.step));
       }
 
       if (update.status === "complete") {
@@ -137,64 +175,22 @@ export const LoadingOverlay = () => {
     };
 
     return () => eventSource.close();
-
-
-
-    // let interval: any;
-
-    // if (isLoading) {
-    //   setProgress(0);
-
-    //   const updateFrequency = 50; // ms
-
-    //   // Determine increment based on duration
-    //   // If duration is provided (e.g. 30000ms), we want to reach 90% in that time.
-    //   // Total updates = duration / updateFrequency.
-    //   // Increment = 90 / Total updates.
-
-    //   // Default (Fast) behavior: reaches 90% in ~0.9s (increment 5 per 50ms)
-    //   let increment = 5;
-
-    //   if (loadingDuration && loadingDuration > 0) {
-    //     const totalUpdates = loadingDuration / updateFrequency;
-    //     increment = 90 / totalUpdates;
-    //   }
-
-    //   interval = setInterval(() => {
-    //     setProgress((prev) => {
-    //       // 1. PHASE: Move up to 90% based on calculated speed
-    //       if (prev < 90) {
-    //         return Math.min(prev + increment, 90);
-    //       }
-
-    //       // 2. STALL PHASE: Once at 90%, creep very slowly
-    //       if (prev < 99) {
-    //         return prev + 0.1;
-    //       }
-
-    //       return 99;
-    //     });
-    //   }, updateFrequency);
-    // } else {
-    //   // API Finished: Snap to 100% immediately
-    //   setProgress(100);
-    // }
-
-    // return () => clearInterval(interval);
   }, [isLoading]);
 
   // Don't render if not loading
   if (!isLoading) return null;
 
+  console.log(loadingDuration)
+
   return (
     <div style={OVERLAY_STYLE}>
       <div style={CONTENT_CONTAINER_STYLE}>
         {/* Percentage Text */}
-        <div style={PROGRESS_TEXT_STYLE}>{Math.floor(progress)}%</div>
+        <div style={PROGRESS_TEXT_STYLE}>{Math.floor(loadingDuration)}%</div>
 
         {/* Horizontal Bar */}
         <div style={BAR_CONTAINER_STYLE}>
-          <div style={BAR_FILL_STYLE(progress)} />
+          <div style={BAR_FILL_STYLE(loadingDuration)} />
         </div>
 
         {/* Status Message */}
