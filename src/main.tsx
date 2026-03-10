@@ -15,6 +15,7 @@ import { HouseholdScreen } from "./screens/HouseholdScreen.tsx";
 import { DisabilityScreen } from "./screens/DisabilityScreen.tsx";
 import { MapLayout } from "./layouts/MapLayout.tsx";
 import { MapProvider } from "react-map-gl";
+import { NotFound } from "./screens/NotFound.tsx";
 
 const Root = () => (
   <StrictMode>
@@ -33,6 +34,7 @@ const Root = () => (
               {/* 2. Add Route */}
               <Route path="/disability" element={<DisabilityScreen />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </MapProvider>
