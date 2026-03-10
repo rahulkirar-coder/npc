@@ -1023,7 +1023,7 @@ export const PopulationScreen = () => {
         {panelData && isRightPanelOpen && (
           <div>
             <div style={{
-              maxHeight: "50%", zIndex: 100,
+              maxHeight: "55%", zIndex: 100,
               overflowY: "auto",
               scrollbarWidth: "none",
               pointerEvents: "auto",
