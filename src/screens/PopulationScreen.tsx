@@ -432,7 +432,7 @@ export const PopulationScreen = () => {
       if (updateData && Object.keys(updateData).length > 0) {
         console.log("Object has data");
         return;
-      } 
+      }
 
       const isDefaultFilters =
         selectedAgeGroups.length === 0 &&
@@ -1021,13 +1021,14 @@ export const PopulationScreen = () => {
         <ChartToggleBtn />
 
         {panelData && isRightPanelOpen && (
-          <div>
+          <div style={{ height: "100%", maxHeight: "65%" }}>
             <div style={{
-              maxHeight: "55%", zIndex: 100,
+              height: "85%",
+              zIndex: 100,
               overflowY: "auto",
               scrollbarWidth: "none",
               pointerEvents: "auto",
-              marginBottom: "10px"
+              marginBottom: "10px",
             }}>
 
               <RightPanel
