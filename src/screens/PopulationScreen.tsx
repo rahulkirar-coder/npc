@@ -195,13 +195,23 @@ export const PopulationScreen = () => {
         if (from >= 15 && to <= 29) return `Youth (${from}-${to})`;
         if (from >= 20 && to <= 59) return `Working (${from}-${to})`;
         if (from >= 60) return `Elderly (${from}+)`;
-
         return `${from}-${to}`;
       };
 
-      const ageGroups = filters.age.map(({ from, to }) =>
-        getAgeLabel(from, to)
-      );
+      let ageGroups: string[] = [];
+
+      // Case 1: [15, 1000]
+      if (typeof filters.age[0] === "number") {
+        const [from, to] = filters.age;
+        ageGroups = [getAgeLabel(from, to)];
+      }
+
+      // Case 2: [{ from: 15, to: 29 }]
+      else {
+        ageGroups = filters.age.map(({ from, to }: any) =>
+          getAgeLabel(from, to)
+        );
+      }
 
       setSelectedAgeGroups(ageGroups);
     }
