@@ -25,8 +25,7 @@ const GRAPH_AREA_STYLE: React.CSSProperties = {
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-const MAP_STYLE =
-  "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+const MAP_STYLE = import.meta.env.VITE_MAP_STYLE;
 
 export const GraphArea = () => {
   const dispatch = useDispatch();

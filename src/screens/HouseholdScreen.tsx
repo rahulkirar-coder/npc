@@ -290,7 +290,7 @@ export const HouseholdScreen = () => {
   const handleRecommendationClick = async (question: string) => {
     dispatch(setLoading(true, "Processing Recommendation..."));
     try {
-      const response = await fetch("https://rawi-backend.vercel.app/query", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: question }),
@@ -400,7 +400,7 @@ export const HouseholdScreen = () => {
         }
 
         const response = await fetch(
-          "https://rawi-backend.vercel.app/household",
+          `${import.meta.env.VITE_API_BASE_URL}/household`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

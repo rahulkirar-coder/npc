@@ -143,7 +143,7 @@ export const LoadingOverlay = () => {
   useEffect(() => {
     if (!isLoading) return;
 
-    const url = "https://rawi-backend.vercel.app/notifications/sse-steps";
+    const url = `${import.meta.env.VITE_API_BASE_URL}/notifications/sse-steps`;
     const eventSource = new EventSource(url);
     console.log(`Connecting to ${url}...`);
 

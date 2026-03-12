@@ -1,7 +1,7 @@
 import { latLngToCell, cellToBoundary } from "h3-js";
 import type { FeatureCollection, Feature, Polygon, Point } from "geojson";
 
-export const BASE_URL = "https://rawi-backend.vercel.app";
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://rawibackend.vercel.app";
 
 // Helper: Convert H3 index to GeoJSON Polygon
 const getHexPolygon = (h3Index: string): number[][] => {

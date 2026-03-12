@@ -457,7 +457,7 @@ export const BuildingScreen = () => {
         );
         try {
           const response = await fetch(
-            "https://rawi-backend.vercel.app/building/doha",
+            `${import.meta.env.VITE_API_BASE_URL}/building/doha`,
             {
               method: "GET",
               headers: { "Content-Type": "application/json" },
@@ -529,7 +529,7 @@ export const BuildingScreen = () => {
   const handleRecommendationClick = async (question: string) => {
     dispatch(setLoading(true, "Processing Recommendation..."));
     try {
-      const response = await fetch("https://rawi-backend.vercel.app/query", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: question }),
@@ -640,7 +640,7 @@ export const BuildingScreen = () => {
         }
 
         const apiResponse = await fetch(
-          "https://rawi-backend.vercel.app/building",
+          `${import.meta.env.VITE_API_BASE_URL}/building`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

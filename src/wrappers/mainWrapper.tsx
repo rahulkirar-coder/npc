@@ -75,7 +75,7 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
 
   //     let sessionId = localStorage.getItem("sessionID");
 
-  //     const response = await fetch("https://rawi-backend.vercel.app/query/history", {
+  //     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/query/history`, {
   //       method: "POST",
   //       headers: { "Content-Type": "application/json" },
   //       body: JSON.stringify({

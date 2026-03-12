@@ -83,7 +83,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
     const fetchQuestions = async () => {
       try {
         const response = await fetch(
-          "https://rawi-backend.vercel.app/question/default",
+          `${import.meta.env.VITE_API_BASE_URL}/question/default`,
         );
         if (response.ok) {
           const json = await response.json();
@@ -166,7 +166,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
     dispatch(setLoading(true, "Processing Query..."));
 
     try {
-      const response = await fetch("https://rawi-backend.vercel.app/query", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: queryText }),

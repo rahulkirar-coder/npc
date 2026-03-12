@@ -200,7 +200,7 @@ export const CityScreen = () => {
 
       try {
         const response = await fetch(
-          "https://rawi-backend.vercel.app/building/doha",
+          `${import.meta.env.VITE_API_BASE_URL}/building/doha`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
