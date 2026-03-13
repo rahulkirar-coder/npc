@@ -1,76 +1,101 @@
-import React from "react";
-
 export const Header = () => {
+  const topHeaderNav = {
+    display: "flex",
+    alignItems: "center",
+    gap: "28px",
+  };
+
+  const actionsStyle = {
+    display: "flex",
+    gap: "16px",
+  };
+
+  const actionStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "32px",
+    height: "32px",
+    borderRadius: "50%",
+    border: "1px solid rgba(255,255,255,0.4)",
+  };
+
+  const actionLinkStyle = {
+    display: "flex",
+    width: "100%",
+    height: "100%",
+    borderRadius: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
   return (
     <div
       style={{
-        position: "fixed",
         width: "100%",
+        position: "fixed",
         top: 0,
         left: 0,
         zIndex: 1,
       }}
     >
-      <section className="top-header">
-        <div className="inner-container">
-          <div className="top-header-container">
-            <div className="top-header-logo">
-              <a href="">
-                <img src="../../assets/img/q-logo.svg" alt="" />
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: "#030f1f",
+          padding: "10px 60px",
+        }}
+      >
+        <img src="../../assets/img/q-logo.svg" alt="" />
+
+        <div style={topHeaderNav}>
+          <div style={actionsStyle}>
+            <span style={actionStyle}>
+              <a href="" style={actionLinkStyle}>
+                <img src="../../assets/img/flag.svg" alt="" />
               </a>
-            </div>
-            <div className="top-header-nav">
-              {/* <ul>
-                <li role="button">
-                  <div className="search d-flex align-items-center gap-2">
-                    <div className="npc-icon-search"></div>
-                    <p className="m-0">Search..</p>
-                  </div>
-                </li>
+            </span>
 
-              </ul> */}
-              <div className="actions">
-                <span className="action">
-                  <a href="">
-                    {" "}
-                    <img src="../../assets/img/flag.svg" alt="" />
-                  </a>{" "}
-                </span>
-                <span
-                  className="action theme-action"
-                  role="button"
-                  onClick={() => {
-                    console.log("Theme toggle");
-                  }}
-                >
-                  {" "}
-                  <span className="npc-icon-theam-btn"></span>{" "}
-                </span>
-                <span className="action">
-                  <a
-                    role="button"
-                    data-bs-toggle="modal"
-                    data-bs-target="#accesspility-modal"
-                  >
-                    {" "}
-                    <span className="npc-icon-access"></span>
-                  </a>
-                </span>
-              </div>
-            </div>
+            <span
+              style={actionStyle}
+              role="button"
+              onClick={() => {
+                console.log("Theme toggle");
+              }}
+            >
+              <span className="npc-icon-theam-btn"></span>
+            </span>
+
+            <span style={actionStyle}>
+              <a
+                role="button"
+                data-bs-toggle="modal"
+                data-bs-target="#accesspility-modal"
+                style={actionLinkStyle}
+              >
+                <span className="npc-icon-access"></span>
+              </a>
+            </span>
           </div>
         </div>
-      </section>
+      </div>
 
-      <header className="header">
-        <div className="inner-container">
-          <div className="header-container">
-            <div className="header-logo">
-              <img src="../../assets/img/logo.svg" alt="" />
-            </div>
-          </div>
-        </div>
-      </header>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          padding: "10px 60px",
+        }}
+      >
+        <img
+          src="../../assets/img/logo.svg"
+          alt=""
+          style={{ maxWidth: "181px" }}
+        />
+      </div>
     </div>
   );
 };
