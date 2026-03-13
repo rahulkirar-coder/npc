@@ -33,6 +33,7 @@ export const Header = () => {
     <div
       style={{
         width: "100%",
+        height: "100px",
         position: "fixed",
         top: 0,
         left: 0,
@@ -45,7 +46,7 @@ export const Header = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          backgroundColor: "#030f1f",
+          // backgroundColor: "#030f1f",
           padding: "10px 60px",
         }}
       >
