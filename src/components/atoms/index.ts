@@ -1,2 +1,2 @@
-export { CircleLegendIcon, DiamondLegendIcon } from "./legend";
+export { CircleLegendIcon, DiamondLegendIcon } from "./legend.tsx";
 export * from "./filterTag"
