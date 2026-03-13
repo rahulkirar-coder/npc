@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EstablishmentRightPanel } from "../components/EstablishmentRightPanel";
-import { Footer } from "../components/Footer";
 import { setLoading, setMapLayer, type AppState } from "../state/appReducer";
 import { useMap } from "react-map-gl";
 import type { FillLayer, LineLayer } from "react-map-gl";

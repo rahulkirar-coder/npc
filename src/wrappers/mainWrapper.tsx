@@ -115,11 +115,11 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
       </div>
 
       <div style={MIDDLE_PANEL_STYLE}>
-        <TogglePanel
+       {middleTopData && <TogglePanel
           {...middleTopData}
-        />
+        />}
 
-        <Footer {...middleBottomData} />
+        {middleBottomData && <Footer {...middleBottomData} />}
       </div>
 
       <div style={{ ...RIGHT_PANEL_STYLE, justifyContent: isOpen ? "space-between" : "flex-end" }}>
@@ -131,7 +131,7 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
           justifyContent: "space-between",
           flexDirection: "column",
         }}>
-          <div style={{
+         {onReset && <div style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -155,7 +155,7 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
             <button style={RESET_BTN_STYLE} onClick={onReset}>
               <span>Reset Filters</span>
             </button>
-          </div>
+          </div>}
           <div style={{ height: "92%" }}>
             {children}
           </div>

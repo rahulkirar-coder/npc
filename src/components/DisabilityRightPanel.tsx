@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { useMap } from "react-map-gl";
-import { BottomInputPanel } from "./AIChat";
+// import { BottomInputPanel } from "./BottomInputPanel";
 import { RawiChatCard } from "./RawiChatCard";
 import { COMMON_CHART_PANEL_TOP } from "../utils/style";
 
@@ -196,21 +196,12 @@ export const DisabilityRightPanel: React.FC<Props> = ({
     </div>
   );
 
-  const chatText = `Finally, a truly smart city is an inclusive city. We must identify those who need specific support to ensure no one is left behind`;
 
   if (!data) return null;
 
   return (
     <>
-      <div className="top-left-panel">
-        <RawiChatCard
-          text={chatText}
-          buttonText=""
-          onButtonClick={() => handleTransition("/establishment")}
-          // minHeight="80px"
-          history={[]}
-        />
-      </div>
+
 
       <div className="right-side-panel"  style={{ top: COMMON_CHART_PANEL_TOP }}>
         {/* CHART 1: Radar Chart (Spider Chart) */}
@@ -325,11 +316,6 @@ export const DisabilityRightPanel: React.FC<Props> = ({
           </div>
         </div>
       </div>
-
-      <BottomInputPanel
-        chips={COMMON_CHIPS}
-        onSubmit={processTextAndNavigate}
-      />
     </>
   );
 };

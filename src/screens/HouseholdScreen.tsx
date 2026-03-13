@@ -4,7 +4,6 @@ import {
   HouseholdRightPanel,
   type HouseholdDashboardData,
 } from "../components/HouseholdRightPanel";
-import { Footer } from "../components/Footer";
 import { setLoading, setMapLayer, type AppState } from "../state/appReducer";
 import { useMap } from "react-map-gl";
 import type { FillLayer, LineLayer } from "react-map-gl";
@@ -104,7 +103,6 @@ export const HouseholdScreen = () => {
   const isRightPanelOpen = useSelector(
     (state: AppState) => state.app.isRightPanelOpen,
   );
-
 
   // State
   const [activeYearBtn, setActiveYearBtn] = useState<2025 | 2020>(2020);

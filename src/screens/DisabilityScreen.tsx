@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DisabilityRightPanel } from "../components/DisabilityRightPanel";
-import { Footer } from "../components/Footer"; // Import Footer
 import { setLoading, setMapLayer, type AppState } from "../state/appReducer";
 import { useMap } from "react-map-gl";
 import type { FillLayer } from "react-map-gl";
 import type { FeatureCollection, Feature } from "geojson";
+import { MainLayout } from "../wrappers/mainWrapper";
+import { useNavigate } from "react-router-dom";
 
 const SCREEN_STYLE: React.CSSProperties = {
   position: "absolute",
@@ -57,6 +58,13 @@ export const DisabilityScreen = () => {
     min: 0,
     max: 0,
   });
+
+  //Reducer
+  const isRightPanelOpen = useSelector(
+    (state: AppState) => state.app.isRightPanelOpen,
+  );
+
+  const navigate = useNavigate();
 
   // Access global zone data from Redux
   const zoneData = useSelector((state: AppState) => state.app.zoneData);
@@ -253,29 +261,79 @@ export const DisabilityScreen = () => {
     setIsDataLoaded(true);
   }, [zoneData, disabilityMap, dispatch]);
 
-  return (
-    <div style={SCREEN_STYLE}>
-      <div style={UI_CONTAINER_STYLE}>
-        <div style={INTERACTIVE_STYLE}>
-          {panelData && (
-            <DisabilityRightPanel
-              data={panelData}
-              onStartTransition={stopCinematicMode}
-            />
-          )}
-        </div>
+  const RaviChatText = `Finally, a truly smart city is an inclusive city. We must identify those who need specific support to ensure no one is left behind`;
 
-        {/* Updated Footer */}
-        <div style={FOOTER_WRAPPER_STYLE}>
-          <div style={FOOTER_POINTER_STYLE}>
-            <Footer
-              title="Disability Intensity (Count)"
-              minVal={dataRange.min}
-              maxVal={dataRange.max}
-            />
-          </div>
-        </div>
+  const COMMON_CHIPS = [
+    "Prevalence by Municipality",
+    "Accessibility analysis in Doha",
+    "Disability support centers",
+    "Compare 2020 vs 2025 statistics",
+  ];
+
+  const handleTransition = (path: string) => {
+    if (stopCinematicMode) stopCinematicMode();
+    if (map) {
+      map.stop();
+      map.flyTo({
+        center: [51.5348, 25.2867],
+        zoom: 9,
+        pitch: 0,
+        bearing: 0,
+        duration: 2000,
+        essential: true,
+      });
+      map.once("moveend", () => navigate(path));
+    } else {
+      navigate(path);
+    }
+  };
+
+  const processTextAndNavigate = (text: string) => {
+    const lowerText = text.toLowerCase().trim();
+    if (!lowerText) return;
+
+    if (lowerText.includes("population")) handleTransition("/population");
+    else if (lowerText.includes("establishment"))
+      handleTransition("/establishment");
+    else if (lowerText.includes("building")) handleTransition("/building");
+    else if (lowerText.includes("household")) handleTransition("/household");
+    else if (lowerText.includes("disability")) handleTransition("/disability");
+    else handleTransition("/city");
+  };
+
+  return (
+    <MainLayout
+      leftSideRaviChatData={{
+        text: RaviChatText,
+        question: "What do you want to know about disability?",
+        buttonText: "",
+        onButtonClick: () => handleTransition("/establishment"),
+      }}
+
+      leftSideChatInputData={{
+        chips: COMMON_CHIPS,
+        onSubmit: processTextAndNavigate,
+      }}
+    >
+
+      <div style={{
+        display: "flex",
+        gap: 5,
+        height: "100%",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        zIndex: 100,
+        pointerEvents: "auto",
+      }}>
+
+        {panelData && isRightPanelOpen && (
+          <DisabilityRightPanel
+            data={panelData}
+            onStartTransition={stopCinematicMode}
+          />
+        )}
       </div>
-    </div>
+
+    </MainLayout>
   );
 };
