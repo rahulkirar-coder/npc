@@ -6,6 +6,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useMap } from "react-map-gl";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../state/appReducer";
+import { getRouteFromGraphScreen, mapCall } from "../utils/commonFunction";
+import { apiMethod } from "../api";
 
 // --- Styles ---
 const INPUT_BAR_STYLE: React.CSSProperties = {
@@ -169,15 +171,11 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
 
       let sessionId = localStorage.getItem("sessionID");
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/query`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: queryText, threadId: sessionId ? sessionId : null }),
-      });
+      const response: any = await apiMethod.query(JSON.stringify({ query: queryText, threadId: sessionId ? sessionId : null }))
 
-      if (response.ok) {
-        const json = await response.json();
-        const data = json.ouptput;
+      if (response?.data?.status === 200) {
+        const json = response?.data;
+        const data = json?.ouptput;
         setInputValue("");
 
         localStorage.setItem("sessionID", json?.sessionId);
@@ -211,27 +209,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
 
         // 2. Specific Query: Navigate or Update Screen Data..
         if (data && data.graphScreeen) {
-          let route = "";
-          switch (data.graphScreeen) {
-            case "building_units":
-              route = "/building";
-              break;
-            case "establishments":
-              route = "/establishment";
-              break;
-            case "population":
-              route = "/population";
-              break;
-            case "disability":
-              route = "/disability";
-              break;
-            case "employment":
-              route = "/employment";
-              break;
-            case "household":
-              route = "/household";
-              break;
-          }
+          let route = getRouteFromGraphScreen(data.graphScreeen)
 
           if (route) {
             // Data Payload
@@ -251,18 +229,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
 
             // Navigate to new screen
             if (map) {
-              map.stop();
-              map.flyTo({
-                center: [51.5348, 25.2867],
-                zoom: 9,
-                pitch: 0,
-                bearing: 0,
-                duration: 2000,
-                essential: true,
-              });
-              map.once("moveend", () =>
-                navigate(route, { state: navigationState }),
-              );
+              mapCall(map, navigate, route, navigationState);
             } else {
               navigate(route, { state: navigationState });
             }

@@ -178,8 +178,6 @@ export const LoadingOverlay = () => {
   // Don't render if not loading
   if (!isLoading) return null;
 
-  console.log(loadingDuration)
-
   return (
     <div style={OVERLAY_STYLE}>
       <div style={CONTENT_CONTAINER_STYLE}>

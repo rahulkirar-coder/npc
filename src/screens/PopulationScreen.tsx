@@ -16,6 +16,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ChartToggleBtn } from "../components/PopulationToggleBtn";
 import { MainLayout } from "../wrappers/mainWrapper";
 import { LegendTable } from "../components/molicules";
+import { getRouteFromGraphScreen, mapCall } from "../utils/commonFunction";
+import { apiMethod } from "../api";
 
 
 // --- Styles ---
@@ -261,28 +263,7 @@ export const PopulationScreen = () => {
         const data = json.ouptput;
 
         if (data && data.graphScreeen) {
-          let route = "";
-          switch (data.graphScreeen) {
-            case "building_units":
-              route = "/building";
-              break;
-            case "establishments":
-              route = "/establishment";
-              break;
-            case "population":
-              route = "/population";
-              break;
-            case "disability":
-              route = "/disability";
-              break;
-            case "employment":
-              route = "/employment";
-              break;
-            case "household":
-              route = "/household";
-              break;
-          }
-
+          let route = getRouteFromGraphScreen(data.graphScreeen);
           if (route) {
             const navigationState = {
               queryData: data,
@@ -298,18 +279,7 @@ export const PopulationScreen = () => {
               handleDataUpdate(navigationState);
             } else {
               if (map) {
-                map.stop();
-                map.flyTo({
-                  center: [51.5348, 25.2867],
-                  zoom: 9,
-                  pitch: 0,
-                  bearing: 0,
-                  duration: 2000,
-                  essential: true,
-                });
-                map.once("moveend", () =>
-                  navigate(route, { state: navigationState }),
-                );
+                mapCall(map, navigate, route, navigationState);
               } else {
                 navigate(route, { state: navigationState });
               }
@@ -1031,7 +1001,7 @@ export const PopulationScreen = () => {
       }}>
 
         {panelData && isRightPanelOpen && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" ,height: "100%"}}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px", height: "100%" }}>
             <div style={{
               height: "90%",
               zIndex: 100,
