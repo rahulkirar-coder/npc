@@ -9,20 +9,15 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
   CartesianGrid,
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { useMap } from "react-map-gl";
-import { BottomInputPanel } from "./BottomInputPanel";
-import { RawiChatCard } from "./RawiChatCard";
 import { DOHA_FLAG_COLOR, DOHA_FLAG_COLOR_RGBA_06 } from "../util";
 import { useSelector } from "react-redux";
 import type { AppState } from "../state/appReducer";
 import {
-  COMMON_CHART_PANEL_TOP,
   DEFAULT_COLORS,
-  ResetBtnStyle,
   darkenColor
 } from "../utils/style";
 import {
@@ -38,7 +33,6 @@ export interface EmploymentData {
   sectorData2025: any[]; // { name, value }
   sectorData2020: any[]; // { name, value }
 }
-
 interface Props {
   data: EmploymentData | null;
   onStartTransition?: () => void;

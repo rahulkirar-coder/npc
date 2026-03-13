@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { useMap } from "react-map-gl";
-import { BottomInputPanel } from "./BottomInputPanel";
+import { BottomInputPanel } from "./AIChat";
 import { RawiChatCard } from "./RawiChatCard";
 import { COMMON_CHART_PANEL_TOP } from "../utils/style";
 

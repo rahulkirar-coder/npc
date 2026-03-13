@@ -172,9 +172,9 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: queryText, threadId : sessionId ? sessionId : null }),
+        body: JSON.stringify({ query: queryText, threadId: sessionId ? sessionId : null }),
       });
-      
+
       if (response.ok) {
         const json = await response.json();
         const data = json.ouptput;
@@ -319,7 +319,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
           ? ""
           : "bottom-middle-panel"
       }
-      style={ window.location.pathname !== "/city" ? {width:"100%"} : {width:"400px"}} // Apply style override
+      style={window.location.pathname !== "/city" ? { width: "100%" } : { width: "400px" }}
     >
       <div className="chips-container" style={{ width: window.location.pathname !== "/city" ? "100%" : "800px" }}>
         {uniqueChips.map((chip, index) => (

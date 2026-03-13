@@ -15,12 +15,9 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { useMap } from "react-map-gl";
-import { BottomInputPanel } from "./BottomInputPanel";
-import { RawiChatCard } from "./RawiChatCard";
 import { DOHA_FLAG_COLOR, DOHA_FLAG_COLOR_RGBA_06 } from "../util";
 import { useSelector } from "react-redux";
 import type { AppState } from "../state/appReducer";
-import { COMMON_CHART_PANEL_TOP, ResetBtnStyle } from "../utils/style";
 
 // ... [Types, COLORS, IconRow kept same] ...
 export interface NationalityItem {
