@@ -537,7 +537,7 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            gap: "15px"
+            gap: "15px",
           }}
         >
           {/* CHART 1: Sector Distribution (REVERTED TO HORIZONTAL + NESTED) */}
@@ -656,7 +656,7 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
             </div>
           </div>
 
-           {/* CHART 2: Type Distribution (Composed Chart) */}
+          {/* CHART 2: Type Distribution (Composed Chart) */}
           <div className="glass-card">
             <div style={CHART_TITLE_STYLE}>
               Distribution by Sector and Employees
@@ -1084,11 +1084,11 @@ export const EstablishmentRightPanel: React.FC<Props> = ({
             </div>
           </div>
 
-         
+
         </div>
       )}
 
-     
+
     </>
   );
 };

@@ -26,10 +26,10 @@ const Root = () => (
             <Route path="/" element={<HomeScreen />} />
             <Route element={<MapLayout />}>
               <Route path="/city" element={<CityScreen />} />
-              <Route path="/population" element={<PopulationScreen />} />
-              <Route path="/building" element={<BuildingScreen />} />
-              <Route path="/employment" element={<EmploymentScreen />} />
-              <Route path="/establishment" element={<EstablishmentScreen />} />
+              <Route path="/population" element={<PopulationScreen />} /> {/*Done*/}
+              <Route path="/building" element={<BuildingScreen />} />{/*Done*/}
+              <Route path="/employment" element={<EmploymentScreen />} />{/*Done*/}
+              <Route path="/establishment" element={<EstablishmentScreen />} /> 
               <Route path="/household" element={<HouseholdScreen />} />
               {/* 2. Add Route */}
               <Route path="/disability" element={<DisabilityScreen />} />

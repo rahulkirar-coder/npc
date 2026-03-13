@@ -5,20 +5,20 @@ import { RawiChatCard } from "../components/RawiChatCard";
 import { Footer } from "../components/PopulationFooter";
 import TogglePanel from "../components/TogglePanel";
 import { FilterTags } from "../components/atoms";
+import { ChartToggleBtn } from "../components/PopulationToggleBtn";
+import type { AppState } from "../state/appReducer";
+import { useSelector } from "react-redux";
 
 // --- Styles ---
 const SCREEN_STYLE: React.CSSProperties = {
   width: "100%",
   height: "100%",
-  position: "absolute",
-  top: 0,
-  left: 0,
   overflow: "hidden",
   pointerEvents: "none",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "0px 25px 20px 20px"
+  paddingTop: "50px",
 };
 
 const LEFT_PANEL_STYLE: React.CSSProperties = {
@@ -28,7 +28,8 @@ const LEFT_PANEL_STYLE: React.CSSProperties = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "50px 10px 0px 10px",
+  padding: "50px 0px",
+  pointerEvents: "auto",
 };
 
 const MIDDLE_PANEL_STYLE: React.CSSProperties = {
@@ -38,20 +39,21 @@ const MIDDLE_PANEL_STYLE: React.CSSProperties = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  paddingBottom: "10px",
+  paddingTop: "10px",
+  paddingBottom: "50px",
 };
 
 const RIGHT_PANEL_STYLE: React.CSSProperties = {
   width: "30%",
   height: "100%",
-  paddingRight: "25px",
   display: "flex",
-  flexDirection: "column",
-  gap: "20px",
+  gap: "10px",
+  padding: "50px 0px",
 };
 
 // --- Styles ---
 const RESET_BTN_STYLE: React.CSSProperties = {
+  height: "100%",
   pointerEvents: "auto",
   backgroundColor: "#A30134",
   borderRadius: "50px",
@@ -68,41 +70,30 @@ const RESET_BTN_STYLE: React.CSSProperties = {
 
 export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middleTopData, middleBottomData, filterTagsSet, onReset, children }: any) => {
 
-  // const [history, setHistory] = useState<any>([]);
+  const [width, setWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
 
-  // const fetchQueryHistory = async () => {
-  //   try {
+  useEffect(() => {
+    const resize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
 
-  //     let sessionId = localStorage.getItem("sessionID");
+  const isTablet = width >= 768 && width <= 1024;
+  const isLaptop = width > 1024 && width <= 1536;
 
-  //     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/query/history`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         sessionId: sessionId ? sessionId : null,
-  //         limit: 10,
-  //         page: 1
-  //       }),
-  //     });
+  const containerPadding = isTablet
+    ? "25px"
+    : isLaptop
+      ? "45px"
+      : "90px";
 
-  //     if (response.ok) {
-  //       const json = await response.json();
-  //       setHistory(json.history);
-  //     }
 
-  //   } catch (error) {
-
-  //   } finally {
-
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchQueryHistory();
-  // }, [leftSideRaviChatData?.text])
+  const isOpen = useSelector((state: AppState) => state.app.isRightPanelOpen);
 
   return (
-    <div style={SCREEN_STYLE}>
+    <div style={{ ...SCREEN_STYLE, paddingLeft: containerPadding, paddingRight: containerPadding }}>
       <LoadingOverlay />
 
       <div style={LEFT_PANEL_STYLE}>
@@ -115,7 +106,7 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
           justifyContent: "space-between",
           alignItems: "center",
           borderRadius: "25px",
-          padding:"10px 10px"
+          padding: "10px 10px"
         }}>
           <RawiChatCard {...leftSideRaviChatData} />
 
@@ -131,32 +122,44 @@ export const MainLayout = ({ leftSideRaviChatData, leftSideChatInputData, middle
         <Footer {...middleBottomData} />
       </div>
 
-      <div style={RIGHT_PANEL_STYLE}>
+      <div style={{ ...RIGHT_PANEL_STYLE, justifyContent: isOpen ? "space-between" : "flex-end" }}>
+        <div style={{ paddingTop: "50px", width: "8%" }}><ChartToggleBtn /></div>
+
         <div style={{
+          width: "90%",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
-          paddingLeft: "30px"
+          flexDirection: "column",
         }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "5px",
+            height: "5%",
+          }}>
 
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {filterTagsSet?.map((item: any, index: any) => {
-              return (
-                <FilterTags
-                  key={index}
-                  items={item?.item}
-                  onToggle={item?.toggle}
-                />
-              )
-            })}
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {filterTagsSet?.map((item: any, index: any) => {
+                return (
+                  <FilterTags
+                    key={index}
+                    items={item?.item}
+                    onToggle={item?.toggle}
+                  />
+                )
+              })}
 
+            </div>
+
+            <button style={RESET_BTN_STYLE} onClick={onReset}>
+              <span>Reset Filters</span>
+            </button>
           </div>
-
-          <button style={RESET_BTN_STYLE} onClick={onReset}>
-            <span>Reset Filters</span>
-          </button>
+          <div style={{ height: "92%" }}>
+            {children}
+          </div>
         </div>
-        {children}
       </div>
     </div>
   );

@@ -1165,107 +1165,13 @@ export const BuildingScreen = () => {
   };
 
   const COMMON_CHIPS = [
-  "Population analysis by block in Doha",
-  "Analyze establishment distribution",
-  "Building distribution by type and status",
-  "Compare population between Doha and Al Daayen",
-];
+    "Population analysis by block in Doha",
+    "Analyze establishment distribution",
+    "Building distribution by type and status",
+    "Compare population between Doha and Al Daayen",
+  ];
 
   return (
-    // <div style={SCREEN_STYLE}>
-    //   <LoadingOverlay />
-    //   <div style={TOGGLE_STYLE}>
-    //     <div style={TOGGLE_WRAPPER_STYLE}>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
-    //         onClick={() => {
-    //           if (activeYearBtn !== 2020 && !isTransitioning.current) {
-    //             performZoomTransition(() => setActiveYearBtn(2020));
-    //           }
-    //         }}
-    //       >
-    //         2020
-    //       </button>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
-    //         onClick={() => {
-    //           if (activeYearBtn !== 2025 && !isTransitioning.current) {
-    //             performZoomTransition(() => setActiveYearBtn(2025));
-    //           }
-    //         }}
-    //       >
-    //         2025
-    //       </button>
-    //     </div>
-    //     <div style={{ width: "10px" }}></div>
-    //     <div style={TOGGLE_WRAPPER_STYLE}>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
-    //         onClick={() => {
-    //           if (viewMode !== "zone" && !isTransitioning.current) {
-    //             performZoomTransition(() => setViewMode("zone"));
-    //           }
-    //         }}
-    //       >
-    //         Zone
-    //       </button>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
-    //         onClick={() => {
-    //           if (viewMode !== "block" && !isTransitioning.current) {
-    //             performZoomTransition(() => setViewMode("block"));
-    //           }
-    //         }}
-    //       >
-    //         Block
-    //       </button>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(viewMode === "building")}
-    //         onClick={() => {
-    //           if (viewMode !== "building" && !isTransitioning.current) {
-    //             performZoomTransition(() => setViewMode("building"));
-    //           }
-    //         }}
-    //       >
-    //         Building
-    //       </button>
-    //     </div>
-    //   </div>
-    //   <div style={UI_CONTAINER_STYLE}>
-    //     <div style={INTERACTIVE_STYLE}>
-    //       {panelData && (
-    //         <BuildingRightPanel
-    //           data={panelData}
-    //           onStartTransition={stopCinematicMode}
-    //           selectedStatuses={selectedStatuses}
-    //           onStatusToggle={handleStatusToggle}
-    //           selectedTypes={selectedTypes}
-    //           onTypeToggle={handleTypeToggle}
-    //           onResetFilters={handleResetFilters}
-    //           chatData={chatInfo}
-    //           onRecommendationClick={handleRecommendationClick}
-    //           onDataUpdate={handleDataUpdate}
-    //         />
-    //       )}
-    //     </div>
-
-    //     <div style={FOOTER_WRAPPER_STYLE}>
-    //       <div style={FOOTER_POINTER_STYLE}>
-    //         <Footer
-    //           title={`Building Count (${viewMode == "zone"
-    //               ? "Zone"
-    //               : viewMode == "block"
-    //                 ? "Block"
-    //                 : "Building"
-    //             })`}
-    //           minVal={min}
-    //           maxVal={max}
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-
     <MainLayout
       leftSideRaviChatData={{
         text: chatInfo?.text ||
@@ -1318,30 +1224,25 @@ export const BuildingScreen = () => {
       <div style={{
         display: "flex",
         gap: 5,
-        justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
+        height: "100%",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        zIndex: 100,
+        pointerEvents: "auto",
       }}>
-        <ChartToggleBtn />
 
         {panelData && isRightPanelOpen && (
-          <div style={{
-            maxHeight: "70%",
-            zIndex: 100,
-            overflowY: "auto",
-            scrollbarWidth: "none",
-            pointerEvents: "auto",
-          }}>
-            <BuildingRightPanel
-              data={panelData}
-              onStartTransition={stopCinematicMode}
-              selectedStatuses={selectedStatuses}
-              onStatusToggle={handleStatusToggle}
-              selectedTypes={selectedTypes}
-              onTypeToggle={handleTypeToggle}
-              chatData={chatInfo}
-              onRecommendationClick={handleRecommendationClick}
-              onDataUpdate={handleDataUpdate}
-            />
-          </div>
+          <BuildingRightPanel
+            data={panelData}
+            onStartTransition={stopCinematicMode}
+            selectedStatuses={selectedStatuses}
+            onStatusToggle={handleStatusToggle}
+            selectedTypes={selectedTypes}
+            onTypeToggle={handleTypeToggle}
+            chatData={chatInfo}
+            onRecommendationClick={handleRecommendationClick}
+            onDataUpdate={handleDataUpdate}
+          />
         )}
       </div>
 

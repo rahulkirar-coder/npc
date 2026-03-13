@@ -13,6 +13,7 @@ interface TogglePanelProps {
 }
 
 const TOGGLE_STYLE: React.CSSProperties = {
+  width: "100%",
   pointerEvents: "auto",
   display: "flex",
 };

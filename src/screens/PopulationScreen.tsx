@@ -1027,18 +1027,17 @@ export const PopulationScreen = () => {
         display: "flex",
         gap: 5,
         justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
+        height: "100%"
       }}>
-        <ChartToggleBtn />
 
         {panelData && isRightPanelOpen && (
-          <div style={{ height: "100%", maxHeight: "65%" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" ,height: "100%"}}>
             <div style={{
-              height: "85%",
+              height: "90%",
               zIndex: 100,
               overflowY: "auto",
               scrollbarWidth: "none",
               pointerEvents: "auto",
-              marginBottom: "10px",
             }}>
 
               <RightPanel

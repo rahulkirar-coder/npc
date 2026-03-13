@@ -75,22 +75,6 @@ const TOGGLE_BUTTON_STYLE = (active: boolean): React.CSSProperties => ({
   outline: "none",
 });
 
-const FOOTER_WRAPPER_STYLE: React.CSSProperties = {
-  position: "absolute",
-  bottom: "0px",
-  left: "0px",
-  width: "100%",
-  pointerEvents: "none",
-  display: "flex",
-  justifyContent: "center",
-  zIndex: 100,
-};
-
-const FOOTER_POINTER_STYLE: React.CSSProperties = {
-  pointerEvents: "auto",
-  marginBottom: "30px",
-};
-
 export const EstablishmentScreen = () => {
   const dispatch = useDispatch();
   const { map } = useMap();
@@ -940,88 +924,6 @@ export const EstablishmentScreen = () => {
     "Compare population between Doha and Al Daayen",
   ];
   return (
-    // <div style={SCREEN_STYLE}>
-    //   <LoadingOverlay />
-    //   <div style={TOGGLE_STYLE}>
-    //     <div style={TOGGLE_WRAPPER_STYLE}>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
-    //         onClick={() => {
-    //           if (activeYearBtn !== 2020 && !isTransitioning.current) {
-    //             performZoomTransition(() => setActiveYearBtn(2020));
-    //           }
-    //         }}
-    //       >
-    //         2020
-    //       </button>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
-    //         onClick={() => {
-    //           if (activeYearBtn !== 2025 && !isTransitioning.current) {
-    //             performZoomTransition(() => setActiveYearBtn(2025));
-    //           }
-    //         }}
-    //       >
-    //         2025
-    //       </button>
-    //     </div>
-    //     <div style={{ width: "10px" }}></div>
-    //     <div style={TOGGLE_WRAPPER_STYLE}>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
-    //         onClick={() => {
-    //           if (viewMode !== "zone" && !isTransitioning.current) {
-    //             performZoomTransition(() => setViewMode("zone"));
-    //           }
-    //         }}
-    //       >
-    //         Zone
-    //       </button>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
-    //         onClick={() => {
-    //           if (viewMode !== "block" && !isTransitioning.current) {
-    //             performZoomTransition(() => setViewMode("block"));
-    //           }
-    //         }}
-    //       >
-    //         Block
-    //       </button>
-    //     </div>
-    //   </div>
-
-    //   <div style={UI_CONTAINER_STYLE}>
-    //     <div style={INTERACTIVE_STYLE}>
-    //       {panelData && (
-    //         <EstablishmentRightPanel
-    //           data={panelData}
-    //           onResetFilters={handleResetFilters}
-    //           selectedActivities={selectedActivities}
-    //           onActivityToggle={handleActivityToggle}
-    //           selectedSizeTypes={selectedSizeTypes}
-    //           onSizeTypeToggle={handleSizeTypeToggle}
-    //           selectedSectors={selectedSectors}
-    //           onSectorToggle={handleSectorToggle}
-    //           chatData={chatInfo}
-    //           onRecommendationClick={handleRecommendationClick}
-    //           onDataUpdate={handleDataUpdate}
-    //         />
-    //       )}
-    //     </div>
-
-    //     <div style={FOOTER_WRAPPER_STYLE}>
-    //       <div style={FOOTER_POINTER_STYLE}>
-    //         <Footer
-    //           title={`Establishment Distribution (${viewMode == "zone" ? "Zone" : "Block"
-    //             })`}
-    //           minVal={min}
-    //           maxVal={max}
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-
     <MainLayout
       leftSideRaviChatData={{
         text: RaviChatText,
@@ -1067,19 +969,14 @@ export const EstablishmentScreen = () => {
       <div style={{
         display: "flex",
         gap: 5,
-        justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
+        height: "100%",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        pointerEvents: "auto",
+        zIndex: 100,
       }}>
-        <ChartToggleBtn />
 
         {panelData && isRightPanelOpen && (
-          <div style={{
-            width: "100%",
-            maxHeight: "55%",
-            zIndex: 100,
-            overflowY: "auto",
-            scrollbarWidth: "none",
-            pointerEvents: "auto",
-          }}>
             <EstablishmentRightPanel
               data={panelData}
               selectedActivities={selectedActivities}
@@ -1092,7 +989,6 @@ export const EstablishmentScreen = () => {
               onRecommendationClick={handleRecommendationClick}
               onDataUpdate={handleDataUpdate}
             />
-          </div>
         )}
       </div>
 

@@ -979,85 +979,6 @@ export const EmploymentScreen = () => {
   };
 
   return (
-    // <div style={SCREEN_STYLE}>
-    //   <div style={TOGGLE_STYLE}>
-    //     <div style={TOGGLE_WRAPPER_STYLE}>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2020)}
-    //         onClick={() => {
-    //           if (activeYearBtn !== 2020 && !isTransitioning.current) {
-    //             performZoomTransition(() => setActiveYearBtn(2020));
-    //           }
-    //         }}
-    //       >
-    //         2020
-    //       </button>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(activeYearBtn === 2025)}
-    //         onClick={() => {
-    //           if (activeYearBtn !== 2025 && !isTransitioning.current) {
-    //             performZoomTransition(() => setActiveYearBtn(2025));
-    //           }
-    //         }}
-    //       >
-    //         2025
-    //       </button>
-    //     </div>
-    //     <div style={{ width: "10px" }}></div>
-    //     <div style={TOGGLE_WRAPPER_STYLE}>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(viewMode === "zone")}
-    //         onClick={() => {
-    //           if (viewMode !== "zone" && !isTransitioning.current) {
-    //             performZoomTransition(() => setViewMode("zone"));
-    //           }
-    //         }}
-    //       >
-    //         Zone
-    //       </button>
-    //       <button
-    //         style={TOGGLE_BUTTON_STYLE(viewMode === "block")}
-    //         onClick={() => {
-    //           if (viewMode !== "block" && !isTransitioning.current) {
-    //             performZoomTransition(() => setViewMode("block"));
-    //           }
-    //         }}
-    //       >
-    //         Block
-    //       </button>
-    //     </div>
-    //   </div>
-
-    //   <div style={UI_CONTAINER_STYLE}>
-    //     <div style={INTERACTIVE_STYLE}>
-    //       {panelData && (
-    //         <EmploymentRightPanel
-    //           data={panelData}
-    //           onStartTransition={stopCinematicMode}
-    //           selectedActivities={selectedActivities}
-    //           onActivityToggle={handleActivityToggle}
-    //           selectedSkills={selectedSkills}
-    //           onSkillToggle={handleSkillToggle}
-    //           onResetFilters={handleResetFilters}
-    //           chatData={chatInfo}
-    //           onRecommendationClick={handleRecommendationClick}
-    //           onDataUpdate={handleDataUpdate}
-    //         />
-    //       )}
-    //     </div>
-    //     <div style={FOOTER_WRAPPER_STYLE}>
-    //       <div style={FOOTER_POINTER_STYLE}>
-    //         <Footer
-    //           title={`Employment Distribution (${
-    //             viewMode == "zone" ? "Zone" : "Block"
-    //           })`}
-    //           minVal={min}
-    //           maxVal={max}
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
     <MainLayout
       leftSideRaviChatData={{
         text: RaviChatText,
@@ -1090,7 +1011,7 @@ export const EmploymentScreen = () => {
         minVal: min,
         maxVal: max
       }}
-      
+
       onReset={handleResetFilters}
 
       filterTagsSet={
@@ -1102,30 +1023,25 @@ export const EmploymentScreen = () => {
       <div style={{
         display: "flex",
         gap: 5,
-        justifyContent: isRightPanelOpen ? "space-between" : "flex-end",
+        height: "100%",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        zIndex: 100,
+        pointerEvents: "auto",
       }}>
-        <ChartToggleBtn />
 
         {panelData && isRightPanelOpen && (
-          <div style={{
-            maxHeight: "45%",
-            zIndex: 100,
-            overflowY: "auto",
-            scrollbarWidth: "none",
-            pointerEvents: "auto",
-          }}>
-            <EmploymentRightPanel
-              data={panelData}
-              onStartTransition={stopCinematicMode}
-              selectedActivities={selectedActivities}
-              onActivityToggle={handleActivityToggle}
-              selectedSkills={selectedSkills}
-              onSkillToggle={handleSkillToggle}
-              chatData={chatInfo}
-              onRecommendationClick={handleRecommendationClick}
-              onDataUpdate={handleDataUpdate}
-            />
-          </div>
+          <EmploymentRightPanel
+            data={panelData}
+            onStartTransition={stopCinematicMode}
+            selectedActivities={selectedActivities}
+            onActivityToggle={handleActivityToggle}
+            selectedSkills={selectedSkills}
+            onSkillToggle={handleSkillToggle}
+            chatData={chatInfo}
+            onRecommendationClick={handleRecommendationClick}
+            onDataUpdate={handleDataUpdate}
+          />
         )}
       </div>
 

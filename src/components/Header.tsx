@@ -15,10 +15,10 @@ export const Header = () => {
   const isLaptop = width > 1024 && width <= 1536;
 
   const containerPadding = isTablet
-    ? "10px 20px"
+    ? "10px 25px"
     : isLaptop
-    ? "10px 40px"
-    : "10px 80px";
+      ? "10px 45px"
+      : "10px 90px";
 
   const logoSize = isTablet ? "140px" : isLaptop ? "160px" : "181px";
 
@@ -52,7 +52,7 @@ export const Header = () => {
     <div
       style={{
         width: "100%",
-        height: isTablet ? "80px" : "100px",
+        height: "100px",
         position: "fixed",
         top: 0,
         left: 0,
@@ -63,10 +63,13 @@ export const Header = () => {
       <div
         style={{
           width: "100%",
+          height: "50%",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           padding: containerPadding,
+          borderBottom: "1px solid #5f5e5e",
+          backgroundColor: "#030f1f"
         }}
       >
         <img
@@ -110,8 +113,9 @@ export const Header = () => {
       {/* Bottom Header */}
       <div
         style={{
-          display: "flex",
           width: "100%",
+          height: "50%",
+          display: "flex",
           padding: containerPadding,
         }}
       >
