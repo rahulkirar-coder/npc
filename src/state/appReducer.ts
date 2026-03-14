@@ -25,6 +25,9 @@ export type AppSliceState = {
   loadingProgress: number | null;
   loadingDuration: number; // New field for custom simulated duration
   isRightPanelOpen: boolean;
+
+  isLocalLoading: boolean;
+
 };
 
 export type AppState = {
@@ -54,6 +57,7 @@ const INITIAL_STATE: AppSliceState = {
   loadingProgress: null,
   loadingDuration: 0, // Default to 0 (Fast mode)
   isRightPanelOpen: true,
+  isLocalLoading: false,
 };
 
 // Action types
@@ -67,6 +71,8 @@ const SET_LOADING_MESSAGE = "app/SET_LOADING_MESSAGE";
 const SET_LOADING_PROGRESS = "app/SET_LOADING_PROGRESS";
 const SET_LOADING_DURATION = "app/SET_LOADING_DURATION";
 const TOGGLE_RIGHT_PANEL = "app/TOGGLE_RIGHT_PANEL";
+
+const SET_LOCAL_LOADING = "app/SET_LOCAL_LOADING";
 
 // Reducer
 export const appReducer = (
@@ -129,6 +135,11 @@ export const appReducer = (
       return {
         ...state,
         isRightPanelOpen: !state.isRightPanelOpen,
+      };
+    case SET_LOCAL_LOADING:
+      return {
+        ...state,
+        isLocalLoading: action.payload,
       };
     default:
       return state;
@@ -193,4 +204,10 @@ export const setLoadingDuration = (duration: number) => ({
 
 export const toggleRightPanel = () => ({
   type: TOGGLE_RIGHT_PANEL,
+});
+
+
+export const setIsLocalLoading = (isLoading: boolean) => ({
+  type: SET_LOCAL_LOADING,
+  payload: isLoading,
 });

@@ -5,7 +5,7 @@ import { BASE_URL } from "../util";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMap } from "react-map-gl";
 import { useDispatch } from "react-redux";
-import { setLoading } from "../state/appReducer";
+import { setLoading,setIsLocalLoading } from "../state/appReducer";
 import { getRouteFromGraphScreen, mapCall } from "../utils/commonFunction";
 import { apiMethod } from "../api";
 
@@ -166,6 +166,7 @@ export const BottomInputPanel: React.FC<BottomInputPanelProps> = ({
     if (!queryText.trim()) return;
 
     dispatch(setLoading(true, "Processing Query..."));
+    dispatch(setIsLocalLoading(true));
 
     try {
 
