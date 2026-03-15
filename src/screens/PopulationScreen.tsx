@@ -150,23 +150,27 @@ export const PopulationScreen = () => {
     });
   };
 
-  const handleResetFilters = () => {
-    setSelectedAgeGroups([]);
-    setSelectedGender(null);
-    setSelectedMaritalStatus([]);
-    setSelectedEducation([]);
-    setSelectedNationalities([]);
-    setSelectedZone(null); // Reset Zone
-    if (map) {
-      map.flyTo({
-        center: [51.5348, 25.2867],
-        zoom: 10,
-        duration: 1500,
-      });
-    }
-  };
-
   // --- Logic for updating data from Query API (Same Screen) ---
+
+  const [updateData, setUpdateData] = useState<any>(null)
+
+  const handleResetFilters = async () => {
+      setUpdateData(null)
+      setSelectedAgeGroups([]);
+      setSelectedGender(null);
+      setSelectedMaritalStatus([]);
+      setSelectedEducation([]);
+      setSelectedNationalities([]);
+      setSelectedZone(null); // Reset Zone
+      if (map) {
+        map.flyTo({
+          center: [51.5348, 25.2867],
+          zoom: 10,
+          duration: 1500,
+        });
+      }
+
+  };
 
   const applyFilters = (filters: any) => {
     if (!filters) return;
@@ -216,10 +220,15 @@ export const PopulationScreen = () => {
       setSelectedAgeGroups(ageGroups);
     }
 
+    setTimeout(() => {
+      setUpdateData(null);
+    }, 3000);
+
   };
 
   const handleDataUpdate = (stateData: any) => {
     const filters = stateData?.queryData?.filters;
+    setUpdateData(filters);
 
     if (filters) {
       applyFilters(filters);
@@ -401,6 +410,12 @@ export const PopulationScreen = () => {
   // --- API Call & Data Processing ---
   useEffect(() => {
     const loadApiData = async () => {
+
+      if (updateData && Object.keys(updateData).length > 0) {
+        console.log("Object has data");
+        navigate(location.pathname, { replace: true, state: null });
+        return;
+      }
 
       const isDefaultFilters =
         selectedAgeGroups.length === 0 &&
@@ -1011,10 +1026,8 @@ export const PopulationScreen = () => {
                 onEducationToggle={handleEducationToggle}
                 selectedNationalities={selectedNationalities}
                 onNationalityToggle={handleNationalityToggle}
-                onResetFilters={handleResetFilters}
                 chatData={chatInfo}
                 onRecommendationClick={handleRecommendationClick}
-                onDataUpdate={handleDataUpdate}
               />
             </div>
             <LegendTable

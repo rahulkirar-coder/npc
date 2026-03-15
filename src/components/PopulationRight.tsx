@@ -22,7 +22,6 @@ interface RightPanelProps {
     onStartTransition?: () => void;
     selectedAgeGroups?: string[];
     onAgeGroupToggle?: (group: string) => void;
-    onResetFilters?: () => void;
     selectedGender?: string | null;
     onGenderToggle?: (gender: string) => void;
     selectedMaritalStatus?: string[];
@@ -38,7 +37,6 @@ interface RightPanelProps {
         question?: string;
     } | null;
     onRecommendationClick?: (rec: string) => void;
-    onDataUpdate?: (data: any) => void;
 }
 
 export const RightPanel: React.FC<RightPanelProps> = ({
@@ -46,7 +44,6 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     onStartTransition,
     selectedAgeGroups = [],
     onAgeGroupToggle,
-    onResetFilters,
     selectedGender,
     onGenderToggle,
     selectedMaritalStatus = [],
@@ -58,7 +55,6 @@ export const RightPanel: React.FC<RightPanelProps> = ({
     onNationalityToggle,
     chatData,
     onRecommendationClick,
-    onDataUpdate,
 }) => {
     const [yearMode, setYearMode] = useState<"2025" | "compare">("compare");
     const navigate = useNavigate();
